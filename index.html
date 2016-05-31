@@ -8,7 +8,7 @@
     <script class='remove'>
       var respecConfig = {
           shortName:  "payment-method-basic-card",
-          edDraftURI:   "https://w3c.github.io/browser-payment-api/basic-card-payment.html",
+          edDraftURI:   "http://w3c.github.io/webpayments-methods-card/",
 
           specStatus: "ED",
           editors: [
@@ -33,7 +33,7 @@
           wgPublicList: "public-payments-wg",
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
-          issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          issueBase:    "https://github.com/w3c/webpayments-methods-card/issues/",
 
           localBiblio:  {
               "PAYMENT-ARCH": {
@@ -92,7 +92,7 @@
 
     <section id='sotd'>
       <p>
-        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        The working group maintains <a href="https://github.com/w3c/webpayments-methods-card/issues">a
         list of all bug reports that the group has not yet addressed</a>.
         This draft highlights some of the pending issues that are still to be discussed in the working
         group. No decision has been taken on the outcome of these issues including whether they are valid.
@@ -222,7 +222,7 @@
 		
       </dl>
 
-      <p class="issue" data-number="55" title="Should the messages support field-level encryption?">
+      <p class="issue" title="Should we standardize a way for messages to implement field-level encryption?">
 There is a requirement for payment apps to be able to return data that is
 hidden from the payee themselves (perhaps for PCI scope reasons) as they will
 pass it on to their payment service processor who can then decrypt it and use
@@ -249,12 +249,6 @@ it.
 
       </section>
     </section>
-
-    <div class="issue" data-number="17" title="complete() should take a string argument not boolean">
-      There is an open issue about what values can be supplied to complete. These may depend on the
-      payment method selected and then Basic Card Payment values would need to be defined in this
-      document.
-    </div>
 
   </body>
 </html>
