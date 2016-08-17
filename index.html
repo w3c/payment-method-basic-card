@@ -167,7 +167,7 @@
 
 	<section id="flow">
       <h2>Payment Method Flow</h2>
-      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a website</p>
+      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a web site</p>
       <p>The blue call-outs show where and how the API is invoked.</p>
 
   	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
@@ -188,7 +188,7 @@
       PaymentRequest API when a user accepts payment with a Basic Payment Card payment method.</p>
 
       <section>
-      <h2>BasicCardResponse</h2>
+      <h3>BasicCardResponse</h3>
       <pre class="idl">
         dictionary BasicCardResponse {
           DOMString cardholderName;
@@ -232,7 +232,7 @@ it.
       </section>
 
       <section>
-      <h2>BillingAddress</h2>
+      <h3>BillingAddress</h3>
       <pre class="idl">
         dictionary BillingAddress {
           // [...] fields TBC - most likely the same as shipping address
@@ -255,6 +255,14 @@ it.
       payment method selected and then Basic Card Payment values would need to be defined in this
       document.
     </div>
+    
+    <section id="security">
+      <h2>Security and Privacy Considerations</h2>
+
+      <p>Owners of web sites SHOULD NOT store the payer's card information except where warranted, such as storage for future and recurring payments. When card information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
+
+      <p><strong>Note</strong>: Implementers may be subject to PCI DSS or other regulations, but discussion of those considerations lies outside the scope of this document.</p>
+    </section>
 
   </body>
 </html>
