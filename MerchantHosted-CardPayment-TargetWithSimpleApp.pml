@@ -62,11 +62,6 @@ Else
 	Note right: Custom code on merchant webpage can encrypt payload to reduce PCI burden from SAQ D to SAQ A-EP
 End
 
-opt
-	Payee->Payee: Store Card
-	note right: Merchant can store card details (apart from CSC) (even if encrypted) for future use (a.k.a. Card on File)
-end
-
 Payee-\MPSP: Authorise (payload)
 
 MPSP-\CPSP: Authorisation Request
