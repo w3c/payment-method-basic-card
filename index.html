@@ -173,15 +173,40 @@
   	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
 	
     </section>
-	
-    <section id="init-data">
-      <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
-      <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
+	     
+	<section id="init-data">
+	  <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
+	  <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
       argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
-      Basic Card Payment methods.</p>
-    </section>
+	
+      <p>The <dfn><code>BasicCardRequest</code></dfn> dictionary contains the request from the
+      PaymentRequest API when a user accepts payment with a Basic Payment Card payment method.</p>
 
+      <section>	
+        <h2>BasicCardRequest</h2>
+        <pre class="idl">
+          dictionary BaseRequestData {
+            sequence<DOMString> requiredFields;
+          };
+        </pre>
+
+        <p>
+          The <code>BasicRequestData</code> dictionary contains the following fields:
+        </p>
+
+        <dl>
+          <dt><dfn><code>requiredFields</code></dfn></dt>
+          <dd>The <code>requiredFields</code> field contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument does not support that field, an empty field must be returned to indicate this</dd>
+        </dl>
+
+      </section>
+	  
+	<div class="issue" title="Should BasicCardRequest be genralised and moved into the Payment API?">
+      This type could be generic to any PaymentRequest and could be moved to the PaymentRequest API as a base type
+    </div>
+	
+    </section>
+	
     <section id="response">
       <h2>Payment Method Response</h2>
       <p>The <dfn><code>BasicCardResponse</code></dfn> dictionary contains the response from the
