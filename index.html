@@ -107,15 +107,8 @@
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
-        This specification is a <a>Payment Transaction Message Specification</a> used by the PaymentRequest API
-        [[!PAYMENT-REQUEST-API]] to support payment by payment cards such as credit or debit cards. It is intended
-        to provide compatibility for merchants who currently request card details from customers to ease adoption
-        of the PaymentRequest API.
-      </p>
-      <p>
-        In the future, merchants should favor payment methods that provide a tokenized response rather than
-        clear text credit card details.
-      </p>
+        This specification is a <a>Payment Method Specification</a> for use with the PaymentRequest API [[!PAYMENT-REQUEST-API]]. With it, merchants can collect the basic card details (card holder name, card number, etc.) through the PaymentRequest API that they have traditionally collected through Web forms, but with an improved user experience.</p>
+      <p class="note">The Web Payments Working Group is also investigating payment methods that offer greater security (e.g., through tokenization).</p>
     </section>
 
     <section id="dependencies"> 
@@ -131,7 +124,7 @@
         [[PAYMENT-ARCH]].</dd>
         <dt>Payment Request API</dt>
         <dd>The term <dfn>PaymentRequest constructor</dfn> is defined by the PaymentRequest API
-        specification [[!PAYMENT-REQUEST-API]].</dd>
+        specification [[!PAYMENT-REQUEST-API]]. A <a href="#flow">flow diagram</a> illustrates how the PaymentRequest API is used for basic card payments.</dd>
         <dt>Payment Method Identifiers</dt>
         <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
         Method Identifier</dfn> is defined by the Payment Method Identifiers specification
@@ -144,42 +137,12 @@
     <section id="method-id">
       <h2>Payment Method Identifier</h2>
       <p>The following <a>payment method identifier</a> strings are supported by the Basic Card Payment data formats.</p>
-
-      <table>
-        <tr><th>Identifier String</th><th>Description</th></tr>
-        <tr><td>visa</td><td>Visa (Credit, Debit and Electron)</td></tr>
-        <tr><td>visa/credit</td><td>Visa Credit</td></tr>
-        <tr><td>visa/debit</td><td>Visa Debit</td></tr>
-        <tr><td>visa/electron</td><td>Visa Electron</td></tr>
-        <tr><td>mastercard</td><td>MasterCard (and EuroCard)</td></tr>
-        <tr><td>mastercard/credit</td><td>MasterCard Credit</td></tr>
-        <tr><td>mastercard/debit</td><td>MasterCard Debit</td></tr>
-        <tr><td>amex</td><td>American Express</td></tr>
-        <tr><td>discover</td><td>Discover</td></tr>
-        <tr><td>maestro</td><td>Maestro</td></tr>
-	    <tr><td>diners</td><td>Diners Club</td></tr>
-        <tr><td>jcb</td><td>JCB</td></tr>
-	    <tr><td>unionpay</td><td>UnionPay</td></tr>
-	    <tr><td>unionpay/credit</td><td>UnionPay Credit</td></tr>
-	    <tr><td>unionpay/debit</td><td>UnionPay Debit</td></tr>
-      </table>
+      <p class="note"> The Web Payments Working Group is leaning toward a single identifier for basic card payments, combined with a filtering mechanism.</p>
     </section>
 
-	<section id="flow">
-      <h2>Payment Method Flow</h2>
-      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a web site</p>
-      <p>The blue call-outs show where and how the API is invoked.</p>
-
-  	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
-	
-    </section>
-	
     <section id="init-data">
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
-      <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
-      argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
-      Basic Card Payment methods.</p>
+      <p>For this payment method, there is no <code>data</code> passed as input to the PaymentRequest constructor.</p>
     </section>
 
     <section id="response">
@@ -219,16 +182,11 @@
         <dt><dfn><code>cardSecurityCode</code></dfn></dt>
         <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
-		
-      </dl>
+     </dl>
 
-      <p class="issue" data-number="55" title="Should the messages support field-level encryption?">
-There is a requirement for payment apps to be able to return data that is
-hidden from the payee themselves (perhaps for PCI scope reasons) as they will
-pass it on to their payment service processor who can then decrypt it and use
-it.
-      </p>
 
+      <p class="issue" data-number="55" title="Should the messages support field-level encryption?">For security reasons (e.g., PCI scope) the Web Payments Working Group is discussing whether field-level encryption is necessary for this
+	specification, or whether that is unnecessary for this specification, which is a simple replacement for Web forms.</p>
       </section>
 
       <section>
@@ -262,6 +220,15 @@ it.
       <p>Owners of web sites SHOULD NOT store the payer's card information except where warranted, such as storage for future and recurring payments. When card information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
 
       <p><strong>Note</strong>: Implementers may be subject to PCI DSS or other regulations, but discussion of those considerations lies outside the scope of this document.</p>
+    </section>
+
+    <section id="flow">
+      <h2>Payment Method Flow</h2>
+      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a web site</p>
+      <p>The blue call-outs show where and how the API is invoked.</p>
+
+  	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
+	
     </section>
 
   </body>
