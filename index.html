@@ -22,8 +22,8 @@
                     company:    "Facebook" },
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
+          noRecTrack:   true,
 
           previousMaturity: "FPWD",
           previousPublishDate:  "2016-04-21",
@@ -36,17 +36,6 @@
           issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
 
           localBiblio:  {
-              "PAYMENT-ARCH": {
-                  title:    "Payment Request Architecture"
-              ,   href:     "https://w3c.github.io/browser-payment-api/specs/architecture.html"
-              ,   authors:  [
-                      "Adrian Bateman"
-                  ,   "Zach Koch"
-                  ,   "Richard Barnes"
-                  ,   "Roy McElmurry"
-                  ]
-              ,   status:   "ED"
-              },
               "PAYMENT-REQUEST-API": {
                   title:    "Payment Request API"
               ,   href:     "https://www.w3.org/TR/payment-request/"
@@ -107,7 +96,7 @@
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
-        This specification is a <a>Payment Transaction Message Specification</a> used by the PaymentRequest API
+        This specification is a Payment Method Specification used by the PaymentRequest API
         [[!PAYMENT-REQUEST-API]] to support payment by payment cards such as credit or debit cards. It is intended
         to provide compatibility for merchants who currently request card details from customers to ease adoption
         of the PaymentRequest API.
@@ -124,11 +113,6 @@
       This specification relies on several other underlying specifications. 
       </p> 
       <dl> 
-        <dt>Payment Request Architecture</dt>
-        <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
-        <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
-        Message Specification</dfn> are defined by the Payment Request Architecture document
-        [[PAYMENT-ARCH]].</dd>
         <dt>Payment Request API</dt>
         <dd>The term <dfn>PaymentRequest constructor</dfn> is defined by the PaymentRequest API
         specification [[!PAYMENT-REQUEST-API]].</dd>
