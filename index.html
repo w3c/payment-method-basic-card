@@ -173,12 +173,45 @@
 	
     </section>
 	
-    <section id="init-data">
+    <section id="request">
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
       <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
-      argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
-      Basic Card Payment methods.</p>
+      argument to the <a>PaymentRequest constructor</a>.</p>
+
+      <section>
+      <h3>BasicCardRequest</h3>
+      <pre class="idl">
+        enum BasicCardType { "credit", "debit", "prepaid" };
+
+        dictionary BasicCardRequest {
+          sequence&lt;DOMString&gt; supportedNetworks;
+          sequence&lt;BasicCardType&gt; supportedTypes;
+        };
+      </pre>
+
+      <p>
+        The <code>BasicCardResponse</code> dictionary contains the following fields:
+      </p>
+
+      <dl>
+        <dt><dfn><code>supportedNetworks</code></dfn></dt>
+        <dd>The <code>supportedNetworks</code> field contains a sequence of identifiers for card networks
+        that the merchant accepts.</dd>
+        <dt><dfn><code>supportedTypes</code></dfn></dt>
+        <dd>The <code>supportedTypes</code> field contains a sequence of card types that the merchant
+        accepts. Implementations will determine how to match the type values <code>credit</code>,
+        <code>debit</code>, and <code>prepaid</code>.</dd>
+      </dl>
+
+      <p class="note">
+        The <code>supportedNetworks</code> and <code>supportedTypes</code> fields are both optional.
+        If neither is provided then any card may be returned. If only <code>supportedNetworks</code>
+        is provided then any card type may be returned provided it matches one of the networks.
+        If only <code>supportedTypes</code> is provided then a card may be returned from any network
+        provided it matches one of the types.
+      </p>
+
+      </section>
     </section>
 
     <section id="response">
