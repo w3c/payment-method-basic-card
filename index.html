@@ -129,8 +129,8 @@
       </p> 
       <dl> 
         <dt>Payment Request API</dt>
-        <dd>The term <dfn>PaymentRequest constructor</dfn> is defined by the PaymentRequest API
-        specification [[!PAYMENT-REQUEST-API]].</dd>
+        <dd>The terms <dfn>PaymentRequest constructor</dfn>, and <dfn>PaymentAddress</dfn>
+        are defined by the PaymentRequest API specification [[!PAYMENT-REQUEST-API]].</dd>
         <dt>Payment Method Identifiers</dt>
         <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
         Method Identifier</dfn> is defined by the Payment Method Identifiers specification
@@ -196,7 +196,7 @@
           DOMString expiryYear;
 		  DOMString cardSecurityCode;
 		  
-          BillingAddress? billingAddress;
+          PaymentAddress? billingAddress;
         };
       </pre>
 
@@ -219,24 +219,6 @@
         <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
       </dl>
-
-      </section>
-
-      <section>
-      <h3>BillingAddress</h3>
-      <pre class="idl">
-        dictionary BillingAddress {
-          // [...] fields TBC - most likely the same as shipping address
-        };
-      </pre>
-
-      <p>The <dfn><code>BillingAddress</code></dfn> dictionary contains the billing address
-      information associated with the payment card.</p>
-
-      <p class="issue">
-        The fields of the <code>BillingAddress</code> will most likely match those in the 
-        shipping address of the PaymentRequest API once those are defined.
-      </p>
 
       </section>
     </section>
