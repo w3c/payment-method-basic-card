@@ -8,7 +8,7 @@
     <script class='remove'>
       var respecConfig = {
           shortName:  "payment-method-basic-card",
-          edDraftURI:   "https://w3c.github.io/browser-payment-api/basic-card-payment.html",
+          edDraftURI: "https://w3c.github.io/webpayments-methods-card/",
 
           specStatus: "ED",
           editors: [
@@ -22,8 +22,8 @@
                     company:    "Facebook" },
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
+          noRecTrack:   true,
 
           previousMaturity: "FPWD",
           previousPublishDate:  "2016-04-21",
@@ -33,20 +33,9 @@
           wgPublicList: "public-payments-wg",
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
-          issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          issueBase:    "https://github.com/w3c/webpayments-methods-card/issues",
 
           localBiblio:  {
-              "PAYMENT-ARCH": {
-                  title:    "Payment Request Architecture"
-              ,   href:     "https://w3c.github.io/browser-payment-api/specs/architecture.html"
-              ,   authors:  [
-                      "Adrian Bateman"
-                  ,   "Zach Koch"
-                  ,   "Richard Barnes"
-                  ,   "Roy McElmurry"
-                  ]
-              ,   status:   "ED"
-              },
               "PAYMENT-REQUEST-API": {
                   title:    "Payment Request API"
               ,   href:     "https://www.w3.org/TR/payment-request/"
@@ -69,7 +58,17 @@
                   ]
               ,   status:   "WD"
               }
-          }
+          },
+          otherLinks: [{
+            key: "Version control",
+            data: [{
+            value: "Github Repository",
+            href: "https://github.com/w3c/webpayments-methods-card/"
+          }, {
+            value: "Issues",
+            href: "https://github.com/w3c/webpayments-methods-card/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20"
+          }]
+        }]
       };
     </script>
     <style>
@@ -92,22 +91,27 @@
 
     <section id='sotd'>
       <p>
-        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        The working group maintains <a href="https://github.com/w3c/webpayments-methods-card/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">a
         list of all bug reports that the group has not yet addressed</a>.
-        This draft highlights some of the pending issues that are still to be discussed in the working
-        group. No decision has been taken on the outcome of these issues including whether they are valid.
         Pull requests with proposed specification text for outstanding issues are strongly encouraged.
       </p>
       <p>
         This specification was derived from a report published previously by the
         <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
       </p>
+      <div class="note">
+        <p><strong>Sending comments on this document</strong></p>
+        <p>If you wish to make comments regarding this document, please raise them as
+        <a href="https://github.com/w3c/webpayments-methods-card/issues">GitHub issues</a>.
+        Only send comments by email if you are unable to raise issues on GitHub (see
+        links below). All comments are welcome.</p>
+      </div>
     </section>
     
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
-        This specification is a <a>Payment Transaction Message Specification</a> used by the PaymentRequest API
+        This specification is a Payment Method Specification used by the PaymentRequest API
         [[!PAYMENT-REQUEST-API]] to support payment by payment cards such as credit or debit cards. It is intended
         to provide compatibility for merchants who currently request card details from customers to ease adoption
         of the PaymentRequest API.
@@ -124,11 +128,6 @@
       This specification relies on several other underlying specifications. 
       </p> 
       <dl> 
-        <dt>Payment Request Architecture</dt>
-        <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
-        <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
-        Message Specification</dfn> are defined by the Payment Request Architecture document
-        [[PAYMENT-ARCH]].</dd>
         <dt>Payment Request API</dt>
         <dd>The term <dfn>PaymentRequest constructor</dfn> is defined by the PaymentRequest API
         specification [[!PAYMENT-REQUEST-API]].</dd>
@@ -219,15 +218,7 @@
         <dt><dfn><code>cardSecurityCode</code></dfn></dt>
         <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
-		
       </dl>
-
-      <p class="issue" data-number="55" title="Should the messages support field-level encryption?">
-There is a requirement for payment apps to be able to return data that is
-hidden from the payee themselves (perhaps for PCI scope reasons) as they will
-pass it on to their payment service processor who can then decrypt it and use
-it.
-      </p>
 
       </section>
 
@@ -250,12 +241,6 @@ it.
       </section>
     </section>
 
-    <div class="issue" data-number="17" title="complete() should take a string argument not boolean">
-      There is an open issue about what values can be supplied to complete. These may depend on the
-      payment method selected and then Basic Card Payment values would need to be defined in this
-      document.
-    </div>
-    
     <section id="security">
       <h2>Security and Privacy Considerations</h2>
 
