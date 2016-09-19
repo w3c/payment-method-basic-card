@@ -111,15 +111,10 @@
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
-        This specification is a Payment Method Specification used by the PaymentRequest API
-        [[!PAYMENT-REQUEST-API]] to support payment by payment cards such as credit or debit cards. It is intended
-        to provide compatibility for merchants who currently request card details from customers to ease adoption
-        of the PaymentRequest API.
-      </p>
-      <p>
-        In the future, merchants should favor payment methods that provide a tokenized response rather than
-        clear text credit card details.
-      </p>
+        This specification is a Payment Method specification for use with the PaymentRequest API [[!PAYMENT-REQUEST-API]].
+        With it, merchants can collect the basic card details (card holder name, card number, etc.) through the
+        PaymentRequest API that they have traditionally collected through Web forms, but with an improved user experience.</p>
+      <p class="note">The Web Payments Working Group is also investigating payment methods that offer greater security (e.g., through tokenization).</p>
     </section>
 
     <section id="dependencies"> 
@@ -145,15 +140,6 @@
       <p>The <a>payment method identifier</a> string for the Basic Card Payment method is <dfn><code>basic-card</code></dfn>.</p>
     </section>
 
-	<section id="flow">
-      <h2>Payment Method Flow</h2>
-      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a web site</p>
-      <p>The blue call-outs show where and how the API is invoked.</p>
-
-  	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
-	
-    </section>
-	
     <section id="request">
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
       <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
@@ -243,6 +229,15 @@
       <p>Owners of web sites SHOULD NOT store the payer's card information except where warranted, such as storage for future and recurring payments. When card information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
 
       <p><strong>Note</strong>: Implementers may be subject to PCI DSS or other regulations, but discussion of those considerations lies outside the scope of this document.</p>
+    </section>
+
+    <section id="flow">
+      <h2>Payment Method Flow</h2>
+      <p>The following represent the flow for all the supported <a>payment method identifier</a> strings as they could be used by a web site</p>
+      <p>The blue call-outs show where and how the API is invoked.</p>
+
+  	  <div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/TargetFlows/Card/MerchantHosted-CardPayment-TargetWithSimpleApp.pml"/></a></div>
+	
     </section>
 
   </body>
