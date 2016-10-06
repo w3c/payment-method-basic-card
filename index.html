@@ -233,16 +233,10 @@
       <p>The decision whether to retain credit card information for future
       transactions remains a matter of local policy for web sites; however,
       the introduction of a programmatic way to retrieve credit card
-      information from a web browser changes a couple of key factors that
+      information from a web browser affects some key factors that
       typically motivate storage of such information.</p>
 
-      <p>Because the web browser will retain credit card information, and make
-      it available – subject to user approval – whenever a merchant needs it,
-      the friction that merchants seek to avoid no longer exists. This frees
-      merchants from the liability considerations of storing information on a
-      persistent basis, such as financial liability that can result from
-      unauthorized access to the databases used to store credit card
-      information.</p>
+      <p>Because Payment Request API enables local storage of card information, this reduces the friction that motivated merchant-side storage, thus freeing merchants from the risk and liability associated with unauthorized access to stored information.</p>
 
       <p>Additionally, web sites that call the payments API for each
       transaction avoid the friction that can result when users’ credit card
@@ -253,16 +247,10 @@
       <p>Finally, by letting the web browser determine user authentication
       information, the merchant site is relieved of the duty of ensuring that
       a time-local and sufficiently strong authentication has occurred.
-      Additionally, browsers can make use of local affordances, such as
+      Additionally, browsers and other payment apps can make use of local affordances, such as
       biometrics and hardware tokens, to authenticate users in a way that is
       more convenient, more secure, and lower friction than web sites
       currently can.</p>
-
-      <p>The basic card payment method provides information to requesting
-      websites that can be used for multiple transactions over a potentially
-      very long period of time, typically on the order of several years at a
-      time.  The decision whether to retain credit card information for future
-      transactions is a matter of local policy for web sites.</p>
 
       <p><strong>Note</strong>: Implementers may be subject to PCI DSS or other regulations, but discussion of those considerations lies outside the scope of this document.</p>
     </section>
