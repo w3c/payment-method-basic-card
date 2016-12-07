@@ -1,12 +1,12 @@
 language: node_js
 branches:
   only:
-  - gh-pages
+    - gh-pages
 env:
   global:
     - URL="https://w3c.github.io/webpayments-methods-card/echidna-manifest.txt"
     - DECISION="https://www.w3.org/2016/04/14-wpwg-minutes#item02"
-    - secure: "e3Bf5AmYXynWh1BEuwiVpO2WsPyqRnpsBMOtNqP5hdTuc3dtKIqntMsaYqxV+8X+82jaF5fp/FaMRleShZdK1bOV9/O+WQf8NU/c0YDpj365WiO9WhAueZb8/G47oGiK/iCDop9ijPIPZ1yEvB4CPKPzqMUNtQy1E74U3mFtBmL4ap9AYs1JK7NalNSurVSSVTAnQtGaT/KMVqWYhrXA8ujsyAB1Fnf0wBC+vVAlVb7NTbGrXvm3wXNpmHbZQ5D7dp01UVNz69cesh907P2uQA4DNVSqqoZvyf8L3OovoBQJ0ViMClIFSPKU+ntEjGesjcBfPp/KDVB+j9VwYIDBdh7zZtyDnEwM110yh8ZOnSOv2/Ln8JqFyku1T3Ddcp71E1A8lmny+Ahjp0l49nSkUis+tK+qD2sdC/I1xNZNCRYiar0rjYUQFg5M+vVsSI+hKONe7VDIg9d3Qb8S8JRaAvFfbiO7tGHiadt9WCSYWCshHTL3WsZ6uUU2b11v7l8D/O2c3Pa1UcNeNtKm1ZVVYJ83WxU9q9wLSQZ3lQQbbVMXYh9XX6gXZRnhkeRbvR3f58EynFfBjFEJwgrGPUR7/ybQvY2u0YJJlveUjHRQ73K/o5lIpSlPeLx/JeF4iWi1gwNmIlnSsjU8YkJMyismgoqcSN3BW6ZQTHn3zQnAPsc="
+    - secure: R+VoisbiBbaUhrLWDiB5NrPhHeleR1zVAA4NanVsJcJx8gPfu5OpWApXnoGRXsVUuSUbNLaorp6Cgh6TTup8PkEm4hI1D5Y4nw8+WAHZf38DgDcHQBP9pIPRTowXOcf5j96qrtmPcZSo9etmvzQTHtDy7LJmhQ1Aq7DF7tyInROl6lFrqbmLbvHXFA2tsIFfNmAf9TO/MObk34pIOdXqmqnE9kFg6UZk7dUi6Vrv91lR44MmUo33XpsJ5mP5h7sN5TsoNpjOcNxFUJikZzEa0uhnmnpdnErc03Va6CAEiAIpqxDt90POcL5u3MY9oCgBjizd108VBb+xsvwy2sja+oulsG9+oSBVXgt1XHaztjnpUbjfYHUzdkFC7tQJzwJSC9zR82PN7/R0dzx+SDulfK7vA4K/GK1eZWrVLNhS/Lk1+PyCkQzAjoYY/CLxUUtlhvQjPh6yRWlY+QDPMd39eusWrOkpLTNTHaadINW6Qo3jHtp6aPlzB/jWMrkyRB6JvR/+ZByTAFSr5ke0KUogzXWeR2Mx5qmpH25HDNpmHvl0CrCBa1dqBGm9zq2Ub/qbeHFZxmFALT0GATh8IY5yLhQNppi5yooBSAqw9V0n+Qi/Cz2yW4mb7d5+wIAoaTa9xAB14c+jl7LGaGd3BV5EqthRyYCOO6RUSsiOaxTchgs=
 script:
   - echo "ok"
 after_success:
