@@ -108,7 +108,7 @@
         links below). All comments are welcome.</p>
       </div>
     </section>
-    
+
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
@@ -118,21 +118,21 @@
       <p class="note">The Web Payments Working Group is also investigating payment methods that offer greater security (e.g., through tokenization).</p>
     </section>
 
-    <section id="dependencies"> 
-      <h2>Dependencies</h2> 
-      <p> 
-      This specification relies on several other underlying specifications. 
-      </p> 
-      <dl> 
+    <section id="dependencies">
+      <h2>Dependencies</h2>
+      <p>
+      This specification relies on several other underlying specifications.
+      </p>
+      <dl>
         <dt>Payment Request API</dt>
-        <dd>The terms <dfn>PaymentRequest constructor</dfn>, and <dfn>PaymentAddress</dfn>
+        <dd>The terms <dfn>PaymentRequest constructor</dfn>, <dfn>PaymentAddress</dfn>, and <dfn>validate payment method data algorithm</dfn>
         are defined by the PaymentRequest API specification [[!PAYMENT-REQUEST-API]].</dd>
         <dt>Payment Method Identifiers</dt>
         <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
         Method Identifier</dfn> is defined by the Payment Method Identifiers specification
         [[!METHOD-IDENTIFIERS]].</dd>
         <dt>Web IDL</dt>
-        <dd>The IDL in this specification is defined by Web IDL [[!WEBIDL]].</dd>
+        <dd>The IDL in this specification is defined by Web IDL. Additionally, the algorithm for <dfn data-lt="convert to dictionary">converting an ECMAScript object to a dictionary</dfn> is defined there. [[!WEBIDL]]</dd>
       </dl>
     </section>
 
@@ -145,6 +145,8 @@
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
       <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
       argument to the <a>PaymentRequest constructor</a>.</p>
+
+      <p>The <a>validate payment method data algorithm</a> for the Basic Card payment method is to <a data-lt="convert to dictionary">convert</a> the ECMAScript object represented by the given data to a <a>BasicCardRequest</a> dictionary. This will throw an appropriate exception if the given data is not in the correct format.</p>
 
       <section>
       <h3>BasicCardRequest</h3>
@@ -196,7 +198,7 @@
           DOMString expiryMonth;
           DOMString expiryYear;
 		  DOMString cardSecurityCode;
-		  
+
           PaymentAddress? billingAddress;
         };
       </pre>
