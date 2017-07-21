@@ -108,7 +108,7 @@
         links below). All comments are welcome.</p>
       </div>
     </section>
-    
+
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
@@ -118,14 +118,15 @@
       <p class="note">The Web Payments Working Group is also investigating payment methods that offer greater security (e.g., through tokenization).</p>
     </section>
 
-    <section id="dependencies"> 
-      <h2>Dependencies</h2> 
-      <p> 
-      This specification relies on several other underlying specifications. 
-      </p> 
-      <dl> 
+    <section id="dependencies">
+      <h2>Dependencies</h2>
+      <p>
+      This specification relies on several other underlying specifications.
+      </p>
+      <dl>
         <dt>Payment Request API</dt>
-        <dd>The terms <dfn>PaymentRequest constructor</dfn>, and <dfn>PaymentAddress</dfn>
+        <dd>The terms <dfn>PaymentRequest constructor</dfn>, <dfn>PaymentAddress</dfn>, <dfn>user
+        accepts the payment request algorithm</dfn>, and the <dfn>paymentRequest.show()</dfn> method
         are defined by the PaymentRequest API specification [[!PAYMENT-REQUEST-API]].</dd>
         <dt>Payment Method Identifiers</dt>
         <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
@@ -133,6 +134,10 @@
         [[!METHOD-IDENTIFIERS]].</dd>
         <dt>Web IDL</dt>
         <dd>The IDL in this specification is defined by Web IDL [[!WEBIDL]].</dd>
+        <dt>ECMAScript</dt>
+        <dd>
+          The <dfn>JSON.parse</dfn> function is defined by [[!ECMA-262]].
+        </dd>
       </dl>
     </section>
 
@@ -180,6 +185,22 @@
       </p>
 
       </section>
+
+      <section>
+      <h3>Processing incoming payment method data</h3>
+
+      <p>When the PaymentRequest API is to pass data to a payment app supporting basic-card as part
+      of the <a>paymentRequest.show()</a> algorithm, the payment app must process any non-null
+      incoming data by deserializing it using an algorithm equivalent to that performed by
+      <a>JSON.parse</a>, and then converting the resulting object to a <code>BasicCardRequest</code>
+      dictionary.</p>
+
+      <p>If these steps fail, the payment app must report that it does not support the incoming
+      payment request.</p>
+
+      <p>Otherwise, the payment app may use the fields of the resulting dictionary to determine
+      whether it supports the payment request, and to carry out the payment process.</p>
+      </section>
     </section>
 
     <section id="response">
@@ -195,8 +216,8 @@
           required DOMString cardNumber;
           DOMString expiryMonth;
           DOMString expiryYear;
-		  DOMString cardSecurityCode;
-		  
+		      DOMString cardSecurityCode;
+
           PaymentAddress? billingAddress;
         };
       </pre>
@@ -221,6 +242,14 @@
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
       </dl>
 
+      </section>
+
+      <section>
+        <h3>Providing outgoing payment responses</h3>
+
+        <p>When the <a>user accepts the payment request algorithm</a> runs in the context of a
+        payment app supporting basic-card, the payment app must provide back the relevant data in a
+        <code>BasicCardResponse</code> dictionary.</p>
       </section>
     </section>
 
