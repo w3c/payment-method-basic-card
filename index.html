@@ -227,7 +227,35 @@
     <section id="security">
       <h2>Security and Privacy Considerations</h2>
 
-      <p>Owners of web sites SHOULD NOT store the payer's card information except where warranted, such as storage for future and recurring payments. When card information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
+      <p>The basic card payment method provides information to merchant
+      websites that can be used for multiple transactions over a potentially
+      very long period of time, typically on the order of several years at a
+      time. At the time of the development of this specification, it is
+      commonplace for merchant sites to store this information long-term to
+      reduce the friction of a user entering a credit card number for every
+      future purchase.</p>
+
+      <p>The decision whether to retain credit card information for future
+      transactions remains a matter of local policy for web sites; however,
+      the introduction of a programmatic way to retrieve credit card
+      information from a web browser affects some key factors that
+      typically motivate storage of such information.</p>
+
+      <p>Because Payment Request API enables local storage of card information, this reduces the friction that motivated merchant-side storage, thus freeing merchants from the risk and liability associated with unauthorized access to stored information.</p>
+
+      <p>Additionally, web sites that call the payments API for each
+      transaction avoid the friction that can result when users’ credit card
+      numbers and/or expiration dates are updated. From a user’s perspective,
+      this avoids the hassle of having to update a large number of merchant
+      web sites any time they are issued a new card.</p>
+
+      <p>Finally, by letting the web browser determine user authentication
+      information, the merchant site is relieved of the duty of ensuring that
+      a time-local and sufficiently strong authentication has occurred.
+      Additionally, browsers and other payment apps can make use of local affordances, such as
+      biometrics and hardware tokens, to authenticate users in a way that is
+      more convenient, more secure, and lower friction than web sites
+      currently can.</p>
 
       <p><strong>Note</strong>: Implementers may be subject to PCI DSS or other regulations, but discussion of those considerations lies outside the scope of this document.</p>
     </section>
