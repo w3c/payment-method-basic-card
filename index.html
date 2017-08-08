@@ -32,23 +32,29 @@
           },
         ],
         github: "https://github.com/w3c/payment-method-basic-card/",
-        license: "w3c-software-doc",
-        noRecTrack: true,
         previousMaturity: "FPWD",
         previousPublishDate: "2016-04-21",
         specStatus: "ED",
         wg: "Web Payments Working Group",
         wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
         wgURI: "https://www.w3.org/Payments/WG/",
+        localBiblio: {
+          "card-network-ids": {
+            "href": "https://www.w3.org/Payments/card-network-ids",
+            "publisher": "W3C",
+            "title": "Card Network Identifiers Approved for use with Payment Request API"
+          }
+        },
       };
     </script>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This specification describes data structures for card-based payments
-        using WebIDL. It is used by other specifications to facilitate monetary
-        transactions with "basic cards", such as credit and debit cards.
+        This specification describes data structures and formats, and a simple
+        processing model, to facilitate card-based payments on the Web. It is
+        used by other specifications to facilitate monetary transactions with a
+        "basic card", such as credit, debit, or prepaid card.
       </p>
     </section>
     <section id='sotd'>
@@ -74,15 +80,11 @@
         Introduction
       </h2>
       <p>
-        This specification is a Payment Method specification for use, for
-        instance, with the <cite data-cite="payment-request">PaymentRequest
-        API</cite>. With it, merchants can collect the basic card details (card
+        This specification defines the "basic-card" payment method for use, for
+        instance, with the <a data-cite="payment-request">Payment Request
+        API</a>. With it, merchants can collect the basic card details (card
         holder name, card number, etc.) as an alternative to collecting the
-        same information through a HTML form.
-      </p>
-      <p class="note">
-        The Web Payments Working Group is also investigating payment methods
-        that offer greater security (e.g., through tokenization).
+        same information through a [[!HTML]] form.
       </p>
     </section>
     <section id="method-id">
@@ -96,10 +98,40 @@
         "<code><dfn>basic-card</dfn></code>".
       </p>
     </section>
+    <section>
+      <h2>
+        Model
+      </h2>
+      <p>
+        A <dfn>card</dfn> is a payment instrument that has <a>details</a>, a
+        <a>type</a>, a <a>network</a>.
+      </p>
+      <p>
+        The <dfn>details</dfn> of a <a>card</a> are the <dfn>primary account
+        number</dfn> (PAN), <dfn>card-holder's name</dfn>, <dfn>security
+        code</dfn> (sometimes known as the CVV, CVC, CVN, CVE or CID),
+        <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and optionally a
+        <dfn>billing address</dfn>. These are represented as the members of the
+        <a>BasicCardResponse</a>.
+      </p>
+      <p>
+        A <a>card</a> can be of <dfn data-lt="types">type</dfn> "credit",
+        "debit", or "prepaid". The different types are represented as the
+        <a>BasicCardType</a> enum.
+      </p>
+      <p>
+        A <a>card</a> is identified as belonging to a <dfn data-lt=
+        "networks">network</dfn> via its issuer identification number (e.g.,
+        those belonging to "visa" start with a "4"). In an API, each network is
+        represented by a DOMString matching one of the <a href=
+        "https://www.w3.org/Payments/card-network-ids">card network
+        identifiers</a> [[!card-network-ids]].
+      </p>
+    </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
-      <h3>
+      <h2>
         <dfn>BasicCardRequest</dfn> dictionary
-      </h3>
+      </h2>
       <pre class="idl">
       dictionary BasicCardRequest {
         sequence&lt;DOMString&gt; supportedNetworks;
@@ -114,9 +146,8 @@
           <dfn>supportedNetworks</dfn>
         </dt>
         <dd>
-          The <a>supportedNetworks</a> member contains a sequence of
-          identifiers for card networks that the merchant accepts. W3C
-          maintains a <a href=
+          A sequence of identifiers for card networks that the merchant
+          accepts. W3C maintains a <a href=
           "https://www.w3.org/Payments/card-network-ids">list of approved card
           network identifiers</a>.
         </dd>
@@ -124,21 +155,56 @@
           <dfn>supportedTypes</dfn>
         </dt>
         <dd>
-          The <a>supportedTypes</a> member contains a sequence of card types
-          that the merchant accepts. Implementations will determine how to
-          match the type values <span data-link-for=
-          "BasicCardType"><a>credit</a>, <a>debit</a>, and
-          <a>prepaid</a></span>.
+          A sequence of card <a>types</a> that the merchant accepts.
         </dd>
       </dl>
-      <p class="note">
-        The <a>supportedNetworks</a> and <a>supportedTypes</a> members are both
-        optional. If neither is provided then any card may be returned. If only
-        <a>supportedNetworks</a> is provided then any card type may be returned
-        provided it matches one of the networks. If only <a>supportedTypes</a>
-        is provided then a card may be returned from any network provided it
-        matches one of the types.
+    </section>
+    <section data-link-for="BasicCardRequest">
+      <h2>
+        Interfacing with a payment handler
+      </h2>
+      <p>
+        The <dfn>steps to constrain a payment handler</dfn> with
+        <var>data</var> <a>BasicCardRequest</a> are given by the following
+        algorithm. If the end-user inputs or selects a <a>card</a> that meets
+        the constraints of <var>data</var>, the algorithm returns a card as a
+        <a>BasicCardResponse</a>.
       </p>
+      <ol class="algorithm">
+        <li>Let <var>cardNetworks</var> be the result of filtering
+        <var>data</var>.<a>supportedNetworks</a> for <a>networks</a> that are
+        supported by this payment handler.
+        </li>
+        <li>
+          <p>
+            Let <var>card</var> be the result of the end user selecting or
+            inputing a <a>card</a> of <a>type</a>
+            <var>data</var>.<a>supportedTypes</a>, or any type if
+            <var>data</var>.<a>supportedTypes</a> is empty, and from one of the
+            <a>networks</a> in <var>cardNetworks</var>, or from any network if
+            <var>cardNetworks</var> is empty. User agents SHOULD validate card
+            details to make sure they adhere to the <a>type</a> and
+            <a>network</a> requirements (e.g., checking that "visa" card starts
+            with the number "4", etc.).
+          </p>
+          <div class="note" title="Validation of inputs">
+            <p>
+              The validation a user agent performs on the card inputs is a
+              "quality of implementation" detail and outside the scope of this
+              specification. There is nevertheless an expectation that user
+              agents will make a best effort to validate that card number via
+              the Luhn algorithm, check the length is correct for the expected
+              <a>type</a>, check that the issuer identification number is
+              correct for the selected <a>network</a>, check that the expiry
+              date on the card hasn't lapsed, and so on.
+            </p>
+          </div>
+        </li>
+        <li>Return <var>card</var> as a <a>BasicCardResponse</a>, with the
+        value of each member formatted per the definition of each dictionary
+        member.
+        </li>
+      </ol>
     </section>
     <section data-dfn-for="BasicCardType" data-link-for="BasicCardType">
       <h2>
@@ -149,19 +215,19 @@
         </pre>
       <dl>
         <dt>
-          <dfn>credit</dfn>
+          "<dfn>credit</dfn>"
         </dt>
         <dd>
           A credit card.
         </dd>
         <dt>
-          <dfn>debit</dfn>
+          "<dfn>debit</dfn>"
         </dt>
         <dd>
           A debit card.
         </dd>
         <dt>
-          <dfn>prepaid</dfn>
+          "<dfn>prepaid</dfn>"
         </dt>
         <dd>
           A prepaid card.
@@ -170,9 +236,9 @@
     </section>
     <section data-dfn-for="BasicCardResponse" data-link-for=
     "BasicCardResponse">
-      <h3>
+      <h2>
         <dfn>BasicCardResponse</dfn> dictionary
-      </h3>
+      </h2>
       <pre class="idl">
         dictionary BasicCardResponse {
           required DOMString cardNumber;
@@ -183,56 +249,48 @@
           PaymentAddress? billingAddress;
         };
       </pre>
-      <p>
-        The <a>BasicCardResponse</a> dictionary contains the following members:
-      </p>
       <dl>
         <dt>
-          <dfn>cardholderName</dfn>
+          <dfn>cardholderName</dfn> member
         </dt>
         <dd>
-          The <a>cardholderName</a> member contains the cardholder's name as it
-          appears on the card.
+          The <a>card-holder's name</a> as it appears on the <a>card</a>.
         </dd>
         <dt>
-          <dfn>cardNumber</dfn>
+          <dfn>cardNumber</dfn> member
         </dt>
         <dd>
-          The <a>cardNumber</a> member contains the primary account number
-          (PAN) for the payment card.
+          The <a>primary account number</a> for the <a>card</a>.
         </dd>
         <dt>
-          <dfn>expiryMonth</dfn>
+          <dfn>expiryMonth</dfn> member
         </dt>
         <dd>
-          The <a>expiryMonth</a> member contains a two-digit string for the
-          expiry month of the card in the range <code>01</code> to
-          <code>12</code>.
+          A two-digit string for the <a>expiry month</a> of the card in the
+          range "<code>01</code>" to "<code>12</code>".
         </dd>
         <dt>
-          <dfn>expiryYear</dfn>
+          <dfn>expiryYear</dfn> member
         </dt>
         <dd>
-          The <a>expiryYear</a> member contains a four-digit string for the
-          expiry year of the card in the range <code>0000</code> to
-          <code>9999</code>.
+          A four-digit string for the <a>expiry year</a> of the card in the
+          range "<code>0000</code>" to "<code>9999</code>".
         </dd>
         <dt>
-          <dfn>cardSecurityCode</dfn>
+          <dfn>cardSecurityCode</dfn> member
         </dt>
         <dd>
-          The <a>cardSecurityCode</a> member contains a three or four digit
-          string for the security code of the card (sometimes known as the CVV,
-          CVC, CVN, CVE or CID).
+          A three or more digit string for the <a>security code</a> of the
+          <a>card</a>.
         </dd>
         <dt>
-          <dfn>billingAddress</dfn>
+          <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          The <a>billingAddress</a> member optionally contains a
-          <code><dfn data-cite=
+          A <code><dfn data-cite=
           "!payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
-          that represents the billing address associated with the card.
+          that represents the <a>billing address</a> associated with the
+          <a>card</a>, or null.
         </dd>
       </dl>
     </section>
@@ -241,15 +299,30 @@
         Security and Privacy Considerations
       </h2>
       <p>
+        Due to differences in "quality of implementation", and the end-user's
+        ability to input data into unconstrained input fields, merchants are
+        expected to revalidate all <a>BasicCardResponse</a> returned by APIs
+        that make use of this specification.
+      </p>
+      <p>
+        In particular, merchants need to treat the values of any <a>details</a>
+        with the same scrutiny that they would apply to a [[HTML]]
+        <code>input</code> element, by, for example, sanitizing all the members
+        of a <a>BasicCardResponse</a> before rendering them anywhere.
+      </p>
+      <p>
         Owners of web sites SHOULD NOT store the payer's card information
         except where warranted, such as storage for future and recurring
         payments. When card information is stored, web site owners SHOULD take
         measures to prevent its disclosure.
       </p>
-      <p>
-        <strong>Note</strong>: Implementers may be subject to PCI DSS or other
-        regulations, but discussion of those considerations lies outside the
-        scope of this document.
+      <p class="note" title=
+      "Payment Card Industry Data Security Standard Compliance">
+        Depending on jurisdiction, users of this specification (implementers,
+        merchants, payment processors, etc.) can be subject to <abbr class=
+        "Payment Card Industry Data Security Standard">PCI DSS</abbr> or other
+        regulations. Discussion of those considerations are outside the scope
+        of this document.
       </p>
     </section>
   </body>
