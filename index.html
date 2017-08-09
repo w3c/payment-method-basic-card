@@ -127,6 +127,11 @@
         "https://www.w3.org/Payments/card-network-ids">card network
         identifiers</a> [[!card-network-ids]].
       </p>
+      <p>
+        A payment handler's <dfn data-lt="known">known networks</dfn> are
+        <a>networks</a> it supports. A payment handler MAY support zero or more
+        networks from the [[!card-network-ids]] list.
+      </p>
     </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
       <h2>
@@ -147,9 +152,8 @@
         </dt>
         <dd>
           A sequence of identifiers for card networks that the merchant
-          accepts. W3C maintains a <a href=
-          "https://www.w3.org/Payments/card-network-ids">list of approved card
-          network identifiers</a>.
+          accepts. W3C maintains a <a data-cite="card-network-ids">list of
+          approved card network identifiers</a>.
         </dd>
         <dt>
           <dfn>supportedTypes</dfn>
@@ -173,19 +177,20 @@
       <ol class="algorithm">
         <li>Let <var>cardNetworks</var> be the result of filtering
         <var>data</var>.<a>supportedNetworks</a> for <a>networks</a> that are
-        supported by this payment handler.
+        <a>known</a> by this payment handler.
+        </li>
+        <li>If <var>cardNetworks</var> is empty, set <var>cardNetworks</var> to
+        the payment handler's <a>known networks</a>.
         </li>
         <li>
           <p>
-            Let <var>card</var> be the result of the end user selecting or
-            inputing a <a>card</a> of <a>type</a>
-            <var>data</var>.<a>supportedTypes</a>, or any type if
-            <var>data</var>.<a>supportedTypes</a> is empty, and from one of the
-            <a>networks</a> in <var>cardNetworks</var>, or from any network if
-            <var>cardNetworks</var> is empty. User agents SHOULD validate card
-            details to make sure they adhere to the <a>type</a> and
-            <a>network</a> requirements (e.g., checking that "visa" card starts
-            with the number "4", etc.).
+            Let <var>card</var> be the result of the end user inputting a
+            <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>,
+            or any type if <var>data</var>.<a>supportedTypes</a> is empty.
+            Check that <var>card</var> is from one of the <a>networks</a> in
+            <var>cardNetworks</var>. Validate <var>card</var>'s <a>details</a>
+            to make sure they adhere to any <a>type</a> and/or <a>network</a>
+            requirements.
           </p>
           <div class="note" title="Validation of inputs">
             <p>
