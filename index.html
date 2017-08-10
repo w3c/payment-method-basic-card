@@ -179,28 +179,26 @@
         <var>data</var>.<a>supportedNetworks</a> for <a>networks</a> that are
         <a>known</a> by this payment handler.
         </li>
-        <li>If <var>cardNetworks</var> is empty, set <var>cardNetworks</var> to
-        the payment handler's <a>known networks</a>.
-        </li>
         <li>
           <p>
             Let <var>card</var> be the result of the end user inputting a
             <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>,
             or any type if <var>data</var>.<a>supportedTypes</a> is empty.
             Check that <var>card</var> is from one of the <a>networks</a> in
-            <var>cardNetworks</var>. Validate <var>card</var>'s <a>details</a>
-            to make sure they adhere to any <a>type</a> and/or <a>network</a>
-            requirements.
+            <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is emtpy,
+            allow input from any <a>network</a>. Validate <var>card</var>'s
+            <a>details</a> to make sure they adhere to any <a>type</a> and/or
+            <a>network</a> requirements.
           </p>
           <div class="note" title="Validation of inputs">
             <p>
-              The validation a user agent performs on the card inputs is a
-              "quality of implementation" detail and outside the scope of this
-              specification. There is nevertheless an expectation that user
-              agents will make a best effort to validate that card number via
-              the Luhn algorithm, check the length is correct for the expected
-              <a>type</a>, check that the issuer identification number is
-              correct for the selected <a>network</a>, check that the expiry
+              The validation a user agent performs on the card's <a>details</a>
+              is a "quality of implementation" detail and outside the scope of
+              this specification. There is nevertheless an expectation that
+              user agents will make a best effort to validate that card number
+              via the Luhn algorithm, check the length is correct for the
+              expected <a>type</a>, check that the issuer identification number
+              is correct for the selected <a>network</a>, check that the expiry
               date on the card hasn't lapsed, and so on.
             </p>
           </div>
