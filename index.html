@@ -38,6 +38,7 @@
         wg: "Web Payments Working Group",
         wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
         wgURI: "https://www.w3.org/Payments/WG/",
+        testSuiteURI: "https://w3c-test.org/payment-method-basic-card",
         localBiblio: {
           "card-network-ids": {
             "href": "https://www.w3.org/Payments/card-network-ids",
@@ -92,9 +93,9 @@
         Payment Method Identifier
       </h2>
       <p>
-        The <a data-cite=
+        The <dfn data-cite=
         "!payment-method-id#standardized-payment-method-identifiers">standardized
-        payment method identifier</a> for this specification is
+        payment method identifier</dfn> for this specification is
         "<code><dfn>basic-card</dfn></code>".
       </p>
     </section>
@@ -300,6 +301,25 @@
           <a>card</a>, or null.
         </dd>
       </dl>
+    </section>
+    <section id="conformance">
+      <p>
+        There is only one class of product that can claim conformance to this
+        specification: a <dfn>payment handler</dfn>.
+      </p>
+      <p>
+        A conforming <a>payment handler</a> MUST:
+      </p>
+      <ul>
+        <li data-tests="payment-request-canmakepayment-method.https.html">when
+        queried, claim to support the "<a>basic-card</a>" <a>standardized
+        payment method identifier</a>.
+        </li>
+        <li data-tests="basiccardresponse-member-formats-manual.https.html">
+        return <a>BasicCardResponse</a>s whose members are formatted as per
+        their definition in this specification.
+        </li>
+      </ul>
     </section>
     <section id="security">
       <h2>
