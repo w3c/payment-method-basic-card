@@ -104,7 +104,7 @@
         Model
       </h2>
       <p>
-        This section concepts used in this specification, and how those
+        This section defines concepts used in this specification, and how those
         concepts are represented in an API via [[!WebIDL]].
       </p>
       <p>
@@ -113,7 +113,7 @@
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn>primary account
-        number</dfn> (PAN), <dfn>card-holder's name</dfn>, <dfn>security
+        number</dfn> (PAN), <dfn>card holder's name</dfn>, <dfn>security
         code</dfn> (sometimes known as the CVV, CVC, CVN, CVE or CID),
         <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and optionally a
         <dfn>billing address</dfn>. These are represented as the members of the
@@ -175,7 +175,7 @@
       <p>
         The <dfn>steps to constrain a payment handler</dfn> with
         <var>data</var> <a>BasicCardRequest</a> are given by the following
-        algorithm. If the end-user inputs or selects a <a>card</a> that meets
+        algorithm. If the end user inputs or selects a <a>card</a> that meets
         the constraints of <var>data</var>, the algorithm returns a card as a
         <a>BasicCardResponse</a>.
       </p>
@@ -184,26 +184,45 @@
         <var>data</var>.<a>supportedNetworks</a> for <a>networks</a> that are
         <a>known</a> by this payment handler.
         </li>
-        <li>
-          <p>
-            Let <var>card</var> be the result of the end user inputting a
-            <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>,
-            or any type if <var>data</var>.<a>supportedTypes</a> is empty.
-            Check that <var>card</var> is from one of the <a>networks</a> in
-            <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is emtpy,
-            allow input from any <a>network</a>. Validate <var>card</var>'s
-            <a>details</a> to make sure they adhere to any <a>type</a> and/or
-            <a>network</a> requirements.
-          </p>
+        <li>Let <var>card</var> be the result of the end user inputting a
+        <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>, or
+        any type if <var>data</var>.<a>supportedTypes</a> is empty:
+          <ol>
+            <dfn>card holder's name</dfn>, (sometimes known as the CVV, CVC,
+            CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>,
+            and optionally a <dfn>billing address</dfn>.
+            <li>Let <var>cardNumber</var> be the card's <a>primary card
+            number</a>.
+            </li>
+            <li>Let <var>cardholderName</var> be the <dfn>card holder's
+            name</dfn>, or the empty string if the user chooses not to provide
+            it.
+            </li>
+            <li>Let <var>cardSecurityCode</var> be the card's or the empty
+            string if the user chooses not to provide it.
+            </li>
+            <li>Let <var>expiryMonth</var> or the empty string if the user
+            chooses not to provide it.
+            </li>
+            <li>Let <var>expiryYear</var> or the empty string if the user
+            chooses not to provide it.
+            </li>
+          </ol>
+        </li>
+        <li>Check that <var>card</var> is from one of the <a>networks</a> in
+        <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is emtpy, allow
+        input from any <a>network</a>. Optionally, validate <var>card</var>'s
+        <a>details</a> to make sure they adhere to any <a>type</a> and/or
+        <a>network</a> requirements.
           <div class="note" title="Validation of inputs">
             <p>
               The validation a user agent performs on the card's <a>details</a>
-              is a "quality of implementation" detail and outside the scope of
+              is a quality of implementation detail and outside the scope of
               this specification. There is nevertheless an expectation that
-              user agents will make a best effort to validate that card number
-              via the Luhn algorithm, check the length is correct for the
-              expected <a>type</a>, check that the issuer identification number
-              is correct for the selected <a>network</a>, check that the expiry
+              user agents will make a best effort a card number is valid as per
+              the Luhn algorithm, check the length is correct for the expected
+              <a>type</a>, check that the issuer identification number is
+              correct for the selected <a>network</a>, check that the expiry
               date on the card hasn't lapsed, and so on.
             </p>
           </div>
@@ -262,13 +281,14 @@
           <dfn>cardholderName</dfn> member
         </dt>
         <dd>
-          The <a>card-holder's name</a> as it appears on the <a>card</a>.
+          The <a>card holder's name</a> as it appears on the <a>card</a>.
         </dd>
         <dt>
           <dfn>cardNumber</dfn> member
         </dt>
         <dd>
-          The <a>primary account number</a> for the <a>card</a>.
+          The <a>primary account number</a> for the <a>card</a> as a string of
+          digits that ranges from 8 to 19 digits.
         </dd>
         <dt>
           <dfn>expiryMonth</dfn> member
@@ -326,7 +346,7 @@
         Security and Privacy Considerations
       </h2>
       <p>
-        Due to differences in "quality of implementation", and the end-user's
+        Due to differences in quality of implementation" and the end user's
         ability to input data into unconstrained input fields, merchants are
         expected to revalidate all <a>BasicCardResponse</a> returned by APIs
         that make use of this specification.
