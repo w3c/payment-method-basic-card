@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      Basic Card Payment
+      Payment Method: Basic Card
     </title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' async
@@ -83,9 +83,9 @@
       <p>
         This specification defines the "basic-card" payment method for use, for
         instance, with the <a data-cite="payment-request">Payment Request
-        API</a>. With it, merchants can collect the basic card details (card
-        holder name, card number, etc.) as an alternative to collecting the
-        same information through a [[!HTML]] form.
+        API</a>. With it, merchants can request the card details (card holder
+        name, card number, etc.) from the end user as an alternative to
+        collecting the same information through a [[!HTML]] form.
       </p>
     </section>
     <section id="method-id">
@@ -105,33 +105,49 @@
       </h2>
       <p>
         This section defines concepts used in this specification, and how those
-        concepts are represented in an API via [[!WebIDL]].
+        concepts are represented in an API via [[!WEBIDL]].
       </p>
       <p>
-        A <dfn>card</dfn> is a payment instrument that has <a>details</a>, a
-        <a>type</a>, a <a>network</a>.
+        A <dfn>card</dfn> is a physical or virtual payment instrument that has
+        <a>details</a>, a <a>type</a>, and belongs to a <a>network</a>.
       </p>
       <p>
-        The <dfn>details</dfn> of a <a>card</a> are the <dfn>primary account
-        number</dfn> (PAN), <dfn>card holder's name</dfn>, <dfn>security
-        code</dfn> (sometimes known as the CVV, CVC, CVN, CVE or CID),
-        <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and optionally a
-        <dfn>billing address</dfn>. These are represented as the members of the
-        <a>BasicCardResponse</a>.
+        The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
+        "!ISO7812-1">primary account number</dfn> (PAN), <dfn>card holder's
+        name</dfn>, <dfn>security code</dfn> (sometimes known as the CVV, CVC,
+        CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and
+        optionally a <dfn>billing address</dfn>. These are represented as the
+        members of the <a>BasicCardResponse</a> dictionary.
       </p>
       <p>
         A <a>card</a> can be of <dfn data-lt="types">type</dfn> "credit",
-        "debit", or "prepaid". The different types are represented as the
-        <a>BasicCardType</a> enum.
+        "debit", or "prepaid", as derived from the issuer identification number
+        (the first eight digits of the <a>primary account number</a>). The
+        different types are represented as the <a>BasicCardType</a> enum.
       </p>
+      <aside class="note" title="Determining the card type">
+        <p>
+          Commercial databases and web services are available to look up issuer
+          identification numbers, which in turn return the <a>type</a> of card.
+        </p>
+      </aside>
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
-        "networks">network</dfn> via its issuer identification number (e.g.,
-        those belonging to "visa" start with a "4"). In an API, each network is
-        represented by a DOMString matching one of the <a href=
-        "https://www.w3.org/Payments/card-network-ids">card network
+        "networks">network</dfn> via its issuer identification number
+        [[!ISO7812-1]] (e.g., those belonging to "visa" start with a "4"). In
+        an API, each network is represented by a string matching one of the
+        <a href="https://www.w3.org/Payments/card-network-ids">card network
         identifiers</a> [[!card-network-ids]].
       </p>
+      <aside class="note" title="Common issuer identification numbers (IIN)">
+        <p>
+          Issuer identification numbers (IIN) are maintained by ISO but are not
+          available to the general public. However, Wikipedia maintains a list
+          of the common <a href=
+          "https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_.28IIN.29">
+          credit card issuer identification numbers</a>.
+        </p>
+      </aside>
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
         <a>networks</a> it supports. A payment handler MAY support zero or more
@@ -174,7 +190,7 @@
       </h2>
       <p>
         The <dfn>steps to constrain a payment handler</dfn> with
-        <var>data</var> <a>BasicCardRequest</a> are given by the following
+        <a>BasicCardRequest</a> <var>data</var> are given by the following
         algorithm. If the end user inputs or selects a <a>card</a> that meets
         the constraints of <var>data</var>, the algorithm returns a card as a
         <a>BasicCardResponse</a>.
@@ -188,29 +204,28 @@
         <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>, or
         any type if <var>data</var>.<a>supportedTypes</a> is empty:
           <ol>
-            <dfn>card holder's name</dfn>, (sometimes known as the CVV, CVC,
-            CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>,
-            and optionally a <dfn>billing address</dfn>.
-            <li>Let <var>cardNumber</var> be the card's <a>primary card
+            <li>Let <var>cardNumber</var> be a string of digits of length
+            between 8 to 19 items representing the <a>primary account
             number</a>.
             </li>
-            <li>Let <var>cardholderName</var> be the <dfn>card holder's
-            name</dfn>, or the empty string if the user chooses not to provide
-            it.
+            <li>Let <var>cardholderName</var> be the <a>card holder's name</a>,
+            or the empty string if the user chooses not to provide it.
             </li>
-            <li>Let <var>cardSecurityCode</var> be the card's or the empty
-            string if the user chooses not to provide it.
+            <li>Let <var>cardSecurityCode</var> be a three or more digit
+            string, or the empty string if the user chooses not to provide it.
             </li>
-            <li>Let <var>expiryMonth</var> or the empty string if the user
-            chooses not to provide it.
+            <li>Let <var>expiryMonth</var> be two-digit string ranging from
+            "<code>01</code>" to "<code>12</code>", or the empty string if the
+            user chooses not to provide it.
             </li>
-            <li>Let <var>expiryYear</var> or the empty string if the user
-            chooses not to provide it.
+            <li>Let <var>expiryYear</var> be a four-digit string in the range
+            "<code>0000</code>" to "<code>9999</code>", or the empty string if
+            the user chooses not to provide it.
             </li>
           </ol>
         </li>
         <li>Check that <var>card</var> is from one of the <a>networks</a> in
-        <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is emtpy, allow
+        <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is empty, allow
         input from any <a>network</a>. Optionally, validate <var>card</var>'s
         <a>details</a> to make sure they adhere to any <a>type</a> and/or
         <a>network</a> requirements.
