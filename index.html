@@ -237,56 +237,60 @@
         the constraints of <var>data</var>, the algorithm returns a card as a
         <a>BasicCardResponse</a>.
       </p>
-      <ol class="algorithm">
-        <li>Let <var>cardNetworks</var> be the result of filtering
-        <var>data</var>.<a>supportedNetworks</a> for <a>networks</a> that are
-        <a>known</a> by this payment handler.
+      <ol class="algorithm" data-link-for="BasicCardResponse">
+        <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
+        be the result of filtering <var>data</var>["<a>supportedNetworks</a>"]
+        for <a>networks</a> that are <a>known</a> by this payment handler.
         </li>
-        <li>Let <var>card</var> be the result of the end user inputting a
-        <a>card</a> of <a>type</a> <var>data</var>.<a>supportedTypes</a>, or
-        any type if <var>data</var>.<a>supportedTypes</a> is empty:
-          <ol>
-            <li>Let <var>cardNumber</var> be a string of digits of length
-            between 8 to 19 items representing the <a>primary account
-            number</a>.
-            </li>
-            <li>Let <var>cardholderName</var> be the <a>card holder's name</a>,
-            or the empty string if the user chooses not to provide it.
-            </li>
-            <li>Let <var>cardSecurityCode</var> be a three or more digit
-            string, or the empty string if the user chooses not to provide it.
-            </li>
-            <li>Let <var>expiryMonth</var> be two-digit string ranging from
-            "<code>01</code>" to "<code>12</code>", or the empty string if the
-            user chooses not to provide it.
-            </li>
-            <li>Let <var>expiryYear</var> be a four-digit string in the range
-            "<code>0000</code>" to "<code>9999</code>", or the empty string if
-            the user chooses not to provide it.
-            </li>
-          </ol>
+        <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
+        <var>data</var>["<a>supportedTypes</a>"].
         </li>
-        <li>Check that <var>card</var> is from one of the <a>networks</a> in
-        <var>cardNetworks</var>. Or, if <var>cardNetworks</var> is empty, allow
-        input from any <a>network</a>. Optionally, validate <var>card</var>'s
-        <a>details</a> to make sure they adhere to any <a>type</a> and/or
-        <a>network</a> requirements.
+        <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
+        </li>
+        <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
+        length between 8 to 19 items representing the <a>primary account
+        number</a>. The <a>primary account number</a> SHOULD be one of the <a>
+          types</a> from <var>requestedTypes</var>, or any <a>type</a> if
+          <var>requestedTypes</var> is empty.
+        </li>
+        <li>Check that <var>card</var>["<a>cardNumber</a>"] is from one of the
+        <a>networks</a> in <var>requestedNetworks</var>, or any <a>network</a>
+        if <var>requestedNetworks</var> is empty. Optionally, validate
+        <var>card</var>'s <a>details</a> to make sure they adhere to any
+        <a>type</a> and/or <a>network</a> requirements.
           <div class="note" title="Validation of inputs">
             <p>
               The validation a user agent performs on the card's <a>details</a>
               is a quality of implementation detail and outside the scope of
               this specification. There is nevertheless an expectation that
               user agents will make a best effort to check that a card number
-              is valid as per the Luhn algorithm, check the length is correct
-              for the expected <a>type</a>, check that the issuer
-              identification number is correct for the selected <a>network</a>,
-              check that the expiry date on the card hasn't lapsed, and so on.
+              is valid as per the Luhn algorithm [[!ISO7812-1]], check the
+              length is correct for the expected <a>type</a>, check that the
+              issuer identification number is correct for the selected
+              <a>network</a>, check that the expiry date on the card hasn't
+              lapsed, and so on.
             </p>
           </div>
         </li>
-        <li>Return <var>card</var> as a <a>BasicCardResponse</a>, with the
-        value of each member formatted per the definition of each dictionary
-        member.
+        <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
+        holder's name</a>, or the empty string if the user chooses not to
+        provide it.
+        </li>
+        <li>Set <var>card</var>["<a>cardSecurityCode</a>"] to a three or more
+        digit string, or the empty string if the user chooses not to provide
+        it.
+        </li>
+        <li>Set <var>card</var>["<a>expiryMonth</a>"] to two-digit string
+        ranging from "<code>01</code>" to "<code>12</code>", or the empty
+        string if the user chooses not to provide it or the <a>type</a> doesn't
+        require an expiry month.
+        </li>
+        <li>Set <var>card</var>["<a>expiryYear</a>"] to a four-digit string in
+        the range "<code>0000</code>" to "<code>9999</code>", or the empty
+        string if the user chooses not to provide it or the <a>type</a> doesn't
+        require an expiry year.
+        </li>
+        <li>Return <var>card</var>.
         </li>
       </ol>
     </section>
