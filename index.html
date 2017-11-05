@@ -290,6 +290,13 @@
         string if the user chooses not to provide it or the <a>type</a> doesn't
         require an expiry year.
         </li>
+        <li>Optionally, set <var>card</var>["<a>billingAddress</a>"] to the
+        result running the steps to <a data-cite=
+        "payment-request#dfn-create-a-payment-address">create a payment
+        address</a>. Alternatively, if a billing address is not required for
+        this card <a>type</a>, then set
+        <var>card</var>["<a>billingAddress</a>"] to null.
+        </li>
         <li>Return <var>card</var>.
         </li>
       </ol>
