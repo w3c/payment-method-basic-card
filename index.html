@@ -225,16 +225,44 @@
         Interfacing with a payment handler
       </h2>
       <p>
-        The <dfn>steps to constrain a payment handler</dfn> with
+        The <dfn>steps to filter payment handlers</dfn> with
         <a>BasicCardRequest</a> <var>data</var> are given by the following
-        algorithm. If the end user inputs or selects a <a>card</a> that meets
-        the constraints of <var>data</var>, the algorithm returns a card as a
-        <a>BasicCardResponse</a>.
+        algorithm. If the payee invokes
+        <code>paymentRequest.canMakePayment()</code> or
+        <code>paymentRequest.show()</code>, the algorithm returns
+        <code>true</code> for matching cards. In case of
+        <code>canMakePayment()</code>, the output of this algorithm is returned
+        to the payee. In case of <code>show()</code>, the output of this
+        algorithm determines whether a payment handler is presented to the
+        user.
       </p>
       <ol class="algorithm" data-link-for="BasicCardResponse">
         <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
-        be the result of filtering <var>data</var>["<a>supportedNetworks</a>"]
-        for <a>networks</a> that are <a>known</a> by this payment handler.
+        be <var>data</var>["<a>supportedNetworks</a>"].
+        </li>
+        <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
+        <var>data</var>["<a>supportedTypes</a>"].
+        </li>
+        <li>If the <a>primary account number</a> is not from one of the
+        <a>networks</a> in <var>requestedNetworks</var> and
+        <var>requestedNetworks</var> is not empty, return <code>false</code>.
+        </li>
+        <li>Otherwise, if the <a>primary account number</a> is not from one of
+        the <a>types</a> in <var>requestedTypes</var> and
+        <var>requestedTypes</var> is not empty, return <code>false</code>.
+        </li>
+        <li>Otherwise, return <code>true</code>.
+        </li>
+      </ol>
+      <p>
+        The <dfn>steps to select a payment handler</dfn> are given by the
+        following algorithm. If the end user inputs or selects a <a>card</a>
+        that meets the constraints of <var>data</var>, the algorithm returns a
+        card as a <a>BasicCardResponse</a>.
+      </p>
+      <ol class="algorithm" data-link-for="BasicCardResponse">
+        <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
+        be <var>data</var>["<a>supportedNetworks</a>"].
         </li>
         <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
         <var>data</var>["<a>supportedTypes</a>"].
