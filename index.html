@@ -229,78 +229,104 @@
     </section>
     <section data-link-for="BasicCardRequest">
       <h2>
-        Interfacing with a payment handler
+        Interfacing with a payment request
       </h2>
-      <p>
-        The <dfn>steps to constrain a payment handler</dfn> with
-        <a>BasicCardRequest</a> <var>data</var> are given by the following
-        algorithm. If the end user inputs or selects a <a>card</a> that meets
-        the constraints of <var>data</var>, the algorithm returns a card as a
-        <a>BasicCardResponse</a>.
-      </p>
-      <ol class="algorithm" data-link-for="BasicCardResponse">
-        <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
-        be the result of filtering <var>data</var>["<a>supportedNetworks</a>"]
-        for <a>networks</a> that are <a>known</a> by this payment handler.
-        </li>
-        <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
-        <var>data</var>["<a>supportedTypes</a>"].
-        </li>
-        <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
-        </li>
-        <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
-        length between 10 to 19 items representing the <a>primary account
-        number</a>. The <a>primary account number</a> SHOULD be one of the <a>
-          types</a> from <var>requestedTypes</var>, or any <a>type</a> if
+      <section>
+        <h3>
+          Steps to check instrument support
+        </h3>
+        <p>
+          The <dfn>steps to check instrument support</dfn> with
+          <a>BasicCardRequest</a> <var>data</var> are given by the following
+          algorithm.
+        </p>
+        <ol class="algorithm">
+          <li>If the <a>card</a>'s <a>network</a> is not one of the
+          <a>networks</a> in <var>requestedNetworks</var> and
+          <var>requestedNetworks</var> is not empty, return <code>false</code>.
+          </li>
+          <li>Otherwise, if the <a>card</a>'s <a>type</a> is not one of the <a>
+            types</a> in <var>requestedTypes</var> and
+            <var>requestedTypes</var> is not empty, return <code>false</code>.
+          </li>
+          <li>Otherwise, return <code>true</code>.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3>
+          Steps to respond to a payment request
+        </h3>
+        <p>
+          The <dfn>steps to respond to a payment request</dfn> are given by the
+          following algorithm. If the end user inputs or selects a <a>card</a>
+          that meets the constraints of <a>BasicCardRequest</a>
+          <var>data</var>, the algorithm returns a card as a
+          <a>BasicCardResponse</a>.
+        </p>
+        <ol class="algorithm" data-link-for="BasicCardResponse">
+          <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
+          be <var>data</var>["<a>supportedNetworks</a>"].
+          </li>
+          <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
+          <var>data</var>["<a>supportedTypes</a>"].
+          </li>
+          <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
+          </li>
+          <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
+          length between 10 to 19 items representing the <a>primary account
+          number</a>. The <a>primary account number</a> SHOULD be one of the
+          <a>types</a> from <var>requestedTypes</var>, or any <a>type</a> if
           <var>requestedTypes</var> is empty.
-        </li>
-        <li>Check that <var>card</var>["<a>cardNumber</a>"] is from one of the
-        <a>networks</a> in <var>requestedNetworks</var>, or any <a>network</a>
-        if <var>requestedNetworks</var> is empty. Optionally, validate
-        <var>card</var>'s <a>details</a> to make sure they adhere to any
-        <a>type</a> and/or <a>network</a> requirements.
-          <div class="note" title="Validation of inputs">
-            <p>
-              The validation a user agent performs on the card's <a>details</a>
-              is a quality of implementation detail and outside the scope of
-              this specification. There is nevertheless an expectation that
-              user agents will make a best effort to check that a card number
-              is valid as per the Luhn algorithm [[!ISO7812-1]], check the
-              length is correct for the expected <a>type</a>, check that the
-              issuer identification number is correct for the selected
-              <a>network</a>, check that the expiry date on the card hasn't
-              lapsed, and so on.
-            </p>
-          </div>
-        </li>
-        <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
-        holder's name</a>, or the empty string if the user chooses not to
-        provide it.
-        </li>
-        <li>Set <var>card</var>["<a>cardSecurityCode</a>"] to a three or more
-        digit string, or the empty string if the user chooses not to provide
-        it.
-        </li>
-        <li>Set <var>card</var>["<a>expiryMonth</a>"] to two-digit string
-        ranging from "<code>01</code>" to "<code>12</code>", or the empty
-        string if the user chooses not to provide it or the <a>type</a> doesn't
-        require an expiry month.
-        </li>
-        <li>Set <var>card</var>["<a>expiryYear</a>"] to a four-digit string in
-        the range "<code>0000</code>" to "<code>9999</code>", or the empty
-        string if the user chooses not to provide it or the <a>type</a> doesn't
-        require an expiry year.
-        </li>
-        <li>Optionally, set <var>card</var>["<a>billingAddress</a>"] to the
-        result running the steps to <a data-cite=
-        "payment-request#dfn-create-a-payment-address">create a payment
-        address</a>. Alternatively, if a billing address is not required for
-        this card <a>type</a>, then set
-        <var>card</var>["<a>billingAddress</a>"] to null.
-        </li>
-        <li>Return <var>card</var>.
-        </li>
-      </ol>
+          </li>
+          <li>Check that <var>card</var>["<a>cardNumber</a>"] is from one of
+          the <a>networks</a> in <var>requestedNetworks</var>, or any
+          <a>network</a> if <var>requestedNetworks</var> is empty. Optionally,
+          validate <var>card</var>'s <a>details</a> to make sure they adhere to
+          any <a>type</a> and/or <a>network</a> requirements.
+            <div class="note" title="Validation of inputs">
+              <p>
+                The validation a user agent performs on the card's
+                <a>details</a> is a quality of implementation detail and
+                outside the scope of this specification. There is nevertheless
+                an expectation that user agents will make a best effort to
+                check that a card number is valid as per the Luhn algorithm
+                [[!ISO7812-1]], check the length is correct for the expected
+                <a>type</a>, check that the issuer identification number is
+                correct for the selected <a>network</a>, check that the expiry
+                date on the card hasn't lapsed, and so on.
+              </p>
+            </div>
+          </li>
+          <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
+          holder's name</a>, or the empty string if the user chooses not to
+          provide it.
+          </li>
+          <li>Set <var>card</var>["<a>cardSecurityCode</a>"] to a three or more
+          digit string, or the empty string if the user chooses not to provide
+          it.
+          </li>
+          <li>Set <var>card</var>["<a>expiryMonth</a>"] to two-digit string
+          ranging from "<code>01</code>" to "<code>12</code>", or the empty
+          string if the user chooses not to provide it or the <a>type</a>
+          doesn't require an expiry month.
+          </li>
+          <li>Set <var>card</var>["<a>expiryYear</a>"] to a four-digit string
+          in the range "<code>0000</code>" to "<code>9999</code>", or the empty
+          string if the user chooses not to provide it or the <a>type</a>
+          doesn't require an expiry year.
+          </li>
+          <li>Optionally, set <var>card</var>["<a>billingAddress</a>"] to the
+          result running the steps to <a data-cite=
+          "payment-request#dfn-create-a-payment-address">create a payment
+          address</a>. Alternatively, if a billing address is not required for
+          this card <a>type</a>, then set
+          <var>card</var>["<a>billingAddress</a>"] to null.
+          </li>
+          <li>Return <var>card</var>.
+          </li>
+        </ol>
+      </section>
     </section>
     <section data-dfn-for="BasicCardType" data-link-for="BasicCardType">
       <h2>
@@ -400,13 +426,15 @@
         A conforming <a>payment handler</a> MUST:
       </p>
       <ul>
-        <li data-tests="payment-method-basic-card/payment-request-canmakepayment-method.https.html">when
-        queried, claim to support the "<a>basic-card</a>" <a>standardized
+        <li data-tests=
+        "payment-method-basic-card/payment-request-canmakepayment-method.https.html">
+        when queried, claim to support the "<a>basic-card</a>" <a>standardized
         payment method identifier</a>.
         </li>
-        <li data-tests="payment-method-basic-card/basiccardresponse-member-formats-manual.https.html">
-        return <a>BasicCardResponse</a>s whose members are formatted as per
-        their definition in this specification.
+        <li data-tests=
+        "payment-method-basic-card/basiccardresponse-member-formats-manual.https.html">
+        return <a>BasicCardResponse</a>s whose members are formatted per their
+        definition in this specification.
         </li>
       </ul>
     </section>
