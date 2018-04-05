@@ -144,8 +144,9 @@
         concepts are represented in an API via [[!WEBIDL]].
       </p>
       <p>
-        A <dfn>card</dfn> is a physical or virtual payment instrument that has
-        <a>details</a>, a <a>type</a>, and belongs to a <a>network</a>.
+        A <dfn data-lt="cards">card</dfn> is a physical or virtual payment
+        instrument that has <a>details</a>, a <a>type</a>, and belongs to a
+        <a>network</a>.
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
@@ -226,23 +227,77 @@
       </h2>
       <section>
         <h3>
-          Steps to check instrument support
+          Can a payment handler make a payment?
         </h3>
         <p>
-          The <dfn>steps to check instrument support</dfn> with
-          <a>BasicCardRequest</a> <var>data</var> are given by the following
-          algorithm.
+          The algorithm to check if a Payment Handler that handles "basic-card"
+          <dfn>can make a payment</dfn> takes <a>BasicCardRequest</a>
+          <var>request</var> as input. It returns either true or false:
         </p>
         <ol class="algorithm">
-          <li>If the <a>card</a>'s <a>network</a> is not one of the
-          <a>networks</a> in <var>requestedNetworks</var> and
-          <var>requestedNetworks</var> is not empty, return <code>false</code>.
+          <li>Let <var>cards</var> be a <a data-lt="infra#list">list</a> of <a>
+            cards</a> associated with this payment handler.
           </li>
-          <li>Otherwise, if the <a>card</a>'s <a>type</a> is not one of the <a>
-            types</a> in <var>requestedTypes</var> and
-            <var>requestedTypes</var> is not empty, return <code>false</code>.
+          <li>If <var>cards</var> <a data-lt="infra#list-is-empty">is
+          empty</a>, return false.
           </li>
-          <li>Otherwise, return <code>true</code>.
+          <li>Let <var>networks</var> be an empty <code><a data-cite=
+          "!WEBIDL#idl-DOMString">DOMString</a></code> sequence.
+          </li>
+          <li>Let <var>types</var> be an empty <a>BasicCardType</a> sequence.
+          </li>
+          <li>If <var>request</var>["supportedTypes"] is present, append each
+          item in <var>request</var>["supportedTypes"] to <var>types</var>.
+          </li>
+          <li>If <var>request</var>["supportedNetworks"] is present, append
+          each item in <var>request</var>["supportedNetworks"] to
+          <var>networks</var>.
+          </li>
+          <li>For each <var>card</var> in <var>cards</var>:
+            <ol>
+              <li>If <a>instrument is supported</a> <var>card</var>,
+              <var>networks</var>, <var>types</var> returns true, return true.
+              </li>
+            </ol>
+          </li>
+          <li>Return false.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3>
+          Is a card supported?
+        </h3>
+        <p>
+          The algorithm to check if an <dfn>instrument is supported</dfn> takes
+          as input a <a>card</a> <var>card</var>, a <a data-lt=
+          "infra#list">list</a> of <a>type</a> <var>types</var>, and a
+          <a data-lt="infra#list">list</a> of <a>network</a>
+          <var>networks</var>. It returns true if the <var>card</var> is
+          supported, false otherwise.
+        </p>
+        <ol class="algorithm">
+          <li>If <var>types</var> <a data-cite="!infra#list-is-empty">is
+          empty</a> and <var>networks</var> <a data-cite=
+          "!infra#list-is-empty">is empty</a>, return true.
+          </li>
+          <li>If <var>networks</var> <a data-cite="!infra#list-is-empty">is not
+          empty</a>:
+            <ol>
+              <li>If <var>networks</var> does not include the <a>card</a>'s <a>
+                network</a>, return false.
+              </li>
+            </ol>
+          </li>
+          <li>If <var>types</var> <a data-cite="!infra#list-is-empty">is not
+          empty</a>:
+            <ol>
+              <li>If <var>types</var> does not include the <a>card</a>'s
+              <a>type</a>, return false.
+              </li>
+            </ol>
+          </li>
+          <li>Return true.
           </li>
         </ol>
       </section>
@@ -258,38 +313,24 @@
           <a>BasicCardResponse</a>.
         </p>
         <ol class="algorithm" data-link-for="BasicCardResponse">
-          <li data-link-for="BasicCardRequest">Let <var>requestedNetworks</var>
-          be <var>data</var>["<a>supportedNetworks</a>"].
+          <li data-link-for="BasicCardRequest">Let <var>networks</var> be <var>
+            data</var>["<a>supportedNetworks</a>"], or an empty list if
+            <var>data</var>["<a>supportedNetworks</a>"] is missing.
           </li>
-          <li data-link-for="BasicCardRequest">Let <var>requestedTypes</var> be
-          <var>data</var>["<a>supportedTypes</a>"].
+          <li data-link-for="BasicCardRequest">Let <var>types</var> be
+          <var>data</var>["<a>supportedTypes</a>"], or an empty list if
+          <var>data</var>["<a>supportedTypes</a>"] is missing.
           </li>
           <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
           </li>
           <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
           length between 10 to 19 items representing the <a>primary account
-          number</a>. The <a>primary account number</a> SHOULD be one of the
-          <a>types</a> from <var>requestedTypes</var>, or any <a>type</a> if
-          <var>requestedTypes</var> is empty.
+          number</a>.
           </li>
-          <li>Check that <var>card</var>["<a>cardNumber</a>"] is from one of
-          the <a>networks</a> in <var>requestedNetworks</var>, or any
-          <a>network</a> if <var>requestedNetworks</var> is empty. Optionally,
-          validate <var>card</var>'s <a>details</a> to make sure they adhere to
-          any <a>type</a> and/or <a>network</a> requirements.
-            <div class="note" title="Validation of inputs">
-              <p>
-                The validation a user agent performs on the card's
-                <a>details</a> is a quality of implementation detail and
-                outside the scope of this specification. There is nevertheless
-                an expectation that user agents will make a best effort to
-                check that a card number is valid as per the Luhn algorithm
-                [[!ISO7812-1]], check the length is correct for the expected
-                <a>type</a>, check that the issuer identification number is
-                correct for the selected <a>network</a>, check that the expiry
-                date on the card hasn't lapsed, and so on.
-              </p>
-            </div>
+          <li>While <a>instrument is supported</a> <var>card</var>,
+          <var>networks</var>, <var>types</var> is false, ask the user to
+          correct the card's <a>details</a>. When <a>instrument is
+          supported</a> is true, continue.
           </li>
           <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
           holder's name</a>, or the empty string if the user chooses not to
@@ -315,6 +356,27 @@
           address</a>. Alternatively, if a billing address is not required for
           this card <a>type</a>, then set
           <var>card</var>["<a>billingAddress</a>"] to null.
+          </li>
+          <li>
+            <p>
+              Optionally, validate <var>card</var>'s <a>details</a> to make
+              sure they adhere to any additional <a>type</a> and/or
+              <a>network</a> requirements and assist the user in fixing any
+              issues encountered.
+            </p>
+            <div class="note" title="Validation of inputs">
+              <p>
+                The validation a user agent performs on the card's
+                <a>details</a> is a quality of implementation detail and
+                outside the scope of this specification. There is nevertheless
+                an expectation that user agents will make a best effort to
+                check that a card number is valid as per the Luhn algorithm
+                [[!ISO7812-1]], check the length is correct for the expected
+                <a>type</a>, check that the issuer identification number is
+                correct for the selected <a>network</a>, check that the expiry
+                date on the card hasn't lapsed, and so on.
+              </p>
+            </div>
           </li>
           <li>Return <var>card</var>.
           </li>
