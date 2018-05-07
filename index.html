@@ -255,8 +255,11 @@
           </li>
           <li>For each <var>card</var> in <var>cards</var>:
             <ol>
-              <li>If <a>instrument is supported</a> <var>card</var>,
-              <var>networks</var>, <var>types</var> returns true, return true.
+              <li>Let <var>isSupported</var> be the result of <a>instrument is
+              supported</a>, passing in <var>card</var>, <var>networks</var>,
+              <var>types</var>.
+              </li>
+              <li>If <var>isSupported</var> is true, then return true.
               </li>
             </ol>
           </li>
