@@ -148,8 +148,8 @@
       </p>
       <p>
         A <dfn data-lt="cards">card</dfn> is a physical or virtual payment
-        instrument that has <a>details</a>, a <a>type</a>, and belongs to a
-        <a>network</a>.
+        instrument that has <a>details</a>, a <a>type</a>, and optionally is
+        part of a <a>network</a>.
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
@@ -178,6 +178,12 @@
         an API, each network is represented by a string matching one of the
         <a href="https://www.w3.org/Payments/card-network-ids">card network
         identifiers</a> [[!card-network-ids]].
+      </p>
+      <p>
+        A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
+        that when passed to the <a>steps to check if an instrument is
+        supported</a>, together with a list of <var>types</var> and
+        <var>networks</var> returns true.
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
@@ -230,11 +236,11 @@
       </h2>
       <section>
         <h3>
-          Can a payment handler make a payment?
+          Steps to check if a payment can be made
         </h3>
         <p>
-          The algorithm to check if a Payment Handler that handles "basic-card"
-          <dfn>can make a payment</dfn> takes <a>BasicCardRequest</a>
+          The <dfn>steps to check if a payment can be made</dfn> by a Payment
+          Handler that handles "basic-card" takes <a>BasicCardRequest</a>
           <var>request</var> as input. It returns either true or false:
         </p>
         <ol class="algorithm">
@@ -258,9 +264,9 @@
           </li>
           <li>For each <var>card</var> in <var>cards</var>:
             <ol>
-              <li>Let <var>isSupported</var> be the result of <a>instrument is
-              supported</a>, passing in <var>card</var>, <var>networks</var>,
-              <var>types</var>.
+              <li>Let <var>isSupported</var> be the result of running the
+              <a>steps to check if an instrument is supported</a>, passing in
+              <var>card</var>, <var>networks</var>, <var>types</var>.
               </li>
               <li>If <var>isSupported</var> is true, then return true.
               </li>
@@ -272,11 +278,11 @@
       </section>
       <section>
         <h3>
-          Is a card supported?
+          Steps to check if an instrument is supported
         </h3>
         <p>
-          The algorithm to check if an <dfn>instrument is supported</dfn> takes
-          as input a <a>card</a> <var>card</var>, a <a data-cite=
+          The <dfn>steps to check if an instrument is supported</dfn> takes as
+          input a <a>card</a> <var>card</var>, a <a data-cite=
           "infra#list">list</a> of <a>type</a> <var>types</var>, and a
           <a data-cite="infra#list">list</a> of <a>network</a>
           <var>networks</var>. It returns true if the <var>card</var> is
@@ -333,10 +339,10 @@
           length between 10 to 19 items representing the <a>primary account
           number</a>.
           </li>
-          <li>While <a>instrument is supported</a> <var>card</var>,
-          <var>networks</var>, <var>types</var> is false, ask the user to
-          correct the card's <a>details</a>. When <a>instrument is
-          supported</a> is true, continue.
+          <li>While the <a>steps to check if an instrument is supported</a>
+          with <var>card</var>, <var>networks</var>, <var>types</var> returns
+          false, ask the user to correct the card's <a>details</a>. Only when
+          the <var>card</var> is a <var>supported card</var>, continue.
           </li>
           <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
           holder's name</a>, or the empty string if the user chooses not to
