@@ -427,26 +427,28 @@
           <li>Let <var>methodDetails</var> be a newly created
           <a>BasicCardChangeDetails</a> dictionary.
           </li>
-          <li>Set <var>methodDetails</var>["<a>network</a>"] to the DOMString from
-          [[!card-network-ids]] that represents <var>card</var>'s
-          <a>network</a>.
+          <li>Set <var>methodDetails</var>["<a>type</a>"] to the
+          <a>BasicCardType</a> that represents <var>card</var>'s <a>type</a>.
           </li>
-          <li>Set <var>methodDetails</var>["<a>type</a>"] to the <a>BasicCardType</a>
-          that represents <var>card</var>'s <a>type</a>.
+          <li>If the <var>card</var> is part of a <a>network</a>, set
+          <var>methodDetails</var>["<a>network</a>"] to the network identifier
+          that represents <var>card</var>'s <a>network</a>
+          [[!card-network-ids]].
           </li>
           <li>Run the payment request's <a data-cite=
           "!payment-request#dfn-payment-method-changed-algorithm">payment
-          method changed algorithm</a> with <var>methodDetails</var>.
+          method changed algorithm</a> with <var>methodDetails</var> and
+          "basic-card".
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
-          <h2>
+          <h4>
             <dfn>BasicCardChangeDetails</dfn> dictionary
-          </h2>
+          </h4>
           <pre class="idl">
             dictionary BasicCardChangeDetails {
-              BasicCardType type;
-              DOMString network;
+              required BasicCardType type;
+              DOMString? network = null;
             };
           </pre>
           <dl>
@@ -460,7 +462,8 @@
               <dfn>network</dfn> member
             </dt>
             <dd>
-              The <a>network</a> of <a>card</a> the user selected.
+              The <a>network</a> of <a>card</a> the user selected, or null when
+              the card has no associated network.
             </dd>
           </dl>
         </section>
