@@ -424,17 +424,19 @@
           <li>From the <a>supported cards</a> presented to the end-user, let
           <var>card</var> be the <a>card</a> the user selected.
           </li>
-          <li>Let <var>details</var> be a newly created
+          <li>Let <var>methodDetails</var> be a newly created
           <a>BasicCardChangeDetails</a> dictionary.
           </li>
-          <li>Set <var>details</var>["<a>network</a>"] to the DOMString from
+          <li>Set <var>methodDetails</var>["<a>network</a>"] to the DOMString from
           [[!card-network-ids]] that represents <var>card</var>'s
           <a>network</a>.
           </li>
-          <li>Set <var>details</var>["<a>type</a>"] to the <a>BasicCardType</a>
+          <li>Set <var>methodDetails</var>["<a>type</a>"] to the <a>BasicCardType</a>
           that represents <var>card</var>'s <a>type</a>.
           </li>
-          <li>Return <var>details</var>.
+          <li>Run the payment request's <a data-cite=
+          "!payment-request#dfn-payment-method-changed-algorithm">payment
+          method changed algorithm</a> with <var>methodDetails</var>.
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
