@@ -403,6 +403,59 @@
           </li>
         </ol>
       </section>
+      <section>
+        <h3>
+          User changes payment method
+        </h3>
+        <p class="note">
+          <cite data-cite="!payment-request">Payment Request API</cite> calls
+          into this algorithm when the user switches from one card to another.
+        </p>
+        <p>
+          The <dfn>user changes payment method</dfn> algorithm is as follows:
+        </p>
+        <ol>
+          <li>Let <var>card</var> be the <a>card</a> the user has selected.
+          </li>
+          <li>Let <var>details</var> be a newly created
+          <a>BasicCardChangeDetails</a> dictionary.
+          </li>
+          <li>Set <var>details</var>["<a>network</a>"] to the DOMString from
+          [[!card-network-ids]] that represents <var>card</var>'s
+          <a>network</a>.
+          </li>
+          <li>Set <var>details</var>["<a>type</a>"] to the <a>BasicCardType</a>
+          that represents <var>card</var>'s <a>type</a>.
+          </li>
+          <li>Return <var>details</var>.
+          </li>
+        </ol>
+        <section data-dfn-for="BasicCardChangeDetails">
+          <h2>
+            <dfn>BasicCardChangeDetails</dfn> dictionary
+          </h2>
+          <pre class="idl">
+            dictionary BasicCardChangeDetails {
+              BasicCardType type;
+              DOMString network;
+            };
+          </pre>
+          <dl>
+            <dt>
+              <dfn>type</dfn> member
+            </dt>
+            <dd>
+              The <a>type</a> of <a>card</a> the user selected.
+            </dd>
+            <dt>
+              <dfn>network</dfn> member
+            </dt>
+            <dd>
+              The <a>network</a> of <a>card</a> the user selected.
+            </dd>
+          </dl>
+        </section>
+      </section>
     </section>
     <section data-dfn-for="BasicCardType" data-link-for="BasicCardType">
       <h2>
