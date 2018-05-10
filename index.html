@@ -408,20 +408,26 @@
           Steps for when a user changes payment method
         </h3>
         <p class="note" data-lt="BasicCardRequest">
-          When the user switches from one card to another, these steps cause an
-          event to fire in the <cite data-cite="!payment-request">Payment
-          Request API</cite>. The algorithm presupposes that the user agent is
-          only presenting <a>supported cards</a> to the end user, by having
-          filtered out unsupported cards based on the initiating payment
-          request's <a>BasicCardRequest</a>'s <a>supportedNetworks</a> and
-          <a>supportedTypes</a> values.
+          When the end user explicitly switches from one card to another, these
+          steps cause an event to fire in the <cite data-cite=
+          "!payment-request">Payment Request API</cite>. The algorithm
+          presupposes that the user agent is only presenting <a>supported
+          cards</a> to the end user, by having filtered out unsupported cards
+          based on the initiating payment request's <a>BasicCardRequest</a>'s
+          <a>supportedNetworks</a> and <a>supportedTypes</a> values.
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows:
+          follows. To mitigate fingerprinting concerns, the user agent MUST NOT
+          run these steps unless the a user explicitly switches to a different
+          card by performing some user action (e.g., by selecting a different
+          card explicitly from a list of cards). For cards that are preselected
+          by default by the user agent, any matching <code><a data-cite=
+          "payment-request#dom-paymentdetailsmodifier">PaymentDetailsModifier</a></code>
+          apply instead (without the need to run these steps).
         </p>
         <ol>
-          <li>From the <a>supported cards</a> presented to the end-user, let
+          <li>From the <a>supported cards</a> presented to the end user, let
           <var>card</var> be the <a>card</a> the user selected.
           </li>
           <li>Let <var>methodDetails</var> be a newly created
@@ -429,11 +435,6 @@
           </li>
           <li>Set <var>methodDetails</var>["<a>type</a>"] to the
           <a>BasicCardType</a> that represents <var>card</var>'s <a>type</a>.
-          </li>
-          <li>If the <var>card</var> is part of a <a>network</a>, set
-          <var>methodDetails</var>["<a>network</a>"] to the network identifier
-          that represents <var>card</var>'s <a>network</a>
-          [[!card-network-ids]].
           </li>
           <li>Run the payment request's <a data-cite=
           "!payment-request#dfn-payment-method-changed-algorithm">payment
@@ -448,7 +449,6 @@
           <pre class="idl">
             dictionary BasicCardChangeDetails {
               required BasicCardType type;
-              DOMString? network = null;
             };
           </pre>
           <dl>
@@ -457,13 +457,6 @@
             </dt>
             <dd>
               The <a>type</a> of <a>card</a> the user selected.
-            </dd>
-            <dt>
-              <dfn>network</dfn> member
-            </dt>
-            <dd>
-              The <a>network</a> of <a>card</a> the user selected, or null when
-              the card has no associated network.
             </dd>
           </dl>
         </section>
