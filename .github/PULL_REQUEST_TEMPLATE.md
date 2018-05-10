@@ -6,7 +6,7 @@ The following tasks have been completed:
  * [ ] Added Web platform tests (link)
  * [ ] added MDN Docs (link)
 
-Implementation commitment:
+Implementation commitments:
 
  * [ ] Safari (link to issue)
  * [ ] Chrome (link to issue)
