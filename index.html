@@ -493,6 +493,73 @@
         </dd>
       </dl>
     </section>
+    <section data-dfn-for="BasicCardErrorFields" data-link-for=
+    "BasicCardErrorFields">
+      <h2>
+        <dfn>BasicCardErrorFields</dfn> dictionary
+      </h2>
+      <p>
+        When <a data-cite="payment-request#retry-method">retrying</a> a request
+        for payment, a developer can pass a <a>BasicCardErrorFields</a> for the
+        value of the <a data-cite=
+        "payment-request#paymentvalidationerrors-dictionary"><code>PaymentValidationErrors</code></a>'s
+        <a data-cite=
+        "payment-request#dom-paymentvalidationerrors-paymentmethod"><code>paymentMethod</code></a>
+        member.
+      </p>
+      <pre class="idl">
+        dictionary BasicCardErrorFields {
+          DOMString cardNumber;
+          DOMString cardholderName;
+          DOMString cardSecurityCode;
+          DOMString expiryMonth;
+          DOMString expiryYear;
+          AddressErrorFields billingAddress;
+        };
+      </pre>
+      <dl>
+        <dt>
+          <dfn>cardholderName</dfn> member
+        </dt>
+        <dd>
+          Validation error for the <a>card holder's name</a>.
+        </dd>
+        <dt>
+          <dfn>cardNumber</dfn> member
+        </dt>
+        <dd>
+          Validation error for the <a>primary account number</a> for the
+          <a>card</a>.
+        </dd>
+        <dt>
+          <dfn>expiryMonth</dfn> member
+        </dt>
+        <dd>
+          Validation error for the <a>expiry month</a> of the <a>card</a>.
+        </dd>
+        <dt>
+          <dfn>expiryYear</dfn> member
+        </dt>
+        <dd>
+          Validation error for the <a>expiry year</a> of the <a>card</a>.
+        </dd>
+        <dt>
+          <dfn>cardSecurityCode</dfn> member
+        </dt>
+        <dd>
+          Validation error for the <a>security code</a> of the <a>card</a>.
+        </dd>
+        <dt>
+          <dfn>billingAddress</dfn> member
+        </dt>
+        <dd>
+          A <code><a data-cite=
+          "!payment-request#dom-addresserrorfields">AddressErrorFields</a></code>
+          that represents validation errors with the <a>billing address</a>
+          associated with the <a>card</a>.
+        </dd>
+      </dl>
+    </section>
     <section id="conformance">
       <p>
         There is only one class of product that can claim conformance to this
