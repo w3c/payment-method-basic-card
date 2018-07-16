@@ -493,28 +493,27 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="BasicCardErrorFields" data-link-for=
-    "BasicCardErrorFields">
+    <section data-dfn-for="BasicCardErrors" data-link-for="BasicCardErrors">
       <h2>
-        <dfn>BasicCardErrorFields</dfn> dictionary
+        <dfn>BasicCardErrors</dfn> dictionary
       </h2>
       <p>
         When <a data-cite="payment-request#retry-method">retrying</a> a request
-        for payment, a developer can pass a <a>BasicCardErrorFields</a> for the
-        value of the <a data-cite=
+        for payment, a developer can pass a <a>BasicCardErrors</a> dictionary
+        for the value of the <a data-cite=
         "payment-request#paymentvalidationerrors-dictionary"><code>PaymentValidationErrors</code></a>'s
         <a data-cite=
         "payment-request#dom-paymentvalidationerrors-paymentmethod"><code>paymentMethod</code></a>
         member.
       </p>
       <pre class="idl">
-        dictionary BasicCardErrorFields {
+        dictionary BasicCardErrors {
           DOMString cardNumber;
           DOMString cardholderName;
           DOMString cardSecurityCode;
           DOMString expiryMonth;
           DOMString expiryYear;
-          AddressErrorFields billingAddress;
+          AddressErrors billingAddress;
         };
       </pre>
       <dl>
@@ -554,8 +553,8 @@
         </dt>
         <dd>
           A <code><a data-cite=
-          "!payment-request#dom-addresserrorfields">AddressErrorFields</a></code>
-          that represents validation errors with the <a>billing address</a>
+          "!payment-request#dom-addresserrors">AddressErrors</a></code> that
+          represents validation errors with the <a>billing address</a>
           associated with the <a>card</a>.
         </dd>
       </dl>
