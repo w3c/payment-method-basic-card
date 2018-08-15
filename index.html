@@ -250,8 +250,8 @@
           <li>If <var>cards</var> <a data-cite="infra#list-is-empty">is
           empty</a>, return false.
           </li>
-          <li>Let <var>networks</var> be an empty <code><a data-cite=
-          "!WEBIDL#idl-DOMString">DOMString</a></code> sequence.
+          <li>Let <var>networks</var> be an empty <a data-cite=
+          "!WEBIDL#idl-DOMString"><code>DOMString</code></a> sequence.
           </li>
           <li>Let <var>types</var> be an empty <a>BasicCardType</a> sequence.
           </li>
@@ -422,8 +422,8 @@
           run these steps unless the a user explicitly switches to a different
           card by performing some user action (e.g., by selecting a different
           card explicitly from a list of cards). For cards that are preselected
-          by default by the user agent, any matching <code><a data-cite=
-          "payment-request#dom-paymentdetailsmodifier">PaymentDetailsModifier</a></code>s
+          by default by the user agent, any matching <a data-cite=
+          "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
           apply instead (without the need to run these steps).
         </p>
         <ol>
@@ -433,8 +433,59 @@
           <li>Let <var>methodDetails</var> be a newly created
           <a>BasicCardChangeDetails</a> dictionary.
           </li>
-          <li>Set <var>methodDetails</var>["<a>type</a>"] to the
-          <a>BasicCardType</a> that represents <var>card</var>'s <a>type</a>.
+          <li>Set <var>methodDetails</var>["<a data-link-for=
+          "BasicCardChangeDetails">type</a>"] to the <a>BasicCardType</a> that
+          represents <var>card</var>'s <a>type</a>.
+          </li>
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>Let <var>billingAddress</var> be null.
+          </li>
+          <li>If <var>request</var>.<a data-cite=
+          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
+          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          is true:
+            <ol>
+              <li>
+                <div class="note" title="Privacy of recipient information">
+                  <p>
+                    The <var>redactList</var> optionally gives user agents the
+                    possibility to limit the amount of personal information
+                    about the recipient that the API shares with the merchant.
+                  </p>
+                  <p>
+                    For merchants, the resulting <a>PaymentAddress</a> object
+                    provides enough information to, for example, calculate tax,
+                    but, in most cases, not enough information to physically
+                    locate and uniquely identify the payer.
+                  </p>
+                  <p>
+                    Unfortunately, even with the <var>redactList</var>,
+                    recipient anonymity cannot be assured. This is because in
+                    some countries postal codes are so fine-grained that they
+                    can uniquely identify a recipient.
+                  </p>
+                </div>Let <var>redactList</var> be the empty list. Optionally,
+                set <var>redactList</var> to « "organization", "phone",
+                "recipient", "addressLine" ».
+              </li>
+              <li>Set <var>address</var> to the result of running the steps to
+              <a data-cite=
+              "payment-request#creating-a-paymentaddress-from-user-provided-input">
+                create a <code>PaymentAddress</code> from user-provided
+                input</a> with <var>redactList</var>.
+              </li>
+              <li>Optionally, redact <var>address</var>.<a data-cite=
+              "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
+              to make it more privacy preserving, but providing enough detail
+              so that, for example, it can still be used to calculate tax.
+              </li>
+            </ol>
+          </li>
+          <li data-link-for="BasicCardChangeDetails">Set
+          <var>methodDetails</var>["<a>billingAddress</a>"] to
+          <var>billingAddress</var>.
           </li>
           <li>Run the payment request's <a data-cite=
           "!payment-request#dfn-payment-method-changed-algorithm">payment
@@ -449,6 +500,7 @@
           <pre class="idl">
             dictionary BasicCardChangeDetails {
               required BasicCardType type;
+              PaymentAddress? billingAddress;
             };
           </pre>
           <dl>
@@ -457,6 +509,15 @@
             </dt>
             <dd>
               The <a>type</a> of <a>card</a> the user selected.
+            </dd>
+            <dt>
+              <dfn>billingAddress</dfn> member
+            </dt>
+            <dd>
+              If the merchant requested the billing address, a redacted
+              <a>PaymentAddress</a> that represents the <a>billing address</a>
+              associated with the <a>card</a>. If the merchant does not request
+              the billing address, it's null.
             </dd>
           </dl>
         </section>
@@ -544,10 +605,29 @@
           <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          A <code><dfn data-cite=
-          "!payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
-          that represents the <a>billing address</a> associated with the
-          <a>card</a>, or null.
+          A <a>PaymentAddress</a> that represents the <a>billing address</a>
+          associated with the <a>card</a>, or null.
+        </dd>
+      </dl>
+    </section>
+    <section>
+      <h2>
+        Dependencies
+      </h2>
+      <p>
+        This specification relies on WebIDL definitions defined in other
+        specifications.
+      </p>
+      <dl>
+        <dt>
+          Payment Request
+        </dt>
+        <dd>
+          The <code><dfn data-cite=
+          "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>,
+          <code><dfn data-cite=
+          "payment-request#dom-paymentaddress">PaymentRequest</dfn></code>
+          interfaces are defined in [[!payment-request]].
         </dd>
       </dl>
     </section>
