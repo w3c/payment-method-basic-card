@@ -208,7 +208,6 @@
       dictionary BasicCardRequest {
         sequence&lt;DOMString&gt; supportedNetworks;
         sequence&lt;BasicCardType&gt; supportedTypes;
-        boolean requestBillingAddress = false;
       };
     </pre>
       <p>
@@ -228,17 +227,6 @@
         </dt>
         <dd>
           A sequence of card <a>types</a> that the merchant accepts.
-        </dd>
-        <dt>
-          <dfn>requestBillingAddress</dfn> member
-        </dt>
-        <dd>
-          A boolean that instructs the user agent to get the billing address
-          associated with a <a>card</a>. The user agent will return the billing
-          address as part of the <a>PaymentMethodChangeEvent</a>'s
-          <a>methodDetails</a> attribute, albeit possibly with parts of the
-          address redacted for privacy reasons. A merchant can use this
-          information to, for example, calculate tax in certain jurisdictions.
         </dd>
       </dl>
     </section>
@@ -430,7 +418,7 @@
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows. The steps take <a>BasicCardRequest</a> <var>request</var> as
+          follows. The steps take <a>PaymentRequest</a> <var>request</var> as
           input. To mitigate fingerprinting concerns, the user agent MUST NOT
           run these steps unless the a user explicitly switches to a different
           card by performing some user action (e.g., by selecting a different
@@ -440,19 +428,18 @@
           apply instead (without the need to run these steps).
         </p>
         <ol>
-          <li>From the <a>supported cards</a> presented to the end user, let
-          <var>card</var> be the <a>card</a> the user selected.
-          </li>
           <li>Let <var>methodDetails</var> be a newly created
           <a>BasicCardChangeDetails</a> dictionary.
           </li>
-          <li>Set <var>methodDetails</var>["<a data-link-for=
-          "BasicCardChangeDetails">type</a>"] to the <a>BasicCardType</a> that
-          represents <var>card</var>'s <a>type</a>.
+          <li>From the <a>supported cards</a> presented to the end user, let
+          <var>card</var> be the <a>card</a> the user selected.
           </li>
           <li>Let <var>billingAddress</var> be null.
           </li>
-          <li>If <var>request</var>["<a>requestBillingAddress</a>"] is true:
+          <li>If <var>request</var>.<a data-cite=
+          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
+          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          is true:
             <ol>
               <li>
                 <div class="note" title="Privacy of recipient information">
@@ -494,7 +481,7 @@
           <var>methodDetails</var>["<a>billingAddress</a>"] to
           <var>billingAddress</var>.
           </li>
-          <li>Run the payment request's <a data-cite=
+          <li>Run <var>request</var>'s <a data-cite=
           "!payment-request#dfn-payment-method-changed-algorithm">payment
           method changed algorithm</a> with <var>methodDetails</var> and
           "basic-card".
@@ -506,17 +493,10 @@
           </h4>
           <pre class="idl">
             dictionary BasicCardChangeDetails {
-              required BasicCardType type;
               PaymentAddress? billingAddress;
             };
           </pre>
           <dl>
-            <dt>
-              <dfn>type</dfn> member
-            </dt>
-            <dd>
-              The <a>type</a> of <a>card</a> the user selected.
-            </dd>
             <dt>
               <dfn>billingAddress</dfn> member
             </dt>
