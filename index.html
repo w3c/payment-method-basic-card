@@ -89,7 +89,7 @@
         instance, with the <a data-cite="payment-request">Payment Request
         API</a>. With it, merchants can request the card details (card holder
         name, card number, etc.) from the end user as an alternative to
-        collecting the same information through a [[!HTML]] form.
+        collecting the same information through a [[HTML]] form.
       </p>
       <p>
         The basic card payment method provides information to merchant websites
@@ -140,7 +140,7 @@
       </h2>
       <p>
         The <dfn data-cite=
-        "!payment-method-id#standardized-payment-method-identifiers">standardized
+        "payment-method-id#standardized-payment-method-identifiers">standardized
         payment method identifier</dfn> for this specification is
         "<code><dfn>basic-card</dfn></code>".
       </p>
@@ -151,7 +151,7 @@
       </h2>
       <p>
         This section defines concepts used in this specification, and how those
-        concepts are represented in an API via [[!WEBIDL]].
+        concepts are represented in an API via [[WEBIDL]].
       </p>
       <p>
         A <dfn data-lt="cards">card</dfn> is a physical or virtual payment
@@ -160,7 +160,7 @@
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
-        "!ISO7812-1">primary account number</dfn> (PAN), <dfn>card holder's
+        "ISO7812-1">primary account number</dfn> (PAN), <dfn>card holder's
         name</dfn>, <dfn>security code</dfn> (sometimes known as the CVV, CVC,
         CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and
         optionally a <dfn>billing address</dfn>. These are represented as the
@@ -181,10 +181,10 @@
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
         "networks">network</dfn> via its issuer identification number
-        [[!ISO7812-1]] (e.g., those belonging to "visa" start with a "4"). In
-        an API, each network is represented by a string matching one of the
+        [[ISO7812-1]] (e.g., those belonging to "visa" start with a "4"). In an
+        API, each network is represented by a string matching one of the
         <a href="https://www.w3.org/Payments/card-network-ids">card network
-        identifiers</a> [[!card-network-ids]].
+        identifiers</a> [[card-network-ids]].
       </p>
       <p>
         A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
@@ -204,7 +204,7 @@
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
         <a>networks</a> it supports. A payment handler MAY support zero or more
-        networks from the [[!card-network-ids]] list.
+        networks from the [[card-network-ids]] list.
       </p>
     </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
@@ -258,7 +258,7 @@
           empty</a>, return false.
           </li>
           <li>Let <var>networks</var> be an empty <a data-cite=
-          "!WEBIDL#idl-DOMString"><code>DOMString</code></a> sequence.
+          "WEBIDL#idl-DOMString"><code>DOMString</code></a> sequence.
           </li>
           <li>Let <var>types</var> be an empty <a>BasicCardType</a> sequence.
           </li>
@@ -296,11 +296,11 @@
           supported, false otherwise.
         </p>
         <ol class="algorithm">
-          <li>If <var>types</var> <a data-cite="!infra#list-is-empty">is
-          empty</a> and <var>networks</var> <a data-cite=
-          "!infra#list-is-empty">is empty</a>, return true.
+          <li>If <var>types</var> <a data-cite="infra#list-is-empty">is
+          empty</a> and <var>networks</var> <a data-cite="infra#list-is-empty">
+            is empty</a>, return true.
           </li>
-          <li>If <var>networks</var> <a data-cite="!infra#list-is-empty">is not
+          <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is not
           empty</a>:
             <ol>
               <li>If <var>networks</var> does not include the <a>card</a>'s <a>
@@ -308,7 +308,7 @@
               </li>
             </ol>
           </li>
-          <li>If <var>types</var> <a data-cite="!infra#list-is-empty">is not
+          <li>If <var>types</var> <a data-cite="infra#list-is-empty">is not
           empty</a>:
             <ol>
               <li>If <var>types</var> does not include the <a>card</a>'s
@@ -399,7 +399,7 @@
                 outside the scope of this specification. There is nevertheless
                 an expectation that user agents will make a best effort to
                 check that a card number is valid as per the Luhn algorithm
-                [[!ISO7812-1]], check the length is correct for the expected
+                [[ISO7812-1]], check the length is correct for the expected
                 <a>type</a>, check that the issuer identification number is
                 correct for the selected <a>network</a>, check that the expiry
                 date on the card hasn't lapsed, and so on.
@@ -417,7 +417,7 @@
         <p class="note" data-lt="BasicCardRequest">
           When the end user explicitly switches from one card to another, these
           steps cause an event to fire in the <cite data-cite=
-          "!payment-request">Payment Request API</cite>. The algorithm
+          "payment-request">Payment Request API</cite>. The algorithm
           presupposes that the user agent is only presenting <a>supported
           cards</a> to the end user, by having filtered out unsupported cards
           based on the initiating payment request's <a>BasicCardRequest</a>'s
@@ -427,10 +427,10 @@
           The <dfn>steps for when a user changes payment method</dfn> are as
           follows. The steps take <a>PaymentRequest</a> <var>request</var> as
           input. To mitigate fingerprinting concerns, the user agent MUST NOT
-          run these steps unless a user explicitly switches to a different
-          card by performing some user action (e.g., by selecting a different
-          card explicitly from a list of cards). For cards that are preselected
-          by default by the user agent, any matching <a data-cite=
+          run these steps unless a user explicitly switches to a different card
+          by performing some user action (e.g., by selecting a different card
+          explicitly from a list of cards). For cards that are preselected by
+          default by the user agent, any matching <a data-cite=
           "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
           apply instead (without the need to run these steps).
         </p>
@@ -489,9 +489,8 @@
           <var>billingAddress</var>.
           </li>
           <li>Run <var>request</var>'s <a data-cite=
-          "!payment-request#dfn-payment-method-changed-algorithm">payment
-          method changed algorithm</a> with <var>methodDetails</var> and
-          "basic-card".
+          "payment-request#dfn-payment-method-changed-algorithm">payment method
+          changed algorithm</a> with <var>methodDetails</var> and "basic-card".
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -625,7 +624,7 @@
           "payment-request#dom-paymentmethodchangeevent">PaymentMethodChangeEvent</dfn></code>
           interface and its <code><dfn data-cite=
           "payment-request#dom-paymentmethodchangeevent-methoddetails">methodDetails</dfn></code>
-          attribute, are defined in [[!payment-request]].
+          attribute, are defined in [[payment-request]].
         </dd>
       </dl>
     </section>
@@ -689,7 +688,7 @@
         </dt>
         <dd>
           A <code><a data-cite=
-          "!payment-request#dom-addresserrors">AddressErrors</a></code> that
+          "payment-request#dom-addresserrors">AddressErrors</a></code> that
           represents validation errors with the <a>billing address</a>
           associated with the <a>card</a>.
         </dd>
