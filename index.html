@@ -57,28 +57,16 @@
     <section id='abstract'>
       <p>
         This specification describes data structures and formats, and a simple
-        processing model, to facilitate card-based payments on the Web. It is
-        used by other specifications to facilitate monetary transactions with a
-        "basic card", such as credit, debit, or prepaid card.
+        processing model, to facilitate payments on the Web with credit, debit,
+        or prepaid cards. It is used by other specifications to facilitate
+        monetary transactions with a "basic card" payment method identifier.
       </p>
     </section>
     <section id='sotd'>
       <p>
-        The working group maintains <a href=
-        "https://github.com/w3c/payment-method-basic-card/issues?utf8=%E2%9C%93&amp;q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">
-        a list of all bug reports that the group has not yet addressed</a>.
-        Pull requests with proposed specification text for outstanding issues
-        are strongly encouraged.
+        This is a work in progress and is expected to change with
+        implementation and deployment experience.
       </p>
-      <div class="note" title="Sending comments on this document">
-        <p>
-          If you wish to make comments regarding this document, please raise
-          them as <a href=
-          "https://github.com/w3c/payment-method-basic-card/issues">GitHub
-          issues</a>. Only send comments by email if you are unable to raise
-          issues on GitHub (see links below). All comments are welcome.
-        </p>
-      </div>
     </section>
     <section class='informative'>
       <h2>
@@ -87,8 +75,8 @@
       <p>
         This specification defines the "basic-card" payment method for use, for
         instance, with the <a data-cite="payment-request">Payment Request
-        API</a>. With it, merchants can request the card details (card holder
-        name, card number, etc.) from the end user as an alternative to
+        API</a>. With it, merchants can request the card <a>details</a> (card
+        holder name, card number, etc.) from the end user as an alternative to
         collecting the same information through a [[HTML]] form.
       </p>
       <p>
@@ -150,13 +138,9 @@
         Model
       </h2>
       <p>
-        This section defines concepts used in this specification, and how those
-        concepts are represented in an API via [[WEBIDL]].
-      </p>
-      <p>
         A <dfn data-lt="cards">card</dfn> is a physical or virtual payment
-        instrument that has <a>details</a>, a <a>type</a>, and optionally is
-        part of a <a>network</a>.
+        instrument that has <a>details</a> and optionally is part of a
+        <a>network</a>.
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
@@ -167,30 +151,12 @@
         members of the <a>BasicCardResponse</a> dictionary.
       </p>
       <p>
-        A <a>card</a> can be of <dfn data-lt="types">type</dfn> "credit",
-        "debit", or "prepaid", as derived from the issuer identification number
-        (the first eight digits of the <a>primary account number</a>). The
-        different types are represented as the <a>BasicCardType</a> enum.
-      </p>
-      <aside class="note" title="Determining the card type">
-        <p>
-          Commercial databases and web services are available to look up issuer
-          identification numbers, which in turn return the <a>type</a> of card.
-        </p>
-      </aside>
-      <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
         "networks">network</dfn> via its issuer identification number
         [[ISO7812-1]] (e.g., those belonging to "visa" start with a "4"). In an
         API, each network is represented by a string matching one of the
         <a href="https://www.w3.org/Payments/card-network-ids">card network
         identifiers</a> [[card-network-ids]].
-      </p>
-      <p>
-        A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
-        that when passed to the <a>steps to check if an instrument is
-        supported</a>, together with a list of <var>types</var> and
-        <var>networks</var> returns true.
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
@@ -201,6 +167,11 @@
           credit card issuer identification numbers</a>.
         </p>
       </aside>
+      <p>
+        A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
+        that when passed to the <a>steps to check if an instrument is
+        supported</a> together with a list of <var>networks</var> returns true.
+      </p>
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
         <a>networks</a> it supports. A payment handler MAY support zero or more
@@ -214,7 +185,6 @@
       <pre class="idl">
       dictionary BasicCardRequest {
         sequence&lt;DOMString&gt; supportedNetworks;
-        sequence&lt;BasicCardType&gt; supportedTypes;
       };
     </pre>
       <p>
@@ -228,12 +198,6 @@
           A sequence of identifiers for card networks that the merchant
           accepts. W3C maintains a <a data-cite="card-network-ids">list of
           approved card network identifiers</a>.
-        </dd>
-        <dt>
-          <dfn>supportedTypes</dfn>
-        </dt>
-        <dd>
-          A sequence of card <a>types</a> that the merchant accepts.
         </dd>
       </dl>
     </section>
@@ -250,7 +214,7 @@
           Handler that handles "basic-card" takes <a>BasicCardRequest</a>
           <var>request</var> as input. It returns either true or false:
         </p>
-        <ol class="algorithm">
+        <ol class="algorithm" data-link-for="BasicCardRequest">
           <li>Let <var>cards</var> be a <a data-cite="infra#list">list</a> of
           <a>cards</a> associated with this payment handler.
           </li>
@@ -260,20 +224,15 @@
           <li>Let <var>networks</var> be an empty <a data-cite=
           "WEBIDL#idl-DOMString"><code>DOMString</code></a> sequence.
           </li>
-          <li>Let <var>types</var> be an empty <a>BasicCardType</a> sequence.
-          </li>
-          <li>If <var>request</var>["supportedTypes"] is present, append each
-          item in <var>request</var>["supportedTypes"] to <var>types</var>.
-          </li>
-          <li>If <var>request</var>["supportedNetworks"] is present, append
-          each item in <var>request</var>["supportedNetworks"] to
+          <li>If <var>request</var>["<a>supportedNetworks</a>"] is present,
+          append each item in <var>request</var>["<a>supportedNetworks</a>"] to
           <var>networks</var>.
           </li>
           <li>For each <var>card</var> in <var>cards</var>:
             <ol>
               <li>Let <var>isSupported</var> be the result of running the
               <a>steps to check if an instrument is supported</a>, passing in
-              <var>card</var>, <var>networks</var>, <var>types</var>.
+              <var>card</var> and <var>networks</var>.
               </li>
               <li>If <var>isSupported</var> is true, then return true.
               </li>
@@ -289,30 +248,19 @@
         </h3>
         <p>
           The <dfn>steps to check if an instrument is supported</dfn> takes as
-          input a <a>card</a> <var>card</var>, a <a data-cite=
-          "infra#list">list</a> of <a>type</a> <var>types</var>, and a
-          <a data-cite="infra#list">list</a> of <a>network</a>
-          <var>networks</var>. It returns true if the <var>card</var> is
-          supported, false otherwise.
+          input a <a>card</a> <var>card</var> and a <a data-cite=
+          "infra#list">list</a> of <a>network</a> <var>networks</var>. It
+          returns true if the <var>card</var> is supported, false otherwise.
         </p>
         <ol class="algorithm">
-          <li>If <var>types</var> <a data-cite="infra#list-is-empty">is
-          empty</a> and <var>networks</var> <a data-cite="infra#list-is-empty">
-            is empty</a>, return true.
+          <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is
+          empty</a>, return true.
           </li>
           <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is not
           empty</a>:
             <ol>
               <li>If <var>networks</var> does not include the <a>card</a>'s <a>
                 network</a>, return false.
-              </li>
-            </ol>
-          </li>
-          <li>If <var>types</var> <a data-cite="infra#list-is-empty">is not
-          empty</a>:
-            <ol>
-              <li>If <var>types</var> does not include the <a>card</a>'s
-              <a>type</a>, return false.
               </li>
             </ol>
           </li>
@@ -336,10 +284,6 @@
             data</var>["<a>supportedNetworks</a>"], or an empty list if
             <var>data</var>["<a>supportedNetworks</a>"] is missing.
           </li>
-          <li data-link-for="BasicCardRequest">Let <var>types</var> be
-          <var>data</var>["<a>supportedTypes</a>"], or an empty list if
-          <var>data</var>["<a>supportedTypes</a>"] is missing.
-          </li>
           <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
           </li>
           <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
@@ -347,9 +291,9 @@
           number</a>.
           </li>
           <li>While the <a>steps to check if an instrument is supported</a>
-          with <var>card</var>, <var>networks</var>, <var>types</var> returns
-          false, ask the user to correct the card's <a>details</a>. Only when
-          the <var>card</var> is a <var>supported card</var>, continue.
+          with <var>card</var>, <var>networks</var> returns false, ask the user
+          to correct the card's <a>details</a>. Only when the <var>card</var>
+          is a <var>supported card</var>, continue.
           </li>
           <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
           holder's name</a>, or the empty string if the user chooses not to
@@ -361,16 +305,16 @@
           </li>
           <li>Set <var>card</var>["<a>expiryMonth</a>"] to two-digit string
           ranging from "<code>01</code>" to "<code>12</code>", or the empty
-          string if the user chooses not to provide it or the <a>type</a>
+          string if the user chooses not to provide it or the <a>card</a>
           doesn't require an expiry month.
           </li>
           <li>Set <var>card</var>["<a>expiryYear</a>"] to a four-digit string
           in the range "<code>0000</code>" to "<code>9999</code>", or the empty
-          string if the user chooses not to provide it or the <a>type</a>
+          string if the user chooses not to provide it or the <a>card</a>
           doesn't require an expiry year.
           </li>
-          <li>If a billing address is not required for this card <a>type</a>,
-          then set <var>card</var>["<a>billingAddress</a>"] to null. Otherwise:
+          <li>If a billing address is not required for this <a>card</a> then
+          set <var>card</var>["<a>billingAddress</a>"] to null. Otherwise:
             <ol>
               <li>Let <var>redactList</var> be « "phone" ».
               </li>
@@ -388,9 +332,8 @@
           <li>
             <p>
               Optionally, validate <var>card</var>'s <a>details</a> to make
-              sure they adhere to any additional <a>type</a> and/or
-              <a>network</a> requirements and assist the user in fixing any
-              issues encountered.
+              sure they adhere to any additional <a>network</a> requirements
+              and assist the user in fixing any issues encountered.
             </p>
             <div class="note" title="Validation of inputs">
               <p>
@@ -399,10 +342,10 @@
                 outside the scope of this specification. There is nevertheless
                 an expectation that user agents will make a best effort to
                 check that a card number is valid as per the Luhn algorithm
-                [[ISO7812-1]], check the length is correct for the expected
-                <a>type</a>, check that the issuer identification number is
-                correct for the selected <a>network</a>, check that the expiry
-                date on the card hasn't lapsed, and so on.
+                [[ISO7812-1]], check the length is correct , check that the
+                issuer identification number is correct for the selected
+                <a>network</a>, check that the expiry date on the card hasn't
+                lapsed, and so on.
               </p>
             </div>
           </li>
@@ -421,7 +364,7 @@
           presupposes that the user agent is only presenting <a>supported
           cards</a> to the end user, by having filtered out unsupported cards
           based on the initiating payment request's <a>BasicCardRequest</a>'s
-          <a>supportedNetworks</a> and <a>supportedTypes</a> values.
+          <a>supportedNetworks</a> values.
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
@@ -515,34 +458,6 @@
           </dl>
         </section>
       </section>
-    </section>
-    <section data-dfn-for="BasicCardType" data-link-for="BasicCardType">
-      <h2>
-        <dfn>BasicCardType</dfn> enum
-      </h2>
-      <pre class="idl">
-          enum BasicCardType { "credit", "debit", "prepaid" };
-        </pre>
-      <dl>
-        <dt>
-          "<dfn>credit</dfn>"
-        </dt>
-        <dd>
-          A credit card.
-        </dd>
-        <dt>
-          "<dfn>debit</dfn>"
-        </dt>
-        <dd>
-          A debit card.
-        </dd>
-        <dt>
-          "<dfn>prepaid</dfn>"
-        </dt>
-        <dd>
-          A prepaid card.
-        </dd>
-      </dl>
     </section>
     <section data-dfn-for="BasicCardResponse" data-link-for=
     "BasicCardResponse">
@@ -688,9 +603,9 @@
         </dt>
         <dd>
           A <code><a data-cite=
-          "payment-request#dom-addresserrors">AddressErrors</a></code> that
-          represents validation errors with the <a>billing address</a>
-          associated with the <a>card</a>.
+          "payment-request#dom-addresserrors">AddressErrors</a></code>
+          dictionary that represents validation errors with the <a>billing
+          address</a> associated with the <a>card</a>.
         </dd>
       </dl>
     </section>
