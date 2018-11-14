@@ -247,7 +247,7 @@
         </h3>
         <p>
           The <dfn>steps to check if a payment can be made</dfn> by a Payment
-          Handler that handles "basic-card" takes <a>BasicCardRequest</a>
+          Handler that handles "basic-card" take <a>BasicCardRequest</a>
           <var>request</var> as input. It returns either true or false:
         </p>
         <ol class="algorithm">
@@ -288,7 +288,7 @@
           Steps to check if an instrument is supported
         </h3>
         <p>
-          The <dfn>steps to check if an instrument is supported</dfn> takes as
+          The <dfn>steps to check if an instrument is supported</dfn> take as
           input a <a>card</a> <var>card</var>, a <a data-cite=
           "infra#list">list</a> of <a>type</a> <var>types</var>, and a
           <a data-cite="infra#list">list</a> of <a>network</a>
@@ -376,7 +376,7 @@
               </li>
               <li>Let <var>billingAddress</var> be the result running the steps
               to <a data-cite=
-              "payment-request#dfn-create-a-payment-address">create a
+              "payment-request#creating-a-paymentaddress-from-user-provided-input">create a
               <code>PaymentAddress</code> from user-provided input</a> with
               <var>redactList</var>.
               </li>
@@ -445,7 +445,7 @@
           </li>
           <li>If <var>request</var>.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          "payment-request#dom-paymentoptions-requestshipping"><code>requestShipping</code></a>"]
           is true:
             <ol>
               <li>
@@ -467,7 +467,7 @@
                     some countries postal codes are so fine-grained that they
                     can uniquely identify a recipient.
                   </p>
-                </div>Let <var>redactList</var> be the empty list. Optionally,
+                </div> Let <var>redactList</var> be the empty list. Optionally,
                 set <var>redactList</var> to « "organization", "phone",
                 "recipient", "addressLine" ».
               </li>
