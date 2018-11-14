@@ -13,7 +13,13 @@ env:
 
 install:
   - npm install respec-validator
+
+script:
   - npx respec-validator
+
+cache:
+  directories:
+    - node_modules # NPM packages
 
 after_success:
   - test $TRAVIS_PULL_REQUEST = false && curl "https://labs.w3.org/echidna/api/request" --data "url=$URL" --data "decision=$DECISION" --data "token=$TOKEN"
