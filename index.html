@@ -211,7 +211,7 @@
         </h3>
         <p>
           The <dfn>steps to check if a payment can be made</dfn> by a Payment
-          Handler that handles "basic-card" takes <a>BasicCardRequest</a>
+          Handler that handles "basic-card" take <a>BasicCardRequest</a>
           <var>request</var> as input. It returns either true or false:
         </p>
         <ol class="algorithm" data-link-for="BasicCardRequest">
@@ -247,7 +247,7 @@
           Steps to check if an instrument is supported
         </h3>
         <p>
-          The <dfn>steps to check if an instrument is supported</dfn> takes as
+          The <dfn>steps to check if an instrument is supported</dfn> take as
           input a <a>card</a> <var>card</var> and a <a data-cite=
           "infra#list">list</a> of <a>network</a> <var>networks</var>. It
           returns true if the <var>card</var> is supported, false otherwise.
@@ -320,9 +320,9 @@
               </li>
               <li>Let <var>billingAddress</var> be the result running the steps
               to <a data-cite=
-              "payment-request#dfn-create-a-payment-address">create a
-              <code>PaymentAddress</code> from user-provided input</a> with
-              <var>redactList</var>.
+              "payment-request#creating-a-paymentaddress-from-user-provided-input">
+                create a <code>PaymentAddress</code> from user-provided
+                input</a> with <var>redactList</var>.
               </li>
               <li>Set <var>card</var>["<a>billingAddress</a>"] to
               <var>billingAddress</var>.
@@ -388,7 +388,7 @@
           </li>
           <li>If <var>request</var>.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          "payment-request#dom-paymentoptions-requestshipping"><code>requestShipping</code></a>"]
           is true:
             <ol>
               <li>
