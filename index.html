@@ -57,9 +57,9 @@
     <section id='abstract'>
       <p>
         This specification describes data structures and formats, and a simple
-        processing model, to facilitate payments on the Web with credit, debit,
-        or prepaid cards. It is used by other specifications to facilitate
-        monetary transactions with a "basic card" payment method identifier.
+        processing model, to facilitate card-based payments on the Web. It is
+        used by other specifications to facilitate monetary transactions with a
+        "basic-card", such as credit, debit, or prepaid card.
       </p>
     </section>
     <section id='sotd'>
@@ -76,7 +76,7 @@
         instance, with the <a data-cite="payment-request">Payment Request
         API</a>. With it, merchants can request the card <a>details</a> (card
         holder name, card number, etc.) from the end user as an alternative to
-        collecting the same information through a [[HTML]] form.
+        collecting the same information through a [[?HTML]] form.
       </p>
       <p>
         The basic card payment method provides information to merchant websites
@@ -152,10 +152,9 @@
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
         "networks">network</dfn> via its issuer identification number
-        [[ISO7812-1]] (e.g., those belonging to "visa" start with a "4"). In an
-        API, each network is represented by a string matching one of the
-        <a href="https://www.w3.org/Payments/card-network-ids">card network
-        identifiers</a> [[card-network-ids]].
+        [[ISO7812-1]] (e.g., those belonging to Visa start with a "4"). In an
+        API, each network is represented by a string from the <a data-cite=
+        "card-network-ids">list of approved card network identifiers</a>.
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
@@ -174,7 +173,8 @@
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
         <a>networks</a> it supports. A payment handler MAY support zero or more
-        networks from the [[card-network-ids]] list.
+        networks from the <a data-cite="card-network-ids">list of approved card
+        network identifiers</a>.
       </p>
     </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
@@ -195,7 +195,7 @@
         </dt>
         <dd>
           A sequence of identifiers for card networks that the merchant
-          accepts. W3C maintains a <a data-cite="card-network-ids">list of
+          accepts, derived from the <a data-cite="card-network-ids">list of
           approved card network identifiers</a>.
         </dd>
       </dl>
@@ -209,9 +209,9 @@
           Steps to check if a payment can be made
         </h3>
         <p>
-          The <dfn>steps to check if a payment can be made</dfn> by a Payment
-          Handler that handles "basic-card" take <a>BasicCardRequest</a>
-          <var>request</var> as input. It returns either true or false:
+          The <dfn>steps to check if a payment can be made</dfn> take a
+          <a>BasicCardRequest</a> <var>request</var> as input. The steps return
+          either true or false:
         </p>
         <ol class="algorithm" data-link-for="BasicCardRequest">
           <li>Let <var>cards</var> be a <a data-cite="infra#list">list</a> of
@@ -255,15 +255,8 @@
           <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is
           empty</a>, return true.
           </li>
-          <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is not
-          empty</a>:
-            <ol>
-              <li>If <var>networks</var> does not include the <a>card</a>'s <a>
-                network</a>, return false.
-              </li>
-            </ol>
-          </li>
-          <li>Return true.
+          <li>Return true if <var>networks</var> includes the <a>card</a>'s <a>
+            network</a>, return true. Otherwise, return false.
           </li>
         </ol>
       </section>
@@ -283,7 +276,8 @@
             data</var>["<a>supportedNetworks</a>"], or an empty list if
             <var>data</var>["<a>supportedNetworks</a>"] is missing.
           </li>
-          <li>Let <var>card</var> be a <a>BasicCardResponse</a>.
+          <li>Let <var>card</var> be a newly created <a>BasicCardResponse</a>
+          dictionary.
           </li>
           <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
           length between 10 to 19 items representing the <a>primary account
@@ -292,7 +286,7 @@
           <li>While the <a>steps to check if an instrument is supported</a>
           with <var>card</var>, <var>networks</var> returns false, ask the user
           to correct the card's <a>details</a>. Only when the <var>card</var>
-          is a <var>supported card</var>, continue.
+          is a <a>supported card</a>, continue.
           </li>
           <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
           holder's name</a>, or the empty string if the user chooses not to
@@ -381,16 +375,21 @@
           <a>BasicCardChangeDetails</a> dictionary.
           </li>
           <li>From the <a>supported cards</a> presented to the end user, let
-          <var>card</var> be the <a>card</a> the user selected.
+          <var>card</var> be the <a>card</a> the user selects.
           </li>
           <li>Let <var>billingAddress</var> be null.
           </li>
           <li>If <var>request</var>.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestshipping"><code>requestShipping</code></a>"]
+          "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
           is true:
             <ol>
               <li>
+                <p>
+                  Let <var>redactList</var> be the empty list. Optionally, set
+                  <var>redactList</var> to « "organization", "phone",
+                  "recipient", "addressLine" ».
+                </p>
                 <div class="note" title="Privacy of recipient information">
                   <p>
                     The <var>redactList</var> optionally gives user agents the
@@ -409,17 +408,15 @@
                     some countries postal codes are so fine-grained that they
                     can uniquely identify a recipient.
                   </p>
-                </div>Let <var>redactList</var> be the empty list. Optionally,
-                set <var>redactList</var> to « "organization", "phone",
-                "recipient", "addressLine" ».
+                </div>
               </li>
-              <li>Set <var>address</var> to the result of running the steps to
+              <li>Set <var>billingAddress</var> to the result of running the steps to
               <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
                 create a <code>PaymentAddress</code> from user-provided
                 input</a> with <var>redactList</var>.
               </li>
-              <li>Optionally, redact <var>address</var>.<a data-cite=
+              <li>Optionally, redact <var>billingAddress</var>.<a data-cite=
               "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
               to make it more privacy preserving, but providing enough detail
               so that, for example, it can still be used to calculate tax.
@@ -517,31 +514,6 @@
         </dd>
       </dl>
     </section>
-    <section>
-      <h2>
-        Dependencies
-      </h2>
-      <p>
-        This specification relies on WebIDL definitions defined in other
-        specifications.
-      </p>
-      <dl>
-        <dt>
-          Payment Request
-        </dt>
-        <dd>
-          The <code><dfn data-cite=
-          "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
-          interface, <code><dfn data-cite=
-          "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
-          interface, <code><dfn data-cite=
-          "payment-request#dom-paymentmethodchangeevent">PaymentMethodChangeEvent</dfn></code>
-          interface and its <code><dfn data-cite=
-          "payment-request#dom-paymentmethodchangeevent-methoddetails">methodDetails</dfn></code>
-          attribute, are defined in [[payment-request]].
-        </dd>
-      </dl>
-    </section>
     <section data-dfn-for="BasicCardErrors" data-link-for="BasicCardErrors">
       <h2>
         <dfn>BasicCardErrors</dfn> dictionary
@@ -601,10 +573,35 @@
           <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          A <code><a data-cite=
-          "payment-request#dom-addresserrors">AddressErrors</a></code>
-          dictionary that represents validation errors with the <a>billing
-          address</a> associated with the <a>card</a>.
+          A <a>AddressErrors</a> dictionary that represents validation errors
+          with the <a>billing address</a> associated with the <a>card</a>.
+        </dd>
+      </dl>
+    </section>
+    <section>
+      <h2>
+        Dependencies
+      </h2>
+      <p>
+        This specification relies on WebIDL definitions defined in other
+        specifications.
+      </p>
+      <dl>
+        <dt>
+          Payment Request
+        </dt>
+        <dd>
+          The <code><dfn data-cite=
+          "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
+          interface, <code><dfn data-cite=
+          "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
+          interface, <code><dfn data-cite=
+          "payment-request#dom-paymentmethodchangeevent">PaymentMethodChangeEvent</dfn></code>
+          interface and its <code><dfn data-cite=
+          "payment-request#dom-paymentmethodchangeevent-methoddetails">methodDetails</dfn></code>
+          attribute, and the <code><dfn data-cite=
+          "payment-request#dom-addresserrors">AddressErrors</dfn></code>
+          dictionary are defined in [[payment-request]].
         </dd>
       </dl>
     </section>
@@ -629,12 +626,12 @@
         </li>
       </ul>
     </section>
-    <section id="security">
+    <section id="security" class="informative">
       <h2>
         Security and Privacy Considerations
       </h2>
       <p>
-        Due to differences in quality of implementation" and the end user's
+        Due to differences in quality of implementation and the end user's
         ability to input data into unconstrained input fields, merchants are
         expected to revalidate all <a>BasicCardResponse</a> returned by APIs
         that make use of this specification.
@@ -646,18 +643,11 @@
         of a <a>BasicCardResponse</a> before rendering them anywhere.
       </p>
       <p>
-        Owners of web sites SHOULD NOT store the payer's card information
-        except where warranted, such as storage for future and recurring
-        payments. When card information is stored, web site owners SHOULD take
-        measures to prevent its disclosure.
-      </p>
-      <p class="note" title=
-      "Payment Card Industry Data Security Standard Compliance">
         Depending on jurisdiction, users of this specification (implementers,
-        merchants, payment processors, etc.) can be subject to <abbr class=
-        "Payment Card Industry Data Security Standard">PCI DSS</abbr> or other
-        regulations. Discussion of those considerations are outside the scope
-        of this document.
+        merchants, payment processors, etc.) can be subject to Payment Card
+        Industry Data Security Standard Compliance (<abbr>PCI DSS</abbr>) or
+        other regulations. Discussion of those considerations are outside the
+        scope of this document.
       </p>
     </section>
     <section id="idl-index" class="appendix"></section>
