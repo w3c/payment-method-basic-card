@@ -312,7 +312,9 @@
           <li>If <var>request</var>.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
-          is true:
+          is true, or, optionally, the user agent determines that payment is
+          taking place in region where validation of billing addresses against
+          an address verification system is the norm:
             <ol>
               <li>Let <var>redactList</var> be « "phone", "organization",
               "recipient" ».
