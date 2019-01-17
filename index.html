@@ -266,8 +266,9 @@
         </h3>
         <p>
           The <dfn>steps to respond to a payment request</dfn> are given by the
-          following algorithm. If the end user inputs or selects a <a>card</a>
-          that meets the constraints of <a>BasicCardRequest</a>
+          following algorithm. The steps take <a>PaymentRequest</a>
+          <var>request</var> as input. If the end user inputs or selects a
+          <a>card</a> that meets the constraints of <a>BasicCardRequest</a>
           <var>data</var>, the algorithm returns a card as a
           <a>BasicCardResponse</a>.
         </p>
@@ -306,19 +307,23 @@
           string if the user chooses not to provide it or the <a>card</a>
           doesn't require an expiry year.
           </li>
-          <li>If a billing address is not required for this <a>card</a> then
-          set <var>card</var>["<a>billingAddress</a>"] to null. Otherwise:
+          <li>Set <var>card</var>["<a>billingAddress</a>"] to null.
+          </li>
+          <li>If <var>request</var>.<a data-cite=
+          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
+          "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
+          is true, or, optionally, the user agent determines that payment is
+          taking place in region where validation of billing addresses against
+          an address verification system is the norm:
             <ol>
-              <li>Let <var>redactList</var> be « "phone" ».
+              <li>Let <var>redactList</var> be « "phone", "organization",
+              "recipient" ».
               </li>
-              <li>Let <var>billingAddress</var> be the result running the steps
-              to <a data-cite=
+              <li>Set <var>card</var>["<a>billingAddress</a>"] to the result of
+              running the steps to <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
                 create a <code>PaymentAddress</code> from user-provided
                 input</a> with <var>redactList</var>.
-              </li>
-              <li>Set <var>card</var>["<a>billingAddress</a>"] to
-              <var>billingAddress</var>.
               </li>
             </ol>
           </li>
