@@ -196,7 +196,7 @@
         <dd>
           A sequence of identifiers for card networks that the merchant
           accepts, derived from the <a data-cite="card-network-ids">list of
-          approved card network identifiers</a>.
+          approved card network identifiers</a>. When the sequence is empty, it means that all networks are supported.
         </dd>
       </dl>
     </section>
@@ -458,6 +458,51 @@
           </dl>
         </section>
       </section>
+      <section>
+        <h2>Steps for showing the payment handler</h2>
+        <p>
+          The steps for showing the payment are given by the following algorithm. These steps run
+          when a payment UI is first presented to the the end-user, as a successful call to a PaymentRequest's <a>show()</a> method. The steps take
+          a <a>PaymentRequest</a> <var>request</var>.
+        </p>
+        <ol class="algorithm">
+          <li>
+            Let <var>restrictions</var> be a newly created <a>BasicCardRequest</a> with its <a>supportedNetworks</a> member set to an empty sequence.
+          </li>
+          <li>
+            For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a> <var>id</var> / string <var>data</var>) of <var>request</var>.<a data-cite="payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a> in reverse order:
+            <ol>
+              <li>If <var>id</var> is not "<a>basic-card</a>", continue.</li>
+              <li>Let <var>object</var> be result of <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              <li>Set <var>restrictions</var> be the result of <a data-cite="webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>object</var> into a <a>BasicCardRequest</a>.</li>
+              <li>Break.</li>
+            </ol>
+          </li>
+          <li>
+            Use <var>restrictions</var>'s <a>supportedNetworks</a> member to constrain the card type inputs of the payment UI.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>Steps for applying modifiers</h2>
+        <p>
+          The steps for applying modifiers.
+        </p>
+        <ol class="algorithm">
+          <li>
+            Let <var>modifiers</var> be 
+          </li>
+          <li>
+            For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a> <var>id</var> / string <var>data</var>) of <var>request</var>.<a data-cite="payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a> in reverse order:
+            <ol>
+              <li>If <var>id</var> is not "<a>basic-card</a>", continue.</li>
+              <li>Let <var>object</var> be result of <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              <li>Set <var></var> be the result of <a data-cite="webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>object</var> into a <a>BasicCardRequest</a>.</li>
+              <li>Break.</li>
+            </ol>
+          </li>
+        </ol>
+      </section>
     </section>
     <section data-dfn-for="BasicCardResponse" data-link-for=
     "BasicCardResponse">
@@ -606,6 +651,13 @@
           attribute, and the <code><dfn data-cite=
           "payment-request#dom-addresserrors">AddressErrors</dfn></code>
           dictionary are defined in [[payment-request]].
+        </dd>
+        <dt>
+          WebIDL
+        </dt>
+        <dd>
+          The <code><dfn data-cite=
+            "WEBIDL#idl-DOMString">DOMString</dfn></code> type is defined in [[WebIDL]].
         </dd>
       </dl>
     </section>
