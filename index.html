@@ -316,8 +316,7 @@
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
             <ol>
-              <li>Let <var>redactList</var> be « "phone", "organization",
-              "recipient" ».
+              <li>Let <var>redactList</var> be at least « "addressLine", "organization", "phone", "recipient" ».
               </li>
               <li>Set <var>card</var>["<a>billingAddress</a>"] to the result of
               running the steps to <a data-cite=
@@ -392,8 +391,7 @@
               <li>
                 <p>
                   Let <var>redactList</var> be the empty list. Set
-                  <var>redactList</var> to « "addressLine", "organization",
-                  "phone", "recipient" ».
+                  <var>redactList</var> to at least « "addressLine", "organization", "phone", "recipient" ».
                 </p>
                 <div class="note" title="Privacy of recipient information">
                   <p>
