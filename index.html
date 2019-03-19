@@ -126,9 +126,10 @@
         Payment Method Identifier
       </h2>
       <p>
-        The <dfn data-cite=
+        The <dfn data-lt="PMI" data-cite=
         "payment-method-id#standardized-payment-method-identifiers">standardized
-        payment method identifier</dfn> for this specification is
+        payment method identifier</dfn> (<abbr title=
+        "payment method identifier">PMI</abbr>) for this specification is
         "<code><dfn>basic-card</dfn></code>".
       </p>
     </section>
@@ -196,7 +197,8 @@
         <dd>
           A sequence of identifiers for card networks that the merchant
           accepts, derived from the <a data-cite="card-network-ids">list of
-          approved card network identifiers</a>. When the sequence is empty, it means that all networks are supported.
+          approved card network identifiers</a>. When the sequence is empty, it
+          means that all networks are supported.
         </dd>
       </dl>
     </section>
@@ -373,7 +375,8 @@
           explicitly from a list of cards). For cards that are preselected by
           default by the user agent, any matching <a data-cite=
           "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
-          apply instead (without the need to run these steps).
+          <a data-lt="apply the modifiers">apply</a> instead (without the need
+          to run these steps).
         </p>
         <ol>
           <li>Let <var>methodDetails</var> be a newly created
@@ -435,6 +438,12 @@
           "payment-request#dfn-payment-method-changed-algorithm">payment method
           changed algorithm</a> with <var>methodDetails</var> and "basic-card".
           </li>
+          <li>Let <var data-type="DOMString">networkIdentifier</var> be the <a>
+            network</a> of the selected instrument.
+          </li>
+          <li>If <a>updateWith()</a> was called, <a>apply the modifiers</a>
+          using <var>request</var> and <var>networkIdentifier</var>.
+          </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
           <h4>
@@ -459,46 +468,132 @@
         </section>
       </section>
       <section>
-        <h2>Steps for showing the payment handler</h2>
+        <h2>
+          Showing the payment handler
+        </h2>
         <p>
-          The steps for showing the payment are given by the following algorithm. These steps run
-          when a payment UI is first presented to the the end-user, as a successful call to a PaymentRequest's <a>show()</a> method. The steps take
-          a <a>PaymentRequest</a> <var>request</var>.
+          The steps for showing the Basic Card payment handler are given by the
+          following algorithm. These steps run when a payment UI is first
+          presented to the end-user, as a successful call to a
+          <a>PaymentRequest</a>'s <a data-cite=
+          "payment-request#dom-paymentrequest-show"><code>show()</code></a>
+          method. The steps take a <a>PaymentRequest</a> <var>request</var>.
         </p>
+        <div class="note">
+          <p>
+            In the case where a payment request is shown with multiple
+            applicable <a>PaymentMethodData</a>s, this algorithm selects the
+            last <a data-cite=
+            "payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
+            whose PMI is "<code>basic-card</code>". (i.e., "the last one
+            wins").
+          </p>
+          <pre class="example" title="Last one wins">
+            const methodData = [
+            // This one is ignored.
+            {
+              supportedMethods: "basic-card",
+              data: {
+                supportedNetworks: ["visa", "mastercard"],
+              },
+            },
+            // ✅ This second one gets used!
+            {
+              supportedMethods: "basic-card",
+              data: {
+                supportedNetworks: ["visa"],
+              },
+            },
+            // This one gets skipped, because it's not applicable to
+            // basic card.
+            {
+              supportedMethods: "https://example.com/bobpay",
+            },
+          ];
+
+          // See above for which methodData gets picked.
+          await new PaymentRequest(methodData, details, options).show();
+          </pre>
+        </div>
         <ol class="algorithm">
-          <li>
-            Let <var>restrictions</var> be a newly created <a>BasicCardRequest</a> with its <a>supportedNetworks</a> member set to an empty sequence.
-          </li>
-          <li>
-            For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a> <var>id</var> / string <var>data</var>) of <var>request</var>.<a data-cite="payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a> in reverse order:
+          <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
+          <var>id</var> / string <var>data</var>) of
+          <var>request</var>.<a data-cite=
+          "payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
+          in reverse order:
             <ol>
-              <li>If <var>id</var> is not "<a>basic-card</a>", continue.</li>
-              <li>Let <var>object</var> be result of <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
-              <li>Set <var>restrictions</var> be the result of <a data-cite="webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>object</var> into a <a>BasicCardRequest</a>.</li>
-              <li>Break.</li>
+              <li>If <var>id</var> is not "<a>basic-card</a>", continue.
+              </li>
+              <li>Let <var>object</var> be result of <a data-cite=
+              "ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              </li>
+              <li>Set <var>restrictions</var> to the result of <a data-cite=
+              "webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>
+                object</var> into a <a>BasicCardRequest</a>.
+              </li>
+              <li>Apply <var>restrictions</var>'s <a>supportedNetworks</a>
+              member to constrain the card type inputs of the payment UI.
+              </li>
+              <li>Break.
+              </li>
             </ol>
           </li>
-          <li>
-            Use <var>restrictions</var>'s <a>supportedNetworks</a> member to constrain the card type inputs of the payment UI.
+          <li>If an payment instrument is selected by default, <a>apply the
+          modifiers</a> using <var>request</var><a data-cite=
+          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
+          and the <a>network</a> of the selected instrument.
           </li>
         </ol>
       </section>
       <section>
-        <h2>Steps for applying modifiers</h2>
+        <h2>
+          Applying the modifiers
+        </h2>
         <p>
-          The steps for applying modifiers.
+          The steps to <dfn>apply the modifiers</dfn> are given by the
+          following algorithm. It takes a <a>PaymentRequest</a> <var data-type=
+          "PaymentRequest">request</var> and a <a>network</a>
+          <var>networkIdentifier</var> :
         </p>
         <ol class="algorithm">
-          <li>
-            Let <var>modifiers</var> be 
+          <li>Let <var>index</var> the length of
+          <var>request</var>.<a data-cite=
+          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
           </li>
-          <li>
-            For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a> <var>id</var> / string <var>data</var>) of <var>request</var>.<a data-cite="payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a> in reverse order:
+          <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
+          <var>id</var> / string <var>data</var>) of
+          <var>request</var>.<a data-cite=
+          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
+          in reverse order:
             <ol>
-              <li>If <var>id</var> is not "<a>basic-card</a>", continue.</li>
-              <li>Let <var>object</var> be result of <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
-              <li>Set <var></var> be the result of <a data-cite="webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>object</var> into a <a>BasicCardRequest</a>.</li>
-              <li>Break.</li>
+              <li>Decrement <var>index</var> by 1.
+              </li>
+              <li>If <var>id</var> is not "<a>basic-card</a>", continue.
+              </li>
+              <li>Let <var>object</var> be result of <a data-cite=
+              "ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              </li>
+              <li>Let <var>bcRequest</var> be the result of converting
+              <var>object</var> to <a>BasicCardRequest</a>.
+              </li>
+              <li>If <var>bcRequest</var>'s <a>supportedNetworks</a> is zero
+              length, or <a>supportedNetworks</a> includes
+              <var>networkIdentifier</var>:
+                <ol>
+                  <li>Let <var>modifier</var> be the PaymentMethodModifier from
+                  <var>request</var>.[[\details].modifiers at <var>index</var>.
+                  </li>
+                  <li>If <var>modifier</var>.total is present, update the
+                  presented UI with <var>modifier</var>.total.
+                  </li>
+                  <li>If <var>modifier</var>.additionalDisplayItems is present,
+                  update the presented UI with
+                  <var>modifier</var>.additionalDisplayItems.
+                  </li>
+                  <li>Break.
+                  </li>
+                </ol>
+              </li>
             </ol>
           </li>
         </ol>
@@ -657,7 +752,8 @@
         </dt>
         <dd>
           The <code><dfn data-cite=
-            "WEBIDL#idl-DOMString">DOMString</dfn></code> type is defined in [[WebIDL]].
+          "WEBIDL#idl-DOMString">DOMString</dfn></code> type is defined in
+          [[WebIDL]].
         </dd>
       </dl>
     </section>
