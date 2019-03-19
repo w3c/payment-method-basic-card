@@ -524,8 +524,11 @@
             <ol>
               <li>If <var>id</var> is not "<a>basic-card</a>", continue.
               </li>
-              <li>Let <var>object</var> be result of <a data-cite=
-              "ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              <li>Let <var data-type="object">object</var> be result of
+              <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a>
+              <var>data</var>.
+              </li>
+              <li>If <var>object</var> is <code>null</code>, continue.
               </li>
               <li>Set <var>restrictions</var> to the result of <a data-cite=
               "webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>
