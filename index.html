@@ -40,7 +40,6 @@
         ],
         doJsonLd: true,
         github: "https://github.com/w3c/payment-method-basic-card/",
-        highlightVars: true,
         lint: { "check-punctuation": true },
         noRecTrack: true,
         previousMaturity: "FPWD",
@@ -50,6 +49,7 @@
         wg: "Web Payments Working Group",
         wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
         wgURI: "https://www.w3.org/Payments/WG/",
+        xrefs: true,
       };
     </script>
   </head>
@@ -184,7 +184,7 @@
       </h2>
       <pre class="idl">
       dictionary BasicCardRequest {
-        sequence&lt;DOMString&gt; supportedNetworks;
+        sequence&lt;DOMString&gt; supportedNetworks = [];
       };
     </pre>
       <p>
@@ -198,7 +198,7 @@
           A sequence of identifiers for card networks that the merchant
           accepts, derived from the <a data-cite="card-network-ids">list of
           approved card network identifiers</a>. When the sequence is empty, it
-          means that all networks are supported.
+          means that all <a>networks</a> are supported.
         </dd>
       </dl>
     </section>
@@ -441,8 +441,10 @@
           <li>Let <var data-type="DOMString">networkIdentifier</var> be the <a>
             network</a> of the selected instrument.
           </li>
-          <li>If <a>updateWith()</a> was called, <a>apply the modifiers</a>
-          using <var>request</var> and <var>networkIdentifier</var>.
+          <li>If <a data-cite=
+          "payment-request#dom-paymentmethodchangeevent-updatewith">updateWith()</a>
+          was called, <a>apply the modifiers</a> using <var>request</var> and
+          <var>networkIdentifier</var>.
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -471,80 +473,86 @@
         <h2>
           Showing the payment handler
         </h2>
-        <p>
-          The steps for showing the Basic Card payment handler are given by the
-          following algorithm. These steps run when a payment UI is first
-          presented to the end-user, as a successful call to a
-          <a>PaymentRequest</a>'s <a data-cite=
-          "payment-request#dom-paymentrequest-show"><code>show()</code></a>
-          method. The steps take a <a>PaymentRequest</a> <var>request</var>.
-        </p>
         <div class="note">
           <p>
             In the case where a payment request is shown with multiple
             applicable <a>PaymentMethodData</a>s, this algorithm selects the
-            last <a data-cite=
-            "payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
+            last applicable <a data-cite=
+            "payment-request#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
             whose PMI is "<code>basic-card</code>". (i.e., "the last one
             wins").
           </p>
           <pre class="example" title="Last one wins">
-            const methodData = [
-            // This one is ignored.
-            {
-              supportedMethods: "basic-card",
-              data: {
-                supportedNetworks: ["visa", "mastercard"],
+              const methodData = [
+              // This one is ignored.
+              {
+                supportedMethods: "basic-card",
+                data: {
+                  supportedNetworks: ["visa", "mastercard"],
+                },
               },
-            },
-            // ✅ This second one gets used!
-            {
-              supportedMethods: "basic-card",
-              data: {
-                supportedNetworks: ["visa"],
+              // ✅ This second one gets used!
+              {
+                supportedMethods: "basic-card",
+                data: {
+                  supportedNetworks: ["visa"],
+                },
               },
-            },
-            // This one gets skipped, because it's not applicable to
-            // basic card.
-            {
-              supportedMethods: "https://example.com/bobpay",
-            },
-          ];
+              // This one gets skipped, because it's not applicable to
+              // basic card.
+              {
+                supportedMethods: "https://example.com/bobpay",
+              },
+            ];
 
-          // See above for which methodData gets picked.
-          await new PaymentRequest(methodData, details, options).show();
-          </pre>
+            // See above for which methodData gets picked.
+            await new PaymentRequest(methodData, details, options).show();
+            </pre>
         </div>
+        <p>
+          The <dfn>steps for showing the payment handler</dfn> are given by the
+          following algorithm. These steps run when a payment UI is first
+          presented to the end-user, as a successful call to a
+          <a>PaymentRequest</a>'s <a data-cite=
+          "payment-request#dom-paymentrequest-show"><code>show()</code></a>
+          method. The steps take a <a>PaymentRequest</a> <var data-type=
+          "PaymentRequest">request</var>.
+        </p>
         <ol class="algorithm">
+          <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
+          newly created <a>BasicCardRequest</a>.
+          </li>
           <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
           <var>id</var> / string <var>data</var>) of
           <var>request</var>.<a data-cite=
-          "payment-request/#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
+          "payment-request#dfn-serializedmethoddata"><code>[[\serializedMethodData]]</code></a>
           in reverse order:
             <ol>
-              <li>If <var>id</var> is not "<a>basic-card</a>", continue.
+              <li>If <var>id</var> is not <code>"basic-card"</code>, continue.
               </li>
               <li>Let <var data-type="object">object</var> be result of
               <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a>
               <var>data</var>.
               </li>
-              <li>If <var>object</var> is <code>null</code>, continue.
+              <li>If <var>object</var> is <code>null</code>, break.
               </li>
-              <li>Set <var>restrictions</var> to the result of <a data-cite=
+              <li>Otherwise, set <var data-type=
+              "BasicCardRequest">restrictions</var> be the result of
+              <a data-cite=
               "webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>
                 object</var> into a <a>BasicCardRequest</a>.
-              </li>
-              <li>Apply <var>restrictions</var>'s <a>supportedNetworks</a>
-              member to constrain the card type inputs of the payment UI.
               </li>
               <li>Break.
               </li>
             </ol>
           </li>
+          <li>Apply <var>restrictions</var>'s <a>supportedNetworks</a> member
+          to constrain the card type inputs of the payment UI. When the
+          sequence is empty, it means that all <a>networks</a> are supported.
+          </li>
           <li>If an payment instrument is selected by default, <a>apply the
-          modifiers</a> using <var>request</var><a data-cite=
-          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
-          and the <a>network</a> of the selected instrument.
+          modifiers</a> using <var>request</var> and passing the identifier for
+          <a>network</a> of the selected instrument.
           </li>
         </ol>
       </section>
@@ -555,51 +563,63 @@
         <p>
           The steps to <dfn>apply the modifiers</dfn> are given by the
           following algorithm. It takes a <a>PaymentRequest</a> <var data-type=
-          "PaymentRequest">request</var> and a <a>network</a>
-          <var>networkIdentifier</var> :
+          "PaymentRequest">request</var> and a string <var data-type=
+          "string">networkIdentifier</var> that identifies a <a>network</a>:
         </p>
         <ol class="algorithm">
-          <li>Let <var>index</var> the length of
+          <li>Let <var data-type="number">index</var> the length of
           <var>request</var>.<a data-cite=
-          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
+          "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
+          </li>
+          <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
+          newly created <a>BasicCardRequest</a>.
           </li>
           <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
-          <var>id</var> / string <var>data</var>) of
-          <var>request</var>.<a data-cite=
-          "payment-request/#dfn-serializedmodifierdata">[[\serializedModifierData]]</a>
-          in reverse order:
+          <var data-type="DOMString">id</var> / string <var data-type="string">
+            data</var>) of <var>request</var>.<a data-cite=
+            "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>
+            in reverse order:
             <ol>
               <li>Decrement <var>index</var> by 1.
               </li>
               <li>If <var>id</var> is not "<a>basic-card</a>", continue.
               </li>
-              <li>Let <var>object</var> be result of <a data-cite=
-              "ecma-262#sec-json.parse">JSON-parsing</a> <var>data</var>.
+              <li>Let <var data-type="object">object</var> be result of
+              <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a>
+              <var>data</var>.
               </li>
-              <li>If <var>object</var> is <code>null</code>, continue.
+              <li>If <var>object</var> is <code>null</code>, break.
               </li>
-              <li>Let <var>bcRequest</var> be the result of converting
-              <var>object</var> to <a>BasicCardRequest</a>.
+              <li>Let <var data-type="BasicCardRequest">bcRequest</var> be the
+              result of converting <var>object</var> to
+              <a>BasicCardRequest</a>.
               </li>
               <li>If <var>bcRequest</var>'s <a>supportedNetworks</a> is zero
               length, or <a>supportedNetworks</a> includes
               <var>networkIdentifier</var>:
                 <ol>
-                  <li>Let <var>modifier</var> be the PaymentMethodModifier from
-                  <var>request</var>.[[\details].modifiers at <var>index</var>.
-                  </li>
-                  <li>If <var>modifier</var>.total is present, update the
-                  presented UI with <var>modifier</var>.total.
-                  </li>
-                  <li>If <var>modifier</var>.additionalDisplayItems is present,
-                  update the presented UI with
-                  <var>modifier</var>.additionalDisplayItems.
+                  <li>Set <var>restriction</var> to <var>bcRequest</var>.
                   </li>
                   <li>Break.
                   </li>
                 </ol>
               </li>
             </ol>
+          </li>
+          <li>Let <var data-type="PaymentMethodModifier">modifier</var> be the
+          <a>PaymentMethodModifier</a> from <var>request</var>.<a data-cite=
+          "payment-request#dfn-details">[[\details]]</a>.<a data-cite=
+          "payment-request#dom-paymentdetailsbase-modifiers">modifiers</a> at
+          <var>index</var>.
+          </li>
+          <li>If <var>modifier</var>.<a data-cite=
+          "payment-request#dom-paymentdetailsmodifier-total"><code>total</code></a>
+          is present, update the presented UI with the updated total.
+          </li>
+          <li>If <var>modifier</var>.<a data-cite=
+          "payment-request#dom-paymentdetailsmodifier-additionaldisplayitems"><code>additionalDisplayItems</code></a>
+          is present, update the presented UI with the additional display
+          items.
           </li>
         </ol>
       </section>
@@ -743,6 +763,10 @@
           The <code><dfn data-cite=
           "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
           interface, <code><dfn data-cite=
+          "payment-request#dom-paymentaddress">PaymentMethodData</dfn></code>
+          dictionary,<code><dfn data-cite=
+          "payment-request#dom-paymentaddress">PaymentMethodModifier</dfn></code>
+          dictionary, <code><dfn data-cite=
           "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
           interface, <code><dfn data-cite=
           "payment-request#dom-paymentmethodchangeevent">PaymentMethodChangeEvent</dfn></code>
