@@ -471,11 +471,11 @@
       </section>
       <section>
         <h2>
-          Showing the payment handler
+          Selecting the payment handler
         </h2>
         <div class="note">
           <p>
-            In the case where a payment request is shown with multiple
+            In the case where a payment request is made with multiple
             applicable <a>PaymentMethodData</a>s, this algorithm selects the
             last applicable <a data-cite=
             "payment-request#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
@@ -484,7 +484,7 @@
           </p>
           <pre class="example" title="Last one wins">
               const methodData = [
-              // This one is ignored.
+              // This one matches, but is ignored since one the follows also matches.
               {
                 supportedMethods: "basic-card",
                 data: {
@@ -510,7 +510,7 @@
             </pre>
         </div>
         <p>
-          The <dfn>steps for showing the payment handler</dfn> are given by the
+          The <dfn>steps for selecting the payment handler</dfn> are given by the
           following algorithm. These steps run when a payment UI is first
           presented to the end-user, as a successful call to a
           <a>PaymentRequest</a>'s <a data-cite=
@@ -567,7 +567,7 @@
           "string">networkIdentifier</var> that identifies a <a>network</a>:
         </p>
         <ol class="algorithm">
-          <li>Let <var data-type="number">index</var> the length of
+          <li>Let <var data-type="number">index</var> be the length of
           <var>request</var>.<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
           </li>
