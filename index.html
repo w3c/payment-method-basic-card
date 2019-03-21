@@ -73,10 +73,10 @@
       </h2>
       <p>
         This specification defines the "basic-card" payment method for use, for
-        instance, with the <a data-cite="payment-request">Payment Request
-        API</a>. With it, merchants can request the card <a>details</a> (card
-        holder name, card number, etc.) from the end user as an alternative to
-        collecting the same information through a [[?HTML]] form.
+        instance, with the <a data-cite="payment-request"></a>. With it,
+        merchants can request the card <a>details</a> (card holder name, card
+        number, etc.) from the end user as an alternative to collecting the
+        same information through a <code><a>form</a></code>.
       </p>
       <p>
         The basic card payment method provides information to merchant websites
@@ -105,11 +105,11 @@
       </p>
       <p>
         Additionally, web sites that call the <a data-cite=
-        "payment-request">Payment Request API</a> for each transaction avoid
-        the friction that can result when users’ credit card numbers and/or
-        expiration dates are updated. From a user’s perspective, this avoids
-        the hassle of having to update a large number of merchant web sites any
-        time they are issued a new card.
+        "payment-request"></a> for each transaction avoid the friction that can
+        result when users’ credit card numbers and/or expiration dates are
+        updated. From a user’s perspective, this avoids the hassle of having to
+        update a large number of merchant web sites any time they are issued a
+        new card.
       </p>
       <p>
         Finally, by letting the web browser determine user authentication
@@ -144,18 +144,19 @@
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-cite=
-        "ISO7812-1">primary account number</dfn> (PAN), <dfn>card holder's
-        name</dfn>, <dfn>security code</dfn> (sometimes known as the CVV, CVC,
-        CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and
-        optionally a <dfn>billing address</dfn>. These are represented as the
-        members of the <a>BasicCardResponse</a> dictionary.
+        "ISO7812-1#">primary account number</dfn> (<abbr title=
+        "primary account number">PAN</abbr>), <dfn>card holder's name</dfn>,
+        <dfn>security code</dfn> (sometimes known as the CVV, CVC, CVN, CVE or
+        CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and optionally a
+        <dfn>billing address</dfn>. These are represented as the members of the
+        <a>BasicCardResponse</a> dictionary.
       </p>
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
         "networks">network</dfn> via its issuer identification number
         [[ISO7812-1]] (e.g., those belonging to Visa start with a "4"). In an
         API, each network is represented by a string from the <a data-cite=
-        "card-network-ids">list of approved card network identifiers</a>.
+        "card-network-ids"></a>.
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
@@ -174,8 +175,7 @@
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
         <a>networks</a> it supports. A payment handler MAY support zero or more
-        networks from the <a data-cite="card-network-ids">list of approved card
-        network identifiers</a>.
+        networks from the <a data-cite="card-network-ids"></a>.
       </p>
     </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
@@ -196,9 +196,9 @@
         </dt>
         <dd>
           A sequence of identifiers for card networks that the merchant
-          accepts, derived from the <a data-cite="card-network-ids">list of
-          approved card network identifiers</a>. When the sequence is empty, it
-          means that all <a>networks</a> are supported.
+          accepts, derived from the <a data-cite="card-network-ids"></a>. When
+          the sequence is empty, it means that all <a>networks</a> are
+          supported.
         </dd>
       </dl>
     </section>
@@ -359,12 +359,11 @@
         </h3>
         <p class="note" data-lt="BasicCardRequest">
           When the end user explicitly switches from one card to another, these
-          steps cause an event to fire in the <cite data-cite=
-          "payment-request">Payment Request API</cite>. The algorithm
-          presupposes that the user agent is only presenting <a>supported
-          cards</a> to the end user, by having filtered out unsupported cards
-          based on the initiating payment request's <a>BasicCardRequest</a>'s
-          <a>supportedNetworks</a> values.
+          steps cause an event to fire in the <a data-cite=
+          "payment-request"></a>. The algorithm presupposes that the user agent
+          is only presenting <a>supported cards</a> to the end user, by having
+          filtered out unsupported cards based on the initiating payment
+          request's <a>BasicCardRequest</a>'s <a>supportedNetworks</a> values.
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
@@ -510,21 +509,20 @@
             </pre>
         </div>
         <p>
-          The <dfn>steps for selecting the payment handler</dfn> are given by the
-          following algorithm. These steps run when a payment UI is first
+          The <dfn>steps for selecting the payment handler</dfn> are given by
+          the following algorithm. These steps run when a payment UI is first
           presented to the end-user, as a successful call to a
           <a>PaymentRequest</a>'s <a data-cite=
           "payment-request#dom-paymentrequest-show"><code>show()</code></a>
           method. The steps take a <a>PaymentRequest</a> <var data-type=
           "PaymentRequest">request</var>.
         </p>
-        <ol class="algorithm">
+        <ol class="algorithm" data-cite="infra">
           <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
           newly created <a>BasicCardRequest</a>.
           </li>
-          <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
-          <var>id</var> / string <var>data</var>) of
-          <var>request</var>.<a data-cite=
+          <li>For each <a>pair</a> (<a>DOMString</a> <var>id</var> / <a>string</a>
+          <var>data</var>) of <var>request</var>.<a data-cite=
           "payment-request#dfn-serializedmethoddata"><code>[[\serializedMethodData]]</code></a>
           in reverse order:
             <ol>
@@ -538,9 +536,8 @@
               </li>
               <li>Otherwise, set <var data-type=
               "BasicCardRequest">restrictions</var> be the result of
-              <a data-cite=
-              "webidl#dfn-convert-ecmascript-to-idl-value">converting</a> <var>
-                object</var> into a <a>BasicCardRequest</a>.
+                <a data-lt="convert">converting</a> <var>object</var> into a
+                <a>BasicCardRequest</a>.
               </li>
               <li>Break.
               </li>
@@ -566,7 +563,7 @@
           "PaymentRequest">request</var> and a string <var data-type=
           "string">networkIdentifier</var> that identifies a <a>network</a>:
         </p>
-        <ol class="algorithm">
+        <ol class="algorithm" data-cite="infra">
           <li>Let <var data-type="number">index</var> be the length of
           <var>request</var>.<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
@@ -574,11 +571,11 @@
           <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
           newly created <a>BasicCardRequest</a>.
           </li>
-          <li>For each <a data-cite="infra#pair">pair</a> (<a>DOMString</a>
-          <var data-type="DOMString">id</var> / string <var data-type="string">
-            data</var>) of <var>request</var>.<a data-cite=
-            "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>
-            in reverse order:
+          <li>For each <a>pair</a> (<a>DOMString</a> <var data-type=
+          "DOMString">id</var> / <a>string</a> <var data-type="string">data</var>) of
+          <var>request</var>.<a data-cite=
+          "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>
+          in reverse order:
             <ol>
               <li>Decrement <var>index</var> by 1.
               </li>
@@ -757,14 +754,14 @@
       </p>
       <dl>
         <dt>
-          Payment Request
+          Payment Request API
         </dt>
         <dd>
           The <code><dfn data-cite=
           "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
           interface, <code><dfn data-cite=
           "payment-request#dom-paymentaddress">PaymentMethodData</dfn></code>
-          dictionary,<code><dfn data-cite=
+          dictionary, <code><dfn data-cite=
           "payment-request#dom-paymentaddress">PaymentMethodModifier</dfn></code>
           dictionary, <code><dfn data-cite=
           "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
