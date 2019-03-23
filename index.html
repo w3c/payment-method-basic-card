@@ -170,7 +170,7 @@
       <p>
         A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
         that when passed to the <a>steps to check if an instrument is
-        supported</a> together with a list of <var>networks</var> returns true.
+        supported</a> together with a list of |networks| returns true.
       </p>
       <p>
         A payment handler's <dfn data-lt="known">known networks</dfn> are
@@ -212,30 +212,29 @@
         </h3>
         <p>
           The <dfn>steps to check if a payment can be made</dfn> take a
-          <a>BasicCardRequest</a> <var>request</var> as input. The steps return
-          either true or false:
+          <a>BasicCardRequest</a> |request:BasicCardRequest| as input. The
+          steps return either true or false:
         </p>
         <ol class="algorithm" data-link-for="BasicCardRequest">
-          <li>Let <var>cards</var> be a <a data-cite="infra#list">list</a> of
-          <a>cards</a> associated with this payment handler.
+          <li>Let |cards:list| be a <a>list</a> of <a>cards</a> associated with
+          this payment handler.
           </li>
-          <li>If <var>cards</var> <a data-cite="infra#list-is-empty">is
-          empty</a>, return false.
+          <li>If |cards| <a data-cite="infra#list-is-empty">is empty</a>,
+          return false.
           </li>
-          <li>Let <var>networks</var> be an empty <a data-cite=
+          <li>Let |networks:sequence| be an empty <a data-cite=
           "WEBIDL#idl-DOMString"><code>DOMString</code></a> sequence.
           </li>
-          <li>If <var>request</var>["<a>supportedNetworks</a>"] is present,
-          append each item in <var>request</var>["<a>supportedNetworks</a>"] to
-          <var>networks</var>.
+          <li>If |request|.<a>supportedNetworks</a> is present, append each
+          item in |request|.<a>supportedNetworks</a> to |networks|.
           </li>
-          <li>For each <var>card</var> in <var>cards</var>:
+          <li>For each |card| in |cards|:
             <ol>
-              <li>Let <var>isSupported</var> be the result of running the
+              <li>Let |isSupported:boolean| be the result of running the
               <a>steps to check if an instrument is supported</a>, passing in
-              <var>card</var> and <var>networks</var>.
+              |card| and |networks|.
               </li>
-              <li>If <var>isSupported</var> is true, then return true.
+              <li>If |isSupported| is true, then return true.
               </li>
             </ol>
           </li>
@@ -249,16 +248,16 @@
         </h3>
         <p>
           The <dfn>steps to check if an instrument is supported</dfn> take as
-          input a <a>card</a> <var>card</var> and a <a data-cite=
-          "infra#list">list</a> of <a>network</a> <var>networks</var>. It
-          returns true if the <var>card</var> is supported, false otherwise.
+          input a <a>card</a> |card:card| and a <a>list</a> of <a>network</a>
+          |networks:list|. It returns true if the |card| is supported, false
+          otherwise.
         </p>
         <ol class="algorithm">
-          <li>If <var>networks</var> <a data-cite="infra#list-is-empty">is
-          empty</a>, return true.
+          <li>If |networks| <a data-cite="infra#list-is-empty">is empty</a>,
+          return true.
           </li>
-          <li>Return true if <var>networks</var> includes the <a>card</a>'s <a>
-            network</a>, return true. Otherwise, return false.
+          <li>If |networks| includes the <a>card</a>'s <a>network</a>, return
+          true. Otherwise, return false.
           </li>
         </ol>
       </section>
@@ -269,71 +268,69 @@
         <p>
           The <dfn>steps to respond to a payment request</dfn> are given by the
           following algorithm. The steps take <a>PaymentRequest</a>
-          <var>request</var> as input. If the end user inputs or selects a
-          <a>card</a> that meets the constraints of <a>BasicCardRequest</a>
-          <var>data</var>, the algorithm returns a card as a
+          |request:PaymentRequest| as input. If the end user inputs or selects
+          a <a>card</a> that meets the constraints of <a>BasicCardRequest</a>
+          |data:BasicCardRequest| the algorithm returns a card as a
           <a>BasicCardResponse</a>.
         </p>
         <ol class="algorithm" data-link-for="BasicCardResponse">
-          <li data-link-for="BasicCardRequest">Let <var>networks</var> be <var>
-            data</var>["<a>supportedNetworks</a>"], or an empty list if
-            <var>data</var>["<a>supportedNetworks</a>"] is missing.
+          <li data-link-for="BasicCardRequest">Let |networks:sequence| be
+          |data|.<a>supportedNetworks</a>, or an empty list if
+          |data|.<a>supportedNetworks</a> is missing.
           </li>
-          <li>Let <var>card</var> be a newly created <a>BasicCardResponse</a>
-          dictionary.
+          <li>Let |card:BasicCardResponse| be a newly created
+          <a>BasicCardResponse</a> dictionary.
           </li>
-          <li>Set <var>card</var>["<a>cardNumber</a>"] to a string of digits of
-          length between 10 to 19 items representing the <a>primary account
+          <li>Set |card|.<a>cardNumber</a> to a string of digits of length
+          between 10 to 19 items representing the <a>primary account
           number</a>.
           </li>
           <li>While the <a>steps to check if an instrument is supported</a>
-          with <var>card</var>, <var>networks</var> returns false, ask the user
-          to correct the card's <a>details</a>. Only when the <var>card</var>
-          is a <a>supported card</a>, continue.
+          with |card|, |networks| returns false, ask the user to correct the
+          card's <a>details</a>. Only when the |card| is a <a>supported
+          card</a>, continue.
           </li>
-          <li>Set <var>card</var>["<a>cardholderName</a>"] to the <a>card
-          holder's name</a>, or the empty string if the user chooses not to
-          provide it.
+          <li>Set |card|.<a>cardholderName</a> to the <a>card holder's
+          name</a>, or the empty string if the user chooses not to provide it.
           </li>
-          <li>Set <var>card</var>["<a>cardSecurityCode</a>"] to a three or more
-          digit string, or the empty string if the user chooses not to provide
-          it.
+          <li>Set |card|.<a>cardSecurityCode</a> to a three or more digit
+          string, or the empty string if the user chooses not to provide it.
           </li>
-          <li>Set <var>card</var>["<a>expiryMonth</a>"] to two-digit string
-          ranging from "<code>01</code>" to "<code>12</code>", or the empty
-          string if the user chooses not to provide it or the <a>card</a>
-          doesn't require an expiry month.
+          <li>Set |card|.<a>expiryMonth</a> to two-digit string ranging from
+          "<code>01</code>" to "<code>12</code>", or the empty string if the
+          user chooses not to provide it or the <a>card</a> doesn't require an
+          expiry month.
           </li>
-          <li>Set <var>card</var>["<a>expiryYear</a>"] to a four-digit string
-          in the range "<code>0000</code>" to "<code>9999</code>", or the empty
-          string if the user chooses not to provide it or the <a>card</a>
-          doesn't require an expiry year.
+          <li>Set |card|.<a>expiryYear</a> to a four-digit string in the range
+          "<code>0000</code>" to "<code>9999</code>", or the empty string if
+          the user chooses not to provide it or the <a>card</a> doesn't require
+          an expiry year.
           </li>
-          <li>Set <var>card</var>["<a>billingAddress</a>"] to null.
+          <li>Set |card|.<a>billingAddress</a> to null.
           </li>
-          <li>If <var>request</var>.<a data-cite=
+          <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
           is true, or, optionally, the user agent determines that payment is
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
             <ol>
-              <li>Let <var>redactList</var> be at least « "addressLine",
+              <li>Let |redactList:list| be at least « "addressLine",
               "organization", "phone", "recipient" ».
               </li>
-              <li>Set <var>card</var>["<a>billingAddress</a>"] to the result of
-              running the steps to <a data-cite=
+              <li>Set |card|.<a>billingAddress</a> to the result of running the
+              steps to <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
                 create a <code>PaymentAddress</code> from user-provided
-                input</a> with <var>redactList</var>.
+                input</a> with |redactList|.
               </li>
             </ol>
           </li>
           <li>
             <p>
-              Optionally, validate <var>card</var>'s <a>details</a> to make
-              sure they adhere to any additional <a>network</a> requirements
-              and assist the user in fixing any issues encountered.
+              Optionally, validate |card|'s <a>details</a> to make sure they
+              adhere to any additional <a>network</a> requirements and assist
+              the user in fixing any issues encountered.
             </p>
             <div class="note" title="Validation of inputs">
               <p>
@@ -349,7 +346,7 @@
               </p>
             </div>
           </li>
-          <li>Return <var>card</var>.
+          <li>Return |card|.
           </li>
         </ol>
       </section>
@@ -367,10 +364,10 @@
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows. The steps take <a>PaymentRequest</a> <var>request</var> as
-          input. To mitigate fingerprinting concerns, the user agent MUST NOT
-          run these steps unless a user explicitly switches to a different card
-          by performing some user action (e.g., by selecting a different card
+          follows. The steps take <a>PaymentRequest</a> |request| as input. To
+          mitigate fingerprinting concerns, the user agent MUST NOT run these
+          steps unless a user explicitly switches to a different card by
+          performing some user action (e.g., by selecting a different card
           explicitly from a list of cards). For cards that are preselected by
           default by the user agent, any matching <a data-cite=
           "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
@@ -378,27 +375,27 @@
           to run these steps).
         </p>
         <ol>
-          <li>Let <var>methodDetails</var> be a newly created
-          <a>BasicCardChangeDetails</a> dictionary.
+          <li>Let |methodDetails:BasicCardChangeDetails| be a newly created <a>
+            BasicCardChangeDetails</a> dictionary.
           </li>
           <li>From the <a>supported cards</a> presented to the end user, let
-          <var>card</var> be the <a>card</a> the user selects.
+          |card| be the <a>card</a> the user selects.
           </li>
-          <li>Let <var>billingAddress</var> be null.
+          <li>Let |billingAddress:PaymentAddress| be null.
           </li>
-          <li>If <var>request</var>.<a data-cite=
+          <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
           is true:
             <ol>
               <li>
                 <p>
-                  Let <var>redactList</var> be at least « "addressLine",
+                  Let |redactList:list| be at least « "addressLine",
                   "organization", "phone", "recipient" ».
                 </p>
                 <div class="note" title="Privacy of recipient information">
                   <p>
-                    The <var>redactList</var> optionally gives user agents the
+                    The |redactList| optionally gives user agents the
                     possibility to limit the amount of personal information
                     about the recipient that the API shares with the merchant.
                   </p>
@@ -409,20 +406,20 @@
                     locate and uniquely identify the payer.
                   </p>
                   <p>
-                    Unfortunately, even with the <var>redactList</var>,
-                    recipient anonymity cannot be assured. This is because in
-                    some countries postal codes are so fine-grained that they
-                    can uniquely identify a recipient.
+                    Unfortunately, even with the |redactList| recipient
+                    anonymity cannot be assured. This is because in some
+                    countries postal codes are so fine-grained that they can
+                    uniquely identify a recipient.
                   </p>
                 </div>
               </li>
-              <li>Set <var>billingAddress</var> to the result of running the
-              steps to <a data-cite=
+              <li>Set |billingAddress| to the result of running the steps to
+              <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
                 create a <code>PaymentAddress</code> from user-provided
-                input</a> with <var>redactList</var>.
+                input</a> with |redactList|
               </li>
-              <li>Optionally, redact <var>billingAddress</var>.<a data-cite=
+              <li>Optionally, redact |billingAddress|<a data-cite=
               "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
               to make it more privacy preserving, but providing enough detail
               so that, for example, it can still be used to calculate tax.
@@ -430,20 +427,19 @@
             </ol>
           </li>
           <li data-link-for="BasicCardChangeDetails">Set
-          <var>methodDetails</var>["<a>billingAddress</a>"] to
-          <var>billingAddress</var>.
+          |methodDetails|.<a>billingAddress</a> to |billingAddress|.
           </li>
-          <li>Run <var>request</var>'s <a data-cite=
+          <li>Run |request|s <a data-cite=
           "payment-request#dfn-payment-method-changed-algorithm">payment method
-          changed algorithm</a> with <var>methodDetails</var> and "basic-card".
+          changed algorithm</a> with |methodDetails| and "basic-card".
           </li>
-          <li>Let <var data-type="DOMString">networkIdentifier</var> be the <a>
-            network</a> of the selected instrument.
+          <li>Let |networkIdentifier:DOMString| be the <a>network</a> of the
+          selected instrument.
           </li>
           <li>If <a data-cite=
           "payment-request#dom-paymentrequestupdateevent-updatewith">updateWith()</a>
-          was called, <a>apply the modifiers</a> using <var>request</var> and
-          <var>networkIdentifier</var>.
+          was called, <a>apply the modifiers</a> using |request| and
+          |networkIdentifier|
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -514,41 +510,39 @@
           presented to the end-user, as a successful call to a
           <a>PaymentRequest</a>'s <a data-cite=
           "payment-request#dom-paymentrequest-show"><code>show()</code></a>
-          method. The steps take a <a>PaymentRequest</a> <var data-type=
-          "PaymentRequest">request</var>.
+          method. The steps take a <a>PaymentRequest</a>
+          |request:PaymentRequest|.
         </p>
         <ol class="algorithm" data-cite="infra">
-          <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
-          newly created <a>BasicCardRequest</a>.
+          <li>Let |restrictions:BasicCardRequest| be a newly created
+          <a>BasicCardRequest</a>.
           </li>
-          <li>For each <a>pair</a> (<a>DOMString</a> <var>id</var> /
-          <a>string</a> <var>data</var>) of <var>request</var>.<a data-cite=
+          <li>For each <a>pair</a> (<a>DOMString</a> |id| / <a>string</a>
+          |data| of |request|.<a data-cite=
           "payment-request#dfn-serializedmethoddata"><code>[[\serializedMethodData]]</code></a>
           in reverse order:
             <ol>
-              <li>If <var>id</var> is not <code>"basic-card"</code>, continue.
+              <li>If |id| is not <code>"basic-card"</code>, continue.
               </li>
-              <li>Let <var data-type="object">object</var> be result of
-              <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a>
-              <var>data</var>.
+              <li>Let |object:object| be result of <a data-cite=
+              "ecma-262#sec-json.parse">JSON-parsing</a> |data|
               </li>
-              <li>If <var>object</var> is <code>null</code>, break.
+              <li>If |object| is <code>null</code>, break.
               </li>
-              <li>Otherwise, set <var data-type=
-              "BasicCardRequest">restrictions</var> be the result of
-                <a data-lt="convert">converting</a> <var>object</var> into a
-                <a>BasicCardRequest</a>.
+              <li>Otherwise, set |restrictions:BasicCardRequest| be the result
+              of <a data-lt="convert">converting</a> |object| into a
+              <a>BasicCardRequest</a>.
               </li>
               <li>Break.
               </li>
             </ol>
           </li>
-          <li>Apply <var>restrictions</var>'s <a>supportedNetworks</a> member
-          to constrain the card type inputs of the payment UI. When the
-          sequence is empty, it means that all <a>networks</a> are supported.
+          <li>Apply |restrictions|s <a>supportedNetworks</a> member to
+          constrain the card type inputs of the payment UI. When the sequence
+          is empty, it means that all <a>networks</a> are supported.
           </li>
           <li>If a payment instrument is selected by default, <a>apply the
-          modifiers</a> using <var>request</var> and passing the identifier for
+          modifiers</a> using |request| and passing the identifier for
           <a>network</a> of the selected instrument.
           </li>
         </ol>
@@ -559,43 +553,39 @@
         </h2>
         <p>
           The steps to <dfn>apply the modifiers</dfn> are given by the
-          following algorithm. It takes a <a>PaymentRequest</a> <var data-type=
-          "PaymentRequest">request</var> and a string <var data-type=
-          "string">networkIdentifier</var> that identifies a <a>network</a>:
+          following algorithm. It takes a <a>PaymentRequest</a>
+          |request:PaymentRequest| and a string |networkIdentifier:string| that
+          identifies a <a>network</a>:
         </p>
         <ol class="algorithm" data-cite="infra">
-          <li>Let <var data-type="number">index</var> be the length of
-          <var>request</var>.<a data-cite=
+          <li>Let |index:unsigned integer| be the length of
+          |request|.<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
           </li>
-          <li>Let <var data-type="BasicCardRequest">restrictions</var> be a
-          newly created <a>BasicCardRequest</a>.
+          <li>Let |restrictions:BasicCardRequest| be a newly created
+          <a>BasicCardRequest</a>.
           </li>
-          <li>For each <a>pair</a> (<a>DOMString</a> <var data-type=
-          "DOMString">id</var> / <a>string</a> <var data-type=
-          "string">data</var>) of <var>request</var>.<a data-cite=
+          <li>For each <a>pair</a> (<a>DOMString</a> |id:DOMString| /
+          <a>string</a> |data:string|) of |request|<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>
           in reverse order:
             <ol>
-              <li>Decrement <var>index</var> by 1.
+              <li>Decrement |index| by 1.
               </li>
-              <li>If <var>id</var> is not "<a>basic-card</a>", continue.
+              <li>If |id| is not "<a>basic-card</a>", continue.
               </li>
-              <li>Let <var data-type="object">object</var> be result of
-              <a data-cite="ecma-262#sec-json.parse">JSON-parsing</a>
-              <var>data</var>.
+              <li>Let |object:object| be result of <a data-cite=
+              "ecma-262#sec-json.parse">JSON-parsing</a> |data|
               </li>
-              <li>If <var>object</var> is <code>null</code>, break.
+              <li>If |object| is <code>null</code>, break.
               </li>
-              <li>Let <var data-type="BasicCardRequest">bcRequest</var> be the
-              result of converting <var>object</var> to
-              <a>BasicCardRequest</a>.
+              <li>Let |bcRequest:BasicCardRequest| be the result of converting
+              |object| to <a>BasicCardRequest</a>.
               </li>
-              <li>If <var>bcRequest</var>'s <a>supportedNetworks</a> is zero
-              length, or <a>supportedNetworks</a> includes
-              <var>networkIdentifier</var>:
+              <li>If |bcRequest|s <a>supportedNetworks</a> is zero length, or
+              <a>supportedNetworks</a> includes |networkIdentifier|
                 <ol>
-                  <li>Set <var>restriction</var> to <var>bcRequest</var>.
+                  <li>Set |restriction| to |bcRequest|
                   </li>
                   <li>Break.
                   </li>
@@ -603,17 +593,17 @@
               </li>
             </ol>
           </li>
-          <li>Let <var data-type="PaymentMethodModifier">modifier</var> be the
-          <a>PaymentMethodModifier</a> from <var>request</var>.<a data-cite=
+          <li>Let |modifier:PaymentMethodModifier| be the
+          <a>PaymentMethodModifier</a> from |request|.<a data-cite=
           "payment-request#dfn-details">[[\details]]</a>.<a data-cite=
           "payment-request#dom-paymentdetailsbase-modifiers">modifiers</a> at
-          <var>index</var>.
+          |index|.
           </li>
-          <li>If <var>modifier</var>.<a data-cite=
+          <li>If |modifier|.<a data-cite=
           "payment-request#dom-paymentdetailsmodifier-total"><code>total</code></a>
           is present, update the presented UI with the updated total.
           </li>
-          <li>If <var>modifier</var>.<a data-cite=
+          <li>If |modifier|.<a data-cite=
           "payment-request#dom-paymentdetailsmodifier-additionaldisplayitems"><code>additionalDisplayItems</code></a>
           is present, update the presented UI with the additional display
           items.
