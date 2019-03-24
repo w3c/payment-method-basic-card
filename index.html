@@ -427,7 +427,7 @@
           <li data-link-for="BasicCardChangeDetails">Set
           |methodDetails|.<a>billingAddress</a> to |billingAddress|.
           </li>
-          <li>Run |request|s <a data-cite=
+          <li>Run |request|'s <a data-cite=
           "payment-request#dfn-payment-method-changed-algorithm">payment method
           changed algorithm</a> with |methodDetails| and "basic-card".
           </li>
@@ -437,7 +437,7 @@
           <li>If <a data-cite=
           "payment-request#dom-paymentrequestupdateevent-updatewith">updateWith()</a>
           was called, <a>apply the modifiers</a> using |request| and
-          |networkIdentifier|
+          |networkIdentifier|.
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -535,7 +535,7 @@
               </li>
             </ol>
           </li>
-          <li>Apply |restrictions|s <a>supportedNetworks</a> member to
+          <li>Apply |restrictions|'s <a>supportedNetworks</a> member to
           constrain the card type inputs of the payment UI. When the sequence
           is empty, it means that all <a>networks</a> are supported.
           </li>
@@ -556,8 +556,7 @@
           identifies a <a>network</a>:
         </p>
         <ol class="algorithm" data-cite="infra">
-          <li>Let |index:unsigned integer| be the length of
-          |request|.<a data-cite=
+          <li>Let |index:number| be the length of |request|.<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
           </li>
           <li>Let |restrictions:BasicCardRequest| be a newly created
@@ -580,7 +579,7 @@
               <li>Let |bcRequest:BasicCardRequest| be the result of converting
               |object| to <a>BasicCardRequest</a>.
               </li>
-              <li>If |bcRequest|s <a>supportedNetworks</a> is zero length, or
+              <li>If |bcRequest|'s <a>supportedNetworks</a> is zero length, or
               <a>supportedNetworks</a> includes |networkIdentifier|
                 <ol>
                   <li>Set |restriction| to |bcRequest|
