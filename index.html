@@ -379,8 +379,6 @@
           <li>From the <a>supported cards</a> presented to the end user, let
           |card| be the <a>card</a> the user selects.
           </li>
-          <li>Let |billingAddress:PaymentAddress| be null.
-          </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
@@ -446,7 +444,7 @@
           </h4>
           <pre class="idl">
             dictionary BasicCardChangeDetails {
-              PaymentAddress? billingAddress;
+              PaymentAddress? billingAddress = null;
             };
           </pre>
           <dl>
