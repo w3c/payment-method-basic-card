@@ -8,7 +8,6 @@ The following tasks have been completed:
 
 Implementation commitments:
 
- * [ ] Safari (link to issue)
  * [ ] Chrome (link to issue)
  * [ ] Firefox (link to issue)
  * [ ] Edge (public signal)
