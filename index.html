@@ -281,32 +281,30 @@
           <li>Let |card:BasicCardResponse| be a newly created
           <a>BasicCardResponse</a> dictionary.
           </li>
-          <li>Set |card|.<a>cardNumber</a> to a string of digits of length
-          between 10 to 19 items representing the <a>primary account
-          number</a>.
+          <li>Set |card|.<a>cardNumber</a> to a user provided, or otherwise
+          generated, string of digits of length between 10 to 19 items
+          representing the <a>primary account number</a>.
           </li>
           <li>While the <a>steps to check if an instrument is supported</a>
           with |card|, |networks| returns false, ask the user to correct the
           card's <a>details</a>. Only when the |card| is a <a>supported
           card</a>, continue.
           </li>
-          <li>Set |card|.<a>cardholderName</a> to the <a>card holder's
-          name</a>, or the empty string if the user chooses not to provide it.
+          <li>If the |card| supports a <a>card holder's name</a> and the user
+          chooses provide it, set |card|.<a>cardholderName</a> to the <a>card
+          holder's name</a>.
           </li>
-          <li>Set |card|.<a>cardSecurityCode</a> to a three or more digit
-          string, or the empty string if the user chooses not to provide it.
+          <li>If the |card| supports a <a>security code</a> and the user
+          chooses provide it, set |card|.<a>cardSecurityCode</a> to a three or
+          more digit string.
           </li>
-          <li>Set |card|.<a>expiryMonth</a> to two-digit string ranging from
-          "<code>01</code>" to "<code>12</code>", or the empty string if the
-          user chooses not to provide it or the <a>card</a> doesn't require an
-          expiry month.
+          <li>If the <a>card</a> supports an <a>expiry month</a> and the user
+          chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
+          string ranging from "<code>01</code>" to "<code>12</code>".
           </li>
-          <li>Set |card|.<a>expiryYear</a> to a four-digit string in the range
-          "<code>0000</code>" to "<code>9999</code>", or the empty string if
-          the user chooses not to provide it or the <a>card</a> doesn't require
-          an expiry year.
-          </li>
-          <li>Set |card|.<a>billingAddress</a> to null.
+          <li>If the <a>card</a> supports an <a>expiry year</a> and the user
+          chooses provide it, set |card|.<a>expiryYear</a> to a four-digit
+          string in the range "<code>0000</code>" to "<code>9999</code>".
           </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
@@ -381,8 +379,6 @@
           <li>From the <a>supported cards</a> presented to the end user, let
           |card| be the <a>card</a> the user selects.
           </li>
-          <li>Let |billingAddress:PaymentAddress| be null.
-          </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
@@ -448,7 +444,7 @@
           </h4>
           <pre class="idl">
             dictionary BasicCardChangeDetails {
-              PaymentAddress? billingAddress;
+              PaymentAddress? billingAddress = null;
             };
           </pre>
           <dl>
@@ -618,11 +614,11 @@
       <pre class="idl">
         dictionary BasicCardResponse {
           required DOMString cardNumber;
-          DOMString cardholderName;
-          DOMString cardSecurityCode;
-          DOMString expiryMonth;
-          DOMString expiryYear;
-          PaymentAddress? billingAddress;
+          DOMString cardholderName = "";
+          DOMString cardSecurityCode = "";
+          DOMString expiryMonth = "";
+          DOMString expiryYear = "";
+          PaymentAddress? billingAddress = null;
         };
       </pre>
       <dl>
