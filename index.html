@@ -126,10 +126,9 @@
         Payment Method Identifier
       </h2>
       <p>
-        The <dfn data-lt="PMI" data-cite=
+        The <dfn data-abbr="PMI" data-cite=
         "payment-method-id#standardized-payment-method-identifiers">standardized
-        payment method identifier</dfn> (<abbr title=
-        "payment method identifier">PMI</abbr>) for this specification is
+        payment method identifier</dfn> for this specification is
         "<code><dfn>basic-card</dfn></code>".
       </p>
     </section>
@@ -143,13 +142,12 @@
         <a>network</a>.
       </p>
       <p>
-        The <dfn>details</dfn> of a <a>card</a> are the <dfn>primary account
-        number</dfn> (<abbr title="primary account number">PAN</abbr>)
-        [[ISO7812-1]], <dfn>card holder's name</dfn>, <dfn>security code</dfn>
-        (sometimes known as the CVV, CVC, CVN, CVE or CID), <dfn>expiry
-        month</dfn>, <dfn>expiry year</dfn>, and optionally a <dfn>billing
-        address</dfn>. These are represented as the members of the
-        <a>BasicCardResponse</a> dictionary.
+        The <dfn>details</dfn> of a <a>card</a> are the <dfn data-abbr=
+        "">primary account number</dfn> [[ISO7812-1]], <dfn>card holder's
+        name</dfn>, <dfn>security code</dfn> (sometimes known as the CVV, CVC,
+        CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and
+        optionally a <dfn>billing address</dfn>. These are represented as the
+        members of the <a>BasicCardResponse</a> dictionary.
       </p>
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
@@ -160,9 +158,9 @@
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
-          Issuer identification numbers (IIN) are maintained by ISO but are not
-          available to the general public. However, Wikipedia maintains a list
-          of the common <a href=
+          <dfn data-abbr="">Issuer identification numbers</dfn> are maintained
+          by ISO but are not available to the general public. However,
+          Wikipedia maintains a list of the common <a href=
           "https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_.28IIN.29">
           credit card issuer identification numbers</a>.
         </p>
@@ -799,16 +797,16 @@
       </p>
       <p>
         In particular, merchants need to treat the values of any <a>details</a>
-        with the same scrutiny that they would apply to a [[?HTML]]
+        with the same scrutiny that they would apply to a [[HTML]]
         <code>input</code> element, by, for example, sanitizing all the members
         of a <a>BasicCardResponse</a> before rendering them anywhere.
       </p>
       <p>
         Depending on jurisdiction, users of this specification (implementers,
-        merchants, payment processors, etc.) can be subject to Payment Card
-        Industry Data Security Standard Compliance (<abbr>PCI DSS</abbr>) or
-        other regulations. Discussion of those considerations are outside the
-        scope of this document.
+        merchants, payment processors, etc.) can be subject to <dfn data-abbr=
+        "PCI DSS">Payment Card Industry Data Security Standard Compliance</dfn>
+        or other regulations. Discussion of those considerations are outside
+        the scope of this document.
       </p>
     </section>
     <section id="idl-index" class="appendix"></section>
