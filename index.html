@@ -146,7 +146,7 @@
         name</dfn>, <dfn>security code</dfn> (sometimes known as the CVV, CVC,
         CVN, CVE or CID), <dfn>expiry month</dfn>, <dfn>expiry year</dfn>, and
         optionally a <dfn>billing address</dfn>. These are represented as the
-        members of the <a>BasicCardResponse</a> dictionary.
+        members of the {{BasicCardResponse}} dictionary.
       </p>
       <p>
         A <a>card</a> is identified as belonging to a <dfn data-lt=
@@ -185,7 +185,7 @@
       };
     </pre>
       <p>
-        The <a>BasicCardRequest</a> dictionary contains the following members:
+        The {{BasicCardRequest}} dictionary contains the following members:
       </p>
       <dl>
         <dt>
@@ -208,8 +208,8 @@
         </h3>
         <p>
           The <dfn>steps to check if a payment can be made</dfn> take a
-          <a>BasicCardRequest</a> |request:BasicCardRequest| as input. The
-          steps return either true or false:
+          {{BasicCardRequest}} |request:BasicCardRequest| as input. The steps
+          return either true or false:
         </p>
         <ol class="algorithm" data-link-for="BasicCardRequest">
           <li>Let |cards:list| be a <a>list</a> of <a>cards</a> associated with
@@ -219,8 +219,7 @@
           return false.
           </li>
           <li>Let |networks:sequence&lt;DOMString&gt;| be an empty
-            <a data-cite="WEBIDL#idl-DOMString"><code>DOMString</code></a>
-            sequence.
+          {{DOMString}} sequence.
           </li>
           <li>If |request|.<a>supportedNetworks</a> is present, append each
           item in |request|.<a>supportedNetworks</a> to |networks|.
@@ -266,9 +265,9 @@
           The <dfn>steps to respond to a payment request</dfn> are given by the
           following algorithm. The steps take <a>PaymentRequest</a>
           |request:PaymentRequest| as input. If the end user inputs or selects
-          a <a>card</a> that meets the constraints of <a>BasicCardRequest</a>
+          a <a>card</a> that meets the constraints of {{BasicCardRequest}}
           |data:BasicCardRequest| the algorithm returns a card as a
-          <a>BasicCardResponse</a>.
+          {{BasicCardResponse}}.
         </p>
         <ol class="algorithm" data-link-for="BasicCardResponse">
           <li data-link-for="BasicCardRequest">Let
@@ -277,7 +276,7 @@
           |data|.<a>supportedNetworks</a> is missing.
           </li>
           <li>Let |card:BasicCardResponse| be a newly created
-          <a>BasicCardResponse</a> dictionary.
+          {{BasicCardResponse}} dictionary.
           </li>
           <li>Set |card|.<a>cardNumber</a> to a user provided, or otherwise
           generated, string of digits of length between 10 to 19 items
@@ -356,7 +355,7 @@
           algorithm presupposes that the user agent is only presenting
           <a>supported cards</a> to the end user, by having filtered out
           unsupported cards based on the initiating payment request's
-          <a>BasicCardRequest</a>'s <a>supportedNetworks</a> values.
+          {{BasicCardRequest}}'s <a>supportedNetworks</a> values.
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
@@ -371,8 +370,8 @@
           to run these steps).
         </p>
         <ol>
-          <li>Let |methodDetails:BasicCardChangeDetails| be a newly created <a>
-            BasicCardChangeDetails</a> dictionary.
+          <li>Let |methodDetails:BasicCardChangeDetails| be a newly created
+          {{BasicCardChangeDetails}} dictionary.
           </li>
           <li>From the <a>supported cards</a> presented to the end user, let
           |card| be the <a>card</a> the user selects.
@@ -394,7 +393,7 @@
                     about the recipient that the API shares with the merchant.
                   </p>
                   <p>
-                    For merchants, the resulting <a>PaymentAddress</a> object
+                    For merchants, the resulting {{PaymentAddress}} object
                     provides enough information to, for example, calculate tax,
                     but, in most cases, not enough information to physically
                     locate and uniquely identify the payer.
@@ -451,7 +450,7 @@
             </dt>
             <dd>
               If the merchant requested the billing address, a redacted
-              <a>PaymentAddress</a> that represents the <a>billing address</a>
+              {{PaymentAddress}} that represents the <a>billing address</a>
               associated with the <a>card</a>. If the merchant does not request
               the billing address, it's null.
             </dd>
@@ -509,9 +508,9 @@
         </p>
         <ol class="algorithm" data-cite="infra">
           <li>Let |restrictions:BasicCardRequest| be a newly created
-          <a>BasicCardRequest</a>.
+          {{BasicCardRequest}}.
           </li>
-          <li>For each <a>pair</a> (<a>DOMString</a> |id:DOMString| /
+          <li>For each <a>pair</a> ({{DOMString}} |id:DOMString| /
           <a>string</a> |data:string| of |request|.<a data-cite=
           "payment-request#dfn-serializedmethoddata"><code>[[\serializedMethodData]]</code></a>
           in reverse order:
@@ -525,7 +524,7 @@
               </li>
               <li>Otherwise, set |restrictions:BasicCardRequest| be the result
               of <a data-lt="convert">converting</a> |object| into a
-              <a>BasicCardRequest</a>.
+              {{BasicCardRequest}}.
               </li>
               <li>Break.
               </li>
@@ -556,9 +555,9 @@
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
           </li>
           <li>Let |restrictions:BasicCardRequest| be a newly created
-          <a>BasicCardRequest</a>.
+          {{BasicCardRequest}}.
           </li>
-          <li>For each <a>pair</a> (<a>DOMString</a> |id:DOMString| /
+          <li>For each <a>pair</a> ({{DOMString}} |id:DOMString| /
           <a>string</a> |data:string|) of |request|<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>
           in reverse order:
@@ -573,7 +572,7 @@
               <li>If |object| is <code>null</code>, break.
               </li>
               <li>Let |bcRequest:BasicCardRequest| be the result of converting
-              |object| to <a>BasicCardRequest</a>.
+              |object| to {{BasicCardRequest}}.
               </li>
               <li>If |bcRequest|'s <a>supportedNetworks</a> is zero length, or
               <a>supportedNetworks</a> includes |networkIdentifier|
@@ -658,7 +657,7 @@
           <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          A <a>PaymentAddress</a> that represents the <a>billing address</a>
+          A {{PaymentAddress}} that represents the <a>billing address</a>
           associated with the <a>card</a>, or null.
         </dd>
       </dl>
@@ -669,8 +668,8 @@
       </h2>
       <p>
         When <a data-cite="payment-request#retry-method">retrying</a> a request
-        for payment, a developer can pass a <a>BasicCardErrors</a> dictionary
-        for the value of the <a data-cite=
+        for payment, a developer can pass a {{BasicCardErrors}} dictionary for
+        the value of the <a data-cite=
         "payment-request#paymentvalidationerrors-dictionary"><code>PaymentValidationErrors</code></a>'s
         <a data-cite=
         "payment-request#dom-paymentvalidationerrors-paymentmethod"><code>paymentMethod</code></a>
@@ -779,9 +778,9 @@
         queried, claim to support the "<a>basic-card</a>" <a>standardized
         payment method identifier</a>.
         </li>
-        <li data-tests="empty-data-manual.https.html">return
-        <a>BasicCardResponse</a>s whose members are formatted per their
-        definition in this specification.
+        <li data-tests="empty-data-manual.https.html">return {{
+        BasicCardResponse}}s whose members are formatted per their definition
+        in this specification.
         </li>
       </ul>
     </section>
@@ -792,14 +791,14 @@
       <p>
         Due to differences in quality of implementation and the end user's
         ability to input data into unconstrained input fields, merchants are
-        expected to revalidate all <a>BasicCardResponse</a> returned by APIs
-        that make use of this specification.
+        expected to revalidate all {{BasicCardResponse}} returned by APIs that
+        make use of this specification.
       </p>
       <p>
         In particular, merchants need to treat the values of any <a>details</a>
         with the same scrutiny that they would apply to a [[HTML]]
         <code>input</code> element, by, for example, sanitizing all the members
-        of a <a>BasicCardResponse</a> before rendering them anywhere.
+        of a {{BasicCardResponse}} before rendering them anywhere.
       </p>
       <p>
         Depending on jurisdiction, users of this specification (implementers,
