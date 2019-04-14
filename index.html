@@ -224,7 +224,7 @@
           <li>If |request|.<a>supportedNetworks</a> is present, append each
           item in |request|.<a>supportedNetworks</a> to |networks|.
           </li>
-          <li>For each |card| in |cards|:
+          <li>[=list/For each=] |card| in |cards|:
             <ol>
               <li>Let |isSupported:boolean| be the result of running the
               <a>steps to check if an instrument is supported</a>, passing in
@@ -295,17 +295,17 @@
           chooses provide it, set |card|.<a>cardSecurityCode</a> to a three or
           more digit string.
           </li>
-          <li>If the <a>card</a> supports an <a>expiry month</a> and the user
+          <li>If the |card| supports an <a>expiry month</a> and the user
           chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
           string ranging from "<code>01</code>" to "<code>12</code>".
           </li>
-          <li>If the <a>card</a> supports an <a>expiry year</a> and the user
-          chooses provide it, set |card|.<a>expiryYear</a> to a four-digit
-          string in the range "<code>0000</code>" to "<code>9999</code>".
+          <li>If the |card| supports an <a>expiry year</a> and the user chooses
+          provide it, set |card|.<a>expiryYear</a> to a four-digit string in
+          the range "<code>0000</code>" to "<code>9999</code>".
           </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
+          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
           is true, or, optionally, the user agent determines that payment is
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
