@@ -49,7 +49,7 @@
         wg: "Web Payments Working Group",
         wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
         wgURI: "https://www.w3.org/Payments/WG/",
-        xref: true,
+        xref: "web-platform",
       };
     </script>
   </head>
@@ -246,8 +246,7 @@
           supported, false otherwise.
         </p>
         <ol class="algorithm">
-          <li>If |networks| <a data-cite="infra#list-is-empty">is empty</a>,
-          return true.
+          <li>If |networks| [= list/is empty=], return true.
           </li>
           <li>If |networks| includes the <a>card</a>'s <a>network</a>, return
           true. Otherwise, return false.
@@ -507,7 +506,7 @@
           method. The steps take a <a>PaymentRequest</a>
           |request:PaymentRequest|.
         </p>
-        <ol class="algorithm" data-cite="infra">
+        <ol class="algorithm">
           <li>Let |restrictions:BasicCardRequest| be a newly created
           {{BasicCardRequest}}.
           </li>
@@ -551,7 +550,7 @@
           |request:PaymentRequest| and a string |networkIdentifier:string| that
           identifies a <a>network</a>:
         </p>
-        <ol class="algorithm" data-cite="infra">
+        <ol class="algorithm">
           <li>Let |index:number| be the length of |request|.<a data-cite=
           "payment-request#dfn-serializedmodifierdata"><code>[[\serializedModifierData]]</code></a>.
           </li>
@@ -755,14 +754,6 @@
           attribute, and the <code><dfn data-cite=
           "payment-request#dom-addresserrors">AddressErrors</dfn></code>
           dictionary are defined in [[payment-request]].
-        </dd>
-        <dt>
-          WebIDL
-        </dt>
-        <dd>
-          The <code><dfn data-cite=
-          "WEBIDL#idl-DOMString">DOMString</dfn></code> type is defined in
-          [[WebIDL]].
         </dd>
       </dl>
     </section>
