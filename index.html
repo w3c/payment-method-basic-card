@@ -200,9 +200,9 @@
         </dt>
         <dd>
           A boolean that indicates whether the <a>payment handler</a> SHOULD
-          collect and return the <a>cardSecurityCode</a>. For some
-          transactions, the payee may prefer that the <a>payment handler</a>
-          not prompt the user.
+          collect and return the <a data-link-for=
+          "BasicCardResponse">cardSecurityCode</a>. For some transactions, the
+          payee may prefer that the <a>payment handler</a> not prompt the user.
         </dd>
       </dl>
     </section>
@@ -298,8 +298,9 @@
           holder's name</a>.
           </li>
           <li>If the |card| supports a <a>security code</a>, and
-          <a>requestSecurityCode</a> is true, and the user chooses provide it,
-          set |card|.<a>cardSecurityCode</a> to a three or more digit string.
+          <a data-link-for="BasicCardRequest">requestSecurityCode</a> is true,
+          and the user chooses provide it, set |card|.<a>cardSecurityCode</a>
+          to a three or more digit string.
           </li>
           <li>If the |card| supports an <a>expiry month</a> and the user
           chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
