@@ -136,9 +136,8 @@
         Model
       </h2>
       <p>
-        A <dfn data-lt="cards">card</dfn> is a physical or virtual payment
-        instrument that has <a>details</a> and optionally is part of a
-        <a>network</a>.
+        A <dfn>card</dfn> is a physical or virtual payment instrument that has
+        <a>details</a> and optionally is part of a <a>network</a>.
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-abbr=
@@ -149,11 +148,10 @@
         members of the {{BasicCardResponse}} dictionary.
       </p>
       <p>
-        A <a>card</a> is identified as belonging to a <dfn data-lt=
-        "networks">network</dfn> via its issuer identification number
-        [[ISO7812-1]] (e.g., those belonging to Visa start with a "4"). In an
-        API, each network is represented by a string from the
-        [[[card-network-ids]]].
+        A <a>card</a> is identified as belonging to a <dfn>network</dfn> via
+        its issuer identification number [[ISO7812-1]] (e.g., those belonging
+        to Visa start with a "4"). In an API, each network is represented by a
+        string from the [[[card-network-ids]]].
       </p>
       <aside class="note" title="Common issuer identification numbers (IIN)">
         <p>
@@ -165,14 +163,14 @@
         </p>
       </aside>
       <p>
-        A <dfn data-lt="supported cards">supported card</dfn> is a <a>card</a>
-        that when passed to the <a>steps to check if an instrument is
-        supported</a> together with a list of |networks| returns true.
+        A <dfn>supported card</dfn> is a <a>card</a> that when passed to the
+        <a>steps to check if an instrument is supported</a> together with a
+        list of |networks| returns true.
       </p>
       <p>
-        A payment handler's <dfn data-lt="known">known networks</dfn> are
-        <a>networks</a> it supports. A payment handler MAY support zero or more
-        networks from the [[[card-network-ids]]].
+        A payment handler's <dfn>known networks</dfn> are <a>networks</a> it
+        supports. A payment handler MAY support zero or more networks from the
+        [[[card-network-ids]]].
       </p>
     </section>
     <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
@@ -211,12 +209,11 @@
           {{BasicCardRequest}} |request:BasicCardRequest| as input. The steps
           return either true or false:
         </p>
-        <ol class="algorithm" data-link-for="BasicCardRequest">
-          <li>Let |cards:list| be a <a>list</a> of <a>cards</a> associated with
-          this payment handler.
+        <ol class="algorithm">
+          <li>Let |cards:list&lt;card&gt;| be a <a>list</a> of <a>cards</a>
+          associated with this payment handler.
           </li>
-          <li>If |cards| <a data-cite="infra#list-is-empty">is empty</a>,
-          return false.
+          <li>If |cards| [=list/is empty=], return false.
           </li>
           <li>Let |networks:sequence&lt;DOMString&gt;| be an empty
           {{DOMString}} sequence.
@@ -224,7 +221,7 @@
           <li>If |request|.<a>supportedNetworks</a> is present, append each
           item in |request|.<a>supportedNetworks</a> to |networks|.
           </li>
-          <li>[=list/For each=] |card| in |cards|:
+          <li>[=list/For each=] |card:card| in |cards|:
             <ol>
               <li>Let |isSupported:boolean| be the result of running the
               <a>steps to check if an instrument is supported</a>, passing in
@@ -245,8 +242,8 @@
         <p>
           The <dfn>steps to check if an instrument is supported</dfn> take as
           input a <a>card</a> |card:card| and a <a>list</a> of <a>network</a>
-          |networks:list|. It returns true if the |card| is supported, false
-          otherwise.
+          |networks:list&lt;network&gt;|. It returns true if the |card| is
+          supported, false otherwise.
         </p>
         <ol class="algorithm">
           <li>If |networks| <a data-cite="infra#list-is-empty">is empty</a>,
@@ -359,12 +356,13 @@
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows. The steps take <a>PaymentRequest</a> |request| as input. To
-          mitigate fingerprinting concerns, the user agent MUST NOT run these
-          steps unless a user explicitly switches to a different card by
-          performing some user action (e.g., by selecting a different card
-          explicitly from a list of cards). For cards that are preselected by
-          default by the user agent, any matching <a data-cite=
+          follows. The steps take <a>PaymentRequest</a>
+          |request:PaymentRequest| as input. To mitigate fingerprinting
+          concerns, the user agent MUST NOT run these steps unless a user
+          explicitly switches to a different card by performing some user
+          action (e.g., by selecting a different card explicitly from a list of
+          cards). For cards that are preselected by default by the user agent,
+          any matching <a data-cite=
           "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
           <a data-lt="apply the modifiers">apply</a> instead (without the need
           to run these steps).
@@ -376,10 +374,13 @@
           <li>From the <a>supported cards</a> presented to the end user, let
           |card| be the <a>card</a> the user selects.
           </li>
+          <li data-link-for="BasicCardChangeDetails">Set
+          |methodDetails|.<a>billingAddress</a> to `null`.
+          </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
           "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
-          is true:
+          is `true`:
             <ol>
               <li>
                 <p>
@@ -406,21 +407,21 @@
                   </p>
                 </div>
               </li>
-              <li>Set |billingAddress| to the result of running the steps to
-              <a data-cite=
+              <li>Let |billingAddress:PaymentAddress| to the result of running
+              the steps to <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
                 create a <code>PaymentAddress</code> from user-provided
-                input</a> with |redactList|
+                input</a> with |redactList|.
               </li>
               <li>Optionally, redact |billingAddress|.<a data-cite=
               "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
               to make it more privacy preserving, but providing enough detail
               so that, for example, it can still be used to calculate tax.
               </li>
+              <li data-link-for="BasicCardChangeDetails">Set
+              |methodDetails|.<a>billingAddress</a> to |billingAddress|.
+              </li>
             </ol>
-          </li>
-          <li data-link-for="BasicCardChangeDetails">Set
-          |methodDetails|.<a>billingAddress</a> to |billingAddress|.
           </li>
           <li>Run |request|'s <a data-cite=
           "payment-request#dfn-payment-method-changed-algorithm">payment method
@@ -637,14 +638,14 @@
         </dt>
         <dd>
           A two-digit string for the <a>expiry month</a> of the card in the
-          range "<code>01</code>" to "<code>12</code>".
+          range "`01`" to "`12`".
         </dd>
         <dt>
           <dfn>expiryYear</dfn> member
         </dt>
         <dd>
           A four-digit string for the <a>expiry year</a> of the card in the
-          range "<code>0000</code>" to "<code>9999</code>".
+          range "`0000`" to "`9999`".
         </dd>
         <dt>
           <dfn>cardSecurityCode</dfn> member
