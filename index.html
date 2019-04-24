@@ -179,7 +179,8 @@
       </h2>
       <pre class="idl">
       dictionary BasicCardRequest {
-        sequence&lt;DOMString&gt; supportedNetworks = [];
+      sequence&lt;DOMString&gt; supportedNetworks = [];
+      boolean requestSecurityCode = true;
       };
     </pre>
       <p>
@@ -193,6 +194,15 @@
           A sequence of identifiers for card networks that the merchant
           accepts, derived from the [[[card-network-ids]]]. When the sequence
           is empty, it means that all <a>networks</a> are supported.
+        </dd>
+        <dt>
+          <dfn>requestSecurityCode</dfn>
+        </dt>
+        <dd>
+          A boolean that indicates whether the <a>payment handler</a> SHOULD
+          collect and return the <a>cardSecurityCode</a>. For some
+          transactions, the payee may prefer that the <a>payment handler</a>
+          not prompt the user.
         </dd>
       </dl>
     </section>
@@ -287,9 +297,9 @@
           chooses provide it, set |card|.<a>cardholderName</a> to the <a>card
           holder's name</a>.
           </li>
-          <li>If the |card| supports a <a>security code</a> and the user
-          chooses provide it, set |card|.<a>cardSecurityCode</a> to a three or
-          more digit string.
+          <li>If the |card| supports a <a>security code</a>, and
+          <a>requestSecurityCode</a> is true, and the user chooses provide it,
+          set |card|.<a>cardSecurityCode</a> to a three or more digit string.
           </li>
           <li>If the |card| supports an <a>expiry month</a> and the user
           chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
