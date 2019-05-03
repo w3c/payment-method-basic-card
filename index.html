@@ -785,7 +785,11 @@
         Due to differences in quality of implementation and the end user's
         ability to input data into unconstrained input fields, merchants are
         expected to revalidate all {{BasicCardResponse}} returned by APIs that
-        make use of this specification.
+        make use of this specification. In particular, merchants need to treat
+        the values of any <a>details</a> with the same scrutiny that they would
+        apply to a [[HTML]] <code>input</code> element, by, for example,
+        sanitizing all the members of a {{BasicCardResponse}} before rendering
+        them anywhere.
       </p>
       <p>
         In particular, merchants need to treat the values of any <a>details</a>
