@@ -77,7 +77,7 @@
         instance, with the [[[payment-request]]]. With it, merchants can
         request the card <a>details</a> (card holder name, card number, etc.)
         from the end user as an alternative to collecting the same information
-        through a <code><a>form</a></code>.
+        through a <a>`form`</a>.
       </p>
       <p>
         The basic card payment method provides information to merchant websites
@@ -306,11 +306,11 @@
           </li>
           <li>If the |card| supports an <a>expiry month</a> and the user
           chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
-          string ranging from "<code>01</code>" to "<code>12</code>".
+          string ranging from "`01`" to "`12`".
           </li>
           <li>If the |card| supports an <a>expiry year</a> and the user chooses
           provide it, set |card|.<a>expiryYear</a> to a four-digit string in
-          the range "<code>0000</code>" to "<code>9999</code>".
+          the range "`0000`" to "`9999`".
           </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
@@ -325,8 +325,8 @@
               <li>Set |card|.<a>billingAddress</a> to the result of running the
               steps to <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
-                create a <code>PaymentAddress</code> from user-provided
-                input</a> with |redactList|.
+                create a {{PaymentAddress}} from user-provided input</a> with
+                |redactList|.
               </li>
             </ol>
           </li>
@@ -533,7 +533,7 @@
               <li>Let |object:object| be result of <a data-cite=
               "ecma-262#sec-json.parse">JSON-parsing</a> |data|
               </li>
-              <li>If |object| is <code>null</code>, break.
+              <li>If |object| is `null`, break.
               </li>
               <li>Otherwise, set |restrictions:BasicCardRequest| be the result
               of <a data-lt="convert">converting</a> |object| into a
@@ -582,7 +582,7 @@
               <li>Let |object:object| be result of <a data-cite=
               "ecma-262#sec-json.parse">JSON-parsing</a> |data|
               </li>
-              <li>If |object| is <code>null</code>, break.
+              <li>If |object| is `null`, break.
               </li>
               <li>Let |bcRequest:BasicCardRequest| be the result of converting
               |object| to {{BasicCardRequest}}.
@@ -683,9 +683,9 @@
         When <a data-cite="payment-request#retry-method">retrying</a> a request
         for payment, a developer can pass a {{BasicCardErrors}} dictionary for
         the value of the <a data-cite=
-        "payment-request#paymentvalidationerrors-dictionary"><code>PaymentValidationErrors</code></a>'s
+        "payment-request#paymentvalidationerrors-dictionary">`PaymentValidationErrors`</a>'s
         <a data-cite=
-        "payment-request#dom-paymentvalidationerrors-paymentmethod"><code>paymentMethod</code></a>
+        "payment-request#dom-paymentvalidationerrors-paymentmethod">`paymentMethod`</a>
         member.
       </p>
       <pre class="idl">
@@ -801,9 +801,9 @@
       </p>
       <p>
         In particular, merchants need to treat the values of any <a>details</a>
-        with the same scrutiny that they would apply to a [[HTML]]
-        <code>input</code> element, by, for example, sanitizing all the members
-        of a {{BasicCardResponse}} before rendering them anywhere.
+        with the same scrutiny that they would apply to a [[HTML]] `input`
+        element, by, for example, sanitizing all the members of a
+        {{BasicCardResponse}} before rendering them anywhere.
       </p>
       <p>
         Depending on jurisdiction, users of this specification (implementers,
