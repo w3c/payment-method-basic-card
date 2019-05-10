@@ -307,7 +307,7 @@
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
             <ol>
-              <li>Let |redactList:list| be at least « "organization", "phone",
+              <li>Let |redactList:list| be at least « "organization",
               "recipient" ».
               </li>
               <li>Set |card|.<a>billingAddress</a> to the result of running the
@@ -785,13 +785,21 @@
         Due to differences in quality of implementation and the end user's
         ability to input data into unconstrained input fields, merchants are
         expected to revalidate all {{BasicCardResponse}} returned by APIs that
-        make use of this specification.
+        make use of this specification. In particular, merchants need to treat
+        the values of any <a>details</a> with the same scrutiny that they would
+        apply to a [[HTML]] `&lt;input&gt;` element, by, for example,
+        sanitizing all the members of a {{BasicCardResponse}} before rendering
+        them anywhere.
       </p>
-      <p>
-        In particular, merchants need to treat the values of any <a>details</a>
-        with the same scrutiny that they would apply to a [[HTML]] `input`
-        element, by, for example, sanitizing all the members of a
-        {{BasicCardResponse}} before rendering them anywhere.
+      <p data-link-for="BasicCardResponse">
+        Payees make multiple uses of the data provided through this
+        specification, including payment authorization and risk assessment.
+        Some users may prefer to share less data than is returned by default
+        through the <a>steps to respond to a payment request</a>. User agents
+        may offer configurations where less data is returned in the response
+        (e.g., by redacting the `phone` member of {{billingAddress}}). Such
+        configurations may have an impact on authorization or other aspects of
+        user experience (e.g., subsequent requests for strong authentication).
       </p>
       <p>
         Depending on jurisdiction, users of this specification (implementers,
