@@ -524,8 +524,8 @@
               <li>If |object| is `null`, break.
               </li>
               <li>Otherwise, set |restrictions:BasicCardRequest| be the result
-              of <a data-lt="convert">converting</a> |object| into a
-              {{BasicCardRequest}}.
+              of <a data-lt="converted to an idl value">converting</a> |object|
+              into a {{BasicCardRequest}} dictionary.
               </li>
               <li>Break.
               </li>
@@ -572,8 +572,9 @@
               </li>
               <li>If |object| is `null`, break.
               </li>
-              <li>Let |bcRequest:BasicCardRequest| be the result of converting
-              |object| to {{BasicCardRequest}}.
+              <li>Let |bcRequest:BasicCardRequest| be the result of
+                <a data-lt="converted to an idl value">converting</a> |object|
+                to a {{BasicCardRequest}} dictionary.
               </li>
               <li>If |bcRequest|'s <a>supportedNetworks</a> is zero length, or
               <a>supportedNetworks</a> includes |networkIdentifier|
