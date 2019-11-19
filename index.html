@@ -39,8 +39,7 @@
           },
         ],
         doJsonLd: true,
-        github: "https://github.com/w3c/payment-method-basic-card/",
-        lint: { "check-punctuation": true },
+        github: "w3c/payment-method-basic-card",
         noRecTrack: true,
         previousMaturity: "FPWD",
         previousPublishDate: "2016-04-21",
@@ -54,7 +53,7 @@
       };
     </script>
   </head>
-  <body>
+  <body data-cite="payment-method-id">
     <section id='abstract'>
       <p>
         This specification describes data structures and formats, and a simple
@@ -126,10 +125,8 @@
         Payment Method Identifier
       </h2>
       <p>
-        The <dfn data-abbr="PMI" data-cite=
-        "payment-method-id#standardized-payment-method-identifiers">standardized
-        payment method identifier</dfn> for this specification is
-        "<code><dfn>basic-card</dfn></code>".
+        The <dfn data-abbr="PMI">standardized payment method identifier</dfn>
+        for this specification is "<code><dfn>basic-card</dfn></code>".
       </p>
     </section>
     <section>
@@ -175,7 +172,7 @@
         [[[card-network-ids]]].
       </p>
     </section>
-    <section data-dfn-for="BasicCardRequest" data-link-for="BasicCardRequest">
+    <section data-dfn-for="BasicCardRequest">
       <h2>
         <dfn>BasicCardRequest</dfn> dictionary
       </h2>
@@ -208,7 +205,7 @@
         </dd>
       </dl>
     </section>
-    <section data-link-for="BasicCardRequest">
+    <section>
       <h2>
         Interfacing with a payment request
       </h2>
@@ -230,8 +227,9 @@
           <li>Let |networks:sequence&lt;DOMString&gt;| be an empty
           {{DOMString}} sequence.
           </li>
-          <li>If |request|.<a>supportedNetworks</a> is present, append each
-          item in |request|.<a>supportedNetworks</a> to |networks|.
+          <li>If |request|.{{BasicCardRequest/supportedNetworks}} is present,
+          append each item in |request|.{{BasicCardRequest/supportedNetworks}}
+          to |networks|.
           </li>
           <li>[=list/For each=] |card:card| in |cards|:
             <ol>
@@ -258,7 +256,7 @@
           supported, false otherwise.
         </p>
         <ol class="algorithm">
-          <li>If |networks| [= list/is empty=], return true.
+          <li>If |networks| [=list/is empty=], return true.
           </li>
           <li>If |networks| includes the <a>card</a>'s <a>network</a>, return
           true. Otherwise, return false.
@@ -277,18 +275,17 @@
           |data:BasicCardRequest| the algorithm returns a card as a
           {{BasicCardResponse}}.
         </p>
-        <ol class="algorithm" data-link-for="BasicCardResponse">
-          <li data-link-for="BasicCardRequest">Let
-          |networks:sequence&lt;DOMString&gt;| be
-          |data|.<a>supportedNetworks</a>, or an empty list if
-          |data|.<a>supportedNetworks</a> is missing.
+        <ol class="algorithm">
+          <li>Let |networks:sequence&lt;DOMString&gt;| be
+          |data|.{{BasicCardRequest/supportedNetworks}}, or an empty list if
+          |data|.{{BasicCardRequest/supportedNetworks}} is missing.
           </li>
           <li>Let |card:BasicCardResponse| be a newly created
           {{BasicCardResponse}} dictionary.
           </li>
-          <li>Set |card|.<a>cardNumber</a> to a user provided, or otherwise
-          generated, string of digits of length between 10 to 19 items
-          representing the <a>primary account number</a>.
+          <li>Set |card|.{{BasicCardResponse/cardNumber}} to a user provided,
+          or otherwise generated, string of digits of length between 10 to 19
+          items representing the <a>primary account number</a>.
           </li>
           <li>While the <a>steps to check if an instrument is supported</a>
           with |card|, |networks| returns false, ask the user to correct the
@@ -296,21 +293,21 @@
           card</a>, continue.
           </li>
           <li>If the |card| supports a <a>card holder's name</a> and the user
-          chooses provide it, set |card|.<a>cardholderName</a> to the <a>card
-          holder's name</a>.
+          chooses provide it, set |card|.{{BasicCardResponse/cardholderName}}
+          to the <a>card holder's name</a>.
           </li>
           <li>If the |card| supports a <a>security code</a>, and
-          <a data-link-for="BasicCardRequest">requestSecurityCode</a> is true,
-          and the user chooses provide it, set |card|.<a>cardSecurityCode</a>
+          {{BasicCardRequest/requestSecurityCode}} is true,
+          and the user chooses provide it, set |card|.{{BasicCardResponse/cardSecurityCode}}
           to a three or more digit string.
           </li>
           <li>If the |card| supports an <a>expiry month</a> and the user
-          chooses to provide it, set |card|.<a>expiryMonth</a> to two-digit
-          string ranging from "`01`" to "`12`".
+          chooses to provide it, set |card|.{{BasicCardResponse/expiryMonth}}
+          to two-digit string ranging from "`01`" to "`12`".
           </li>
           <li>If the |card| supports an <a>expiry year</a> and the user chooses
-          provide it, set |card|.<a>expiryYear</a> to a four-digit string in
-          the range "`0000`" to "`9999`".
+          provide it, set |card|.{{BasicCardResponse/expiryYear}} to a
+          four-digit string in the range "`0000`" to "`9999`".
           </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
@@ -319,13 +316,13 @@
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
             <ol>
-              <li>Let |redactList:list| be at least « "addressLine",
-              "organization", "phone", "recipient" ».
+              <li>Let |redactList:list| be at least « "organization", "phone",
+              "recipient" ».
               </li>
-              <li>Set |card|.<a>billingAddress</a> to the result of running the
-              steps to <a data-cite=
+              <li>Set |card|.{{BasicCardResponse/billingAddress}} to the result
+              of running the steps to <a data-cite=
               "payment-request#creating-a-paymentaddress-from-user-provided-input">
-                create a {{PaymentAddress}} from user-provided input</a> with
+                create a `PaymentAddress` from user-provided input</a> with
                 |redactList|.
               </li>
             </ol>
@@ -358,13 +355,13 @@
         <h3>
           Steps for when a user changes payment method
         </h3>
-        <p class="note" data-lt="BasicCardRequest">
+        <p class="note">
           When the end user explicitly switches from one card to another, these
           steps cause an event to fire in the [[[payment-request]]]. The
           algorithm presupposes that the user agent is only presenting
           <a>supported cards</a> to the end user, by having filtered out
           unsupported cards based on the initiating payment request's
-          {{BasicCardRequest}}'s <a>supportedNetworks</a> values.
+          {{BasicCardRequest}}'s {{BasicCardRequest/supportedNetworks}} values.
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
@@ -386,8 +383,8 @@
           <li>From the <a>supported cards</a> presented to the end user, let
           |card| be the <a>card</a> the user selects.
           </li>
-          <li data-link-for="BasicCardChangeDetails">Set
-          |methodDetails|.<a>billingAddress</a> to `null`.
+          <li>Set |methodDetails|.{{BasicCardChangeDetails/billingAddress}} to
+          `null`.
           </li>
           <li>If |request|.<a data-cite=
           "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
@@ -430,8 +427,8 @@
               to make it more privacy preserving, but providing enough detail
               so that, for example, it can still be used to calculate tax.
               </li>
-              <li data-link-for="BasicCardChangeDetails">Set
-              |methodDetails|.<a>billingAddress</a> to |billingAddress|.
+              <li>Set |methodDetails|.{{BasicCardChangeDetails/billingAddress}}
+              to |billingAddress|.
               </li>
             </ol>
           </li>
@@ -531,21 +528,21 @@
               <li>If |id| is not <code>"basic-card"</code>, continue.
               </li>
               <li>Let |object:object| be result of <a data-cite=
-              "ecma-262#sec-json.parse">JSON-parsing</a> |data|
+              "ecma-262#sec-json.parse">JSON-parsing</a> |data|.
               </li>
               <li>If |object| is `null`, break.
               </li>
               <li>Otherwise, set |restrictions:BasicCardRequest| be the result
-              of |object| being <a>converted to an IDL value</a> of type
-              {{BasicCardRequest}}.
+              of [=converted to an idl value|converting=] |object| into a
+              {{BasicCardRequest}} dictionary.
               </li>
               <li>Break.
               </li>
             </ol>
           </li>
-          <li>Apply |restrictions|'s <a>supportedNetworks</a> member to
-          constrain the card type inputs of the payment UI. When the sequence
-          is empty, it means that all <a>networks</a> are supported.
+          <li>Apply |restrictions|'s {{BasicCardRequest/supportedNetworks}}
+          member to constrain the card type inputs of the payment UI. When the
+          sequence is empty, it means that all <a>networks</a> are supported.
           </li>
           <li>If a payment instrument is selected by default, <a>apply the
           modifiers</a> using |request| and passing the identifier for
@@ -580,16 +577,17 @@
               <li>If |id| is not "<a>basic-card</a>", continue.
               </li>
               <li>Let |object:object| be result of <a data-cite=
-              "ecma-262#sec-json.parse">JSON-parsing</a> |data|
+              "ecma-262#sec-json.parse">JSON-parsing</a> |data|.
               </li>
               <li>If |object| is `null`, break.
               </li>
-              <li>Let |bcRequest:BasicCardRequest| be the result of |object|
-              being <a>converted to an IDL value</a> of type
-              {{BasicCardRequest}}.
+              <li>Let |bcRequest:BasicCardRequest| be the result of [=converted
+              to an idl value|converting=] |object| to a {{BasicCardRequest}}
+              dictionary.
               </li>
-              <li>If |bcRequest|'s <a>supportedNetworks</a> is zero length, or
-              <a>supportedNetworks</a> includes |networkIdentifier|
+              <li>If |bcRequest|'s {{BasicCardRequest/supportedNetworks}} is
+              zero length, or {{BasicCardRequest/supportedNetworks}} includes
+              |networkIdentifier|
                 <ol>
                   <li>Set |restriction| to |bcRequest|
                   </li>
@@ -599,8 +597,8 @@
               </li>
             </ol>
           </li>
-          <li>Let |modifier:PaymentMethodModifier| be the
-          <a>PaymentMethodModifier</a> from |request|.<a data-cite=
+          <li>Let |modifier:PaymentDetailsModifier| be the
+          <a>PaymentDetailsModifier</a> from |request|.<a data-cite=
           "payment-request#dfn-details">[[\details]]</a>.<a data-cite=
           "payment-request#dom-paymentdetailsbase-modifiers">modifiers</a> at
           |index|.
@@ -617,8 +615,7 @@
         </ol>
       </section>
     </section>
-    <section data-dfn-for="BasicCardResponse" data-link-for=
-    "BasicCardResponse">
+    <section data-dfn-for="BasicCardResponse">
       <h2>
         <dfn>BasicCardResponse</dfn> dictionary
       </h2>
@@ -676,7 +673,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="BasicCardErrors" data-link-for="BasicCardErrors">
+    <section data-dfn-for="BasicCardErrors">
       <h2>
         <dfn>BasicCardErrors</dfn> dictionary
       </h2>
@@ -758,7 +755,7 @@
           interface, <code><dfn data-cite=
           "payment-request#dom-paymentmethoddata">PaymentMethodData</dfn></code>
           dictionary, <code><dfn data-cite=
-          "payment-request#dom-paymentdetailsmodifier">PaymentMethodModifier</dfn></code>
+          "payment-request#dom-paymentdetailsmodifier">PaymentDetailsModifier</dfn></code>
           dictionary, <code><dfn data-cite=
           "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
           interface, <code><dfn data-cite=
