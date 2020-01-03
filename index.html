@@ -297,8 +297,7 @@
           four-digit string in the range "`0000`" to "`9999`".
           </li>
           <li>If |request|.<a data-cite=
-          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          "payment-request#dfn-options">[[\options]]</a>["{{PaymentOptions/requestBillingAddress}}"]
           is true, or, optionally, the user agent determines that payment is
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
@@ -358,8 +357,7 @@
           explicitly switches to a different card by performing some user
           action (e.g., by selecting a different card explicitly from a list of
           cards). For cards that are preselected by default by the user agent,
-          any matching <a data-cite=
-          "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
+          any matching {{PaymentDetailsModifier}}s
           <a data-lt="apply the modifiers">apply</a> instead (without the need
           to run these steps).
         </p>
@@ -374,8 +372,7 @@
           `null`.
           </li>
           <li>If |request|.<a data-cite=
-          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
+          "payment-request#dfn-options">[[\options]]</a>["{{PaymentOptions/requestBillingAddress}}"]
           is `true`:
             <ol>
               <li>
@@ -409,8 +406,7 @@
                 create a <code>PaymentAddress</code> from user-provided
                 input</a> with |redactList|.
               </li>
-              <li>Optionally, redact |billingAddress|.<a data-cite=
-              "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
+              <li>Optionally, redact |billingAddress|.{{PaymentAddress/postalCode}}
               to make it more privacy preserving, but providing enough detail
               so that, for example, it can still be used to calculate tax.
               </li>
@@ -426,8 +422,7 @@
           <li>Let |networkIdentifier:DOMString| be the <a>network</a> of the
           selected instrument.
           </li>
-          <li>If <a data-cite=
-          "payment-request#dom-paymentrequestupdateevent-updatewith">updateWith()</a>
+          <li>If {{PaymentRequestUpdateEvent/updateWith()}}
           was called, <a>apply the modifiers</a> using |request| and
           |networkIdentifier|.
           </li>
@@ -666,10 +661,7 @@
       <p>
         When <a data-cite="payment-request#retry-method">retrying</a> a request
         for payment, a developer can pass a {{BasicCardErrors}} dictionary for
-        the value of the <a data-cite=
-        "payment-request#paymentvalidationerrors-dictionary">`PaymentValidationErrors`</a>'s
-        <a data-cite=
-        "payment-request#dom-paymentvalidationerrors-paymentmethod">`paymentMethod`</a>
+        the value of the {{PaymentValidationErrors}}'s {{PaymentValidationErrors/paymentMethod}}
         member.
       </p>
       <pre class="idl">
