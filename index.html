@@ -351,15 +351,15 @@
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows. The steps take {{PaymentRequest}}
-          |request:PaymentRequest| as input. To mitigate fingerprinting
-          concerns, the user agent MUST NOT run these steps unless a user
-          explicitly switches to a different card by performing some user
-          action (e.g., by selecting a different card explicitly from a list of
-          cards). For cards that are preselected by default by the user agent,
-          any matching {{PaymentDetailsModifier}}s
-          <a data-lt="apply the modifiers">apply</a> instead (without the need
-          to run these steps).
+          follows. The steps take {{PaymentRequest}} |request:PaymentRequest|
+          as input. To mitigate fingerprinting concerns, the user agent MUST
+          NOT run these steps unless a user explicitly switches to a different
+          card by performing some user action (e.g., by selecting a different
+          card explicitly from a list of cards). For cards that are preselected
+          by default by the user agent, any matching
+          {{PaymentDetailsModifier}}s <a data-lt=
+          "apply the modifiers">apply</a> instead (without the need to run
+          these steps).
         </p>
         <ol>
           <li>Let |methodDetails:BasicCardChangeDetails| be a newly created
@@ -406,9 +406,10 @@
                 create a <code>PaymentAddress</code> from user-provided
                 input</a> with |redactList|.
               </li>
-              <li>Optionally, redact |billingAddress|.{{PaymentAddress/postalCode}}
-              to make it more privacy preserving, but providing enough detail
-              so that, for example, it can still be used to calculate tax.
+              <li>Optionally, redact
+              |billingAddress|.{{PaymentAddress/postalCode}} to make it more
+              privacy preserving, but providing enough detail so that, for
+              example, it can still be used to calculate tax.
               </li>
               <li>Set |methodDetails|.{{BasicCardChangeDetails/billingAddress}}
               to |billingAddress|.
@@ -422,9 +423,8 @@
           <li>Let |networkIdentifier:DOMString| be the <a>network</a> of the
           selected instrument.
           </li>
-          <li>If {{PaymentRequestUpdateEvent/updateWith()}}
-          was called, <a>apply the modifiers</a> using |request| and
-          |networkIdentifier|.
+          <li>If {{PaymentRequestUpdateEvent/updateWith()}} was called,
+          <a>apply the modifiers</a> using |request| and |networkIdentifier|.
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -456,8 +456,8 @@
         <div class="note">
           <p>
             In the case where a payment request is made with multiple
-            applicable {{PaymentMethodData}}s, this algorithm selects the
-            last applicable <a data-cite=
+            applicable {{PaymentMethodData}}s, this algorithm selects the last
+            applicable <a data-cite=
             "payment-request#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
             whose PMI is "<code>basic-card</code>". (i.e., "the last one
             wins").
@@ -493,9 +493,8 @@
           The <dfn>steps for selecting the payment handler</dfn> are given by
           the following algorithm. These steps run when a payment UI is first
           presented to the end-user, as a successful call to a
-          {{PaymentRequest}}'s {{PaymentRequest.show()}}
-          method. The steps take a {{PaymentRequest}}
-          |request:PaymentRequest|.
+          {{PaymentRequest}}'s {{PaymentRequest.show()}} method. The steps take
+          a {{PaymentRequest}} |request:PaymentRequest|.
         </p>
         <ol class="algorithm">
           <li>Let |restrictions:BasicCardRequest| be a newly created
@@ -661,8 +660,8 @@
       <p>
         When <a data-cite="payment-request#retry-method">retrying</a> a request
         for payment, a developer can pass a {{BasicCardErrors}} dictionary for
-        the value of the {{PaymentValidationErrors}}'s {{PaymentValidationErrors/paymentMethod}}
-        member.
+        the value of the {{PaymentValidationErrors}}'s
+        {{PaymentValidationErrors/paymentMethod}} member.
       </p>
       <pre class="idl">
         dictionary BasicCardErrors {
@@ -710,8 +709,8 @@
           <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          A {{AddressErrors}} dictionary that represents validation errors
-          with the <a>billing address</a> associated with the <a>card</a>.
+          A {{AddressErrors}} dictionary that represents validation errors with
+          the <a>billing address</a> associated with the <a>card</a>.
         </dd>
       </dl>
     </section>
