@@ -579,16 +579,14 @@
           </li>
           <li>Let |modifier:PaymentDetailsModifier| be the
           {{PaymentDetailsModifier}} from |request|.<a data-cite=
-          "payment-request#dfn-details">[[\details]]</a>. <a data-cite=
-          "payment-request#dom-paymentdetailsbase-modifiers">modifiers</a> at
+          "payment-request#dfn-details">[[\details]]</a>. {{PaymentDetailsBase/modifiers}} at
           |index|.
           </li>
           <li>If |modifier|.<a data-cite=
           "payment-request#dom-paymentdetailsmodifier-total"><code>total</code></a>
           is present, update the presented UI with the updated total.
           </li>
-          <li>If |modifier|.<a data-cite=
-          "payment-request#dom-paymentdetailsmodifier-additionaldisplayitems"><code>additionalDisplayItems</code></a>
+          <li>If |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}
           is present, update the presented UI with the additional display
           items.
           </li>
@@ -658,7 +656,7 @@
         <dfn>BasicCardErrors</dfn> dictionary
       </h2>
       <p>
-        When <a data-cite="payment-request#retry-method">retrying</a> a request
+        When {{PaymentResponse/retry()}} a request
         for payment, a developer can pass a {{BasicCardErrors}} dictionary for
         the value of the {{PaymentValidationErrors}}'s
         {{PaymentValidationErrors/paymentMethod}} member.
