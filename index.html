@@ -581,6 +581,8 @@
           {{PaymentDetailsModifier}} from |request|.<a data-cite=
           "payment-request#dfn-details">[[\details]]</a>. {{PaymentDetailsBase/modifiers}} at
           |index|.
+          "payment-request#dfn-details">[[\details]]</a>.
+          {{PaymentDetailsBase/modifiers}} at |index|.
           </li>
           <li>If |modifier|.<a data-cite=
           "payment-request#dom-paymentdetailsmodifier-total"><code>total</code></a>
@@ -656,10 +658,10 @@
         <dfn>BasicCardErrors</dfn> dictionary
       </h2>
       <p>
-        When {{PaymentResponse/retry()}} a request
-        for payment, a developer can pass a {{BasicCardErrors}} dictionary for
-        the value of the {{PaymentValidationErrors}}'s
-        {{PaymentValidationErrors/paymentMethod}} member.
+        When {{PaymentResponse/retry()}} a request for payment, a developer can
+        pass a {{BasicCardErrors}} dictionary for the value of the
+        {{PaymentValidationErrors}}'s {{PaymentValidationErrors/paymentMethod}}
+        member.
       </p>
       <pre class="idl">
         dictionary BasicCardErrors {
