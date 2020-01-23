@@ -52,7 +52,7 @@
       };
     </script>
   </head>
-  <body data-cite="payment-method-id">
+  <body data-cite="payment-method-id payment-request">
     <section id='abstract'>
       <p>
         This specification describes data structures and formats, and a simple
@@ -257,7 +257,7 @@
         </h3>
         <p>
           The <dfn>steps to respond to a payment request</dfn> are given by the
-          following algorithm. The steps take <a>PaymentRequest</a>
+          following algorithm. The steps take {{PaymentRequest}}
           |request:PaymentRequest| as input. If the end user inputs or selects
           a <a>card</a> that meets the constraints of {{BasicCardRequest}}
           |data:BasicCardRequest| the algorithm returns a card as a
@@ -297,8 +297,7 @@
           four-digit string in the range "`0000`" to "`9999`".
           </li>
           <li>If |request|.<a data-cite=
-          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestbillingaddress"><code>requestBillingAddress</code></a>"]
+          "payment-request#dfn-options">[[\options]]</a>["{{PaymentOptions/requestBillingAddress}}"]
           is true, or, optionally, the user agent determines that payment is
           taking place in region where validation of billing addresses against
           an address verification system is the norm:
@@ -352,16 +351,15 @@
         </p>
         <p>
           The <dfn>steps for when a user changes payment method</dfn> are as
-          follows. The steps take <a>PaymentRequest</a>
-          |request:PaymentRequest| as input. To mitigate fingerprinting
-          concerns, the user agent MUST NOT run these steps unless a user
-          explicitly switches to a different card by performing some user
-          action (e.g., by selecting a different card explicitly from a list of
-          cards). For cards that are preselected by default by the user agent,
-          any matching <a data-cite=
-          "payment-request#dom-paymentdetailsmodifier"><code>PaymentDetailsModifier</code></a>s
-          <a data-lt="apply the modifiers">apply</a> instead (without the need
-          to run these steps).
+          follows. The steps take {{PaymentRequest}} |request:PaymentRequest|
+          as input. To mitigate fingerprinting concerns, the user agent MUST
+          NOT run these steps unless a user explicitly switches to a different
+          card by performing some user action (e.g., by selecting a different
+          card explicitly from a list of cards). For cards that are preselected
+          by default by the user agent, any matching
+          {{PaymentDetailsModifier}}s <a data-lt=
+          "apply the modifiers">apply</a> instead (without the need to run
+          these steps).
         </p>
         <ol>
           <li>Let |methodDetails:BasicCardChangeDetails| be a newly created
@@ -374,8 +372,7 @@
           `null`.
           </li>
           <li>If |request|.<a data-cite=
-          "payment-request#dfn-options">[[\options]]</a>["<a data-cite=
-          "payment-request#dom-paymentoptions-requestshipping"><code>requestBillingAddress</code></a>"]
+          "payment-request#dfn-options">[[\options]]</a>["{{PaymentOptions/requestBillingAddress}}"]
           is `true`:
             <ol>
               <li>
@@ -409,10 +406,10 @@
                 create a <code>PaymentAddress</code> from user-provided
                 input</a> with |redactList|.
               </li>
-              <li>Optionally, redact |billingAddress|.<a data-cite=
-              "payment-request#dom-paymentaddress-postalcode"><code>postalCode</code></a>
-              to make it more privacy preserving, but providing enough detail
-              so that, for example, it can still be used to calculate tax.
+              <li>Optionally, redact
+              |billingAddress|.{{PaymentAddress/postalCode}} to make it more
+              privacy preserving, but providing enough detail so that, for
+              example, it can still be used to calculate tax.
               </li>
               <li>Set |methodDetails|.{{BasicCardChangeDetails/billingAddress}}
               to |billingAddress|.
@@ -426,10 +423,8 @@
           <li>Let |networkIdentifier:DOMString| be the <a>network</a> of the
           selected instrument.
           </li>
-          <li>If <a data-cite=
-          "payment-request#dom-paymentrequestupdateevent-updatewith">updateWith()</a>
-          was called, <a>apply the modifiers</a> using |request| and
-          |networkIdentifier|.
+          <li>If {{PaymentRequestUpdateEvent/updateWith()}} was called,
+          <a>apply the modifiers</a> using |request| and |networkIdentifier|.
           </li>
         </ol>
         <section data-dfn-for="BasicCardChangeDetails">
@@ -461,8 +456,8 @@
         <div class="note">
           <p>
             In the case where a payment request is made with multiple
-            applicable <a>PaymentMethodData</a>s, this algorithm selects the
-            last applicable <a data-cite=
+            applicable {{PaymentMethodData}}s, this algorithm selects the last
+            applicable <a data-cite=
             "payment-request#dfn-serializedmethoddata">[[\serializedMethodData]]</a>
             whose PMI is "<code>basic-card</code>". (i.e., "the last one
             wins").
@@ -498,10 +493,8 @@
           The <dfn>steps for selecting the payment handler</dfn> are given by
           the following algorithm. These steps run when a payment UI is first
           presented to the end-user, as a successful call to a
-          <a>PaymentRequest</a>'s <a data-cite=
-          "payment-request#dom-paymentrequest-show"><code>show()</code></a>
-          method. The steps take a <a>PaymentRequest</a>
-          |request:PaymentRequest|.
+          {{PaymentRequest}}'s {{PaymentRequest.show()}} method. The steps take
+          a {{PaymentRequest}} |request:PaymentRequest|.
         </p>
         <ol class="algorithm">
           <li>Let |restrictions:BasicCardRequest| be a newly created
@@ -543,7 +536,7 @@
         </h2>
         <p>
           The steps to <dfn>apply the modifiers</dfn> are given by the
-          following algorithm. It takes a <a>PaymentRequest</a>
+          following algorithm. It takes a {{PaymentRequest}}
           |request:PaymentRequest| and a string |networkIdentifier:string| that
           identifies a <a>network</a>:
         </p>
@@ -585,17 +578,14 @@
             </ol>
           </li>
           <li>Let |modifier:PaymentDetailsModifier| be the
-          <a>PaymentDetailsModifier</a> from |request|.<a data-cite=
-          "payment-request#dfn-details">[[\details]]</a>.<a data-cite=
-          "payment-request#dom-paymentdetailsbase-modifiers">modifiers</a> at
-          |index|.
+          {{PaymentDetailsModifier}} from |request|.<a data-cite=
+          "payment-request#dfn-details">[[\details]]</a>.
+          {{PaymentDetailsBase/modifiers}} at |index|.
           </li>
-          <li>If |modifier|.<a data-cite=
-          "payment-request#dom-paymentdetailsmodifier-total"><code>total</code></a>
-          is present, update the presented UI with the updated total.
+          <li>If |modifier|.{{PaymentDetailsModifier/total}} is present, update
+          the presented UI with the updated total.
           </li>
-          <li>If |modifier|.<a data-cite=
-          "payment-request#dom-paymentdetailsmodifier-additionaldisplayitems"><code>additionalDisplayItems</code></a>
+          <li>If |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}
           is present, update the presented UI with the additional display
           items.
           </li>
@@ -665,12 +655,9 @@
         <dfn>BasicCardErrors</dfn> dictionary
       </h2>
       <p>
-        When <a data-cite="payment-request#retry-method">retrying</a> a request
-        for payment, a developer can pass a {{BasicCardErrors}} dictionary for
-        the value of the <a data-cite=
-        "payment-request#paymentvalidationerrors-dictionary">`PaymentValidationErrors`</a>'s
-        <a data-cite=
-        "payment-request#dom-paymentvalidationerrors-paymentmethod">`paymentMethod`</a>
+        When {{PaymentResponse/retry()}} a request for payment, a developer can
+        pass a {{BasicCardErrors}} dictionary for the value of the
+        {{PaymentValidationErrors}}'s {{PaymentValidationErrors/paymentMethod}}
         member.
       </p>
       <pre class="idl">
@@ -719,39 +706,8 @@
           <dfn>billingAddress</dfn> member
         </dt>
         <dd>
-          A <a>AddressErrors</a> dictionary that represents validation errors
-          with the <a>billing address</a> associated with the <a>card</a>.
-        </dd>
-      </dl>
-    </section>
-    <section>
-      <h2>
-        Dependencies
-      </h2>
-      <p>
-        This specification relies on WebIDL definitions defined in other
-        specifications.
-      </p>
-      <dl>
-        <dt>
-          Payment Request API
-        </dt>
-        <dd>
-          The <code><dfn data-cite=
-          "payment-request#dom-paymentaddress">PaymentAddress</dfn></code>
-          interface, <code><dfn data-cite=
-          "payment-request#dom-paymentmethoddata">PaymentMethodData</dfn></code>
-          dictionary, <code><dfn data-cite=
-          "payment-request#dom-paymentdetailsmodifier">PaymentDetailsModifier</dfn></code>
-          dictionary, <code><dfn data-cite=
-          "payment-request#dom-paymentrequest">PaymentRequest</dfn></code>
-          interface, <code><dfn data-cite=
-          "payment-request#dom-paymentmethodchangeevent">PaymentMethodChangeEvent</dfn></code>
-          interface and its <code><dfn data-cite=
-          "payment-request#dom-paymentmethodchangeevent-methoddetails">methodDetails</dfn></code>
-          attribute, and the <code><dfn data-cite=
-          "payment-request#dom-addresserrors">AddressErrors</dfn></code>
-          dictionary are defined in [[payment-request]].
+          A {{AddressErrors}} dictionary that represents validation errors with
+          the <a>billing address</a> associated with the <a>card</a>.
         </dd>
       </dl>
     </section>
