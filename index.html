@@ -133,8 +133,9 @@
         Model
       </h2>
       <p>
-        A <dfn>card</dfn> is a physical or virtual payment instrument that has
-        <a>details</a> and optionally is part of a <a>network</a>.
+        A <dfn data-lt="card's">card</dfn> is a physical or virtual payment
+        instrument that has <a>details</a> and optionally is part of a
+        <a>network</a>.
       </p>
       <p>
         The <dfn>details</dfn> of a <a>card</a> are the <dfn data-abbr=
@@ -177,6 +178,7 @@
       <pre class="idl">
       dictionary BasicCardRequest {
         sequence&lt;DOMString&gt; supportedNetworks = [];
+        boolean requestSecurityCode = true;
       };
     </pre>
       <p>
@@ -190,6 +192,15 @@
           A sequence of identifiers for card networks that the merchant
           accepts, derived from the [[[card-network-ids]]]. When the sequence
           is empty, it means that all <a>networks</a> are supported.
+        </dd>
+        <dt>
+          <dfn>requestSecurityCode</dfn> member
+        </dt>
+        <dd data-link-for="BasicCardResponse">
+          A boolean that indicates whether the <a>payment handler</a> SHOULD
+          collect and return a [=card's=] <a>security code</a> via
+          {{BasicCardResponse/cardSecurityCode}}. For some transactions, the
+          payee may prefer that the <a>payment handler</a> not prompt the user.
         </dd>
       </dl>
     </section>
@@ -284,7 +295,8 @@
           chooses provide it, set |card|.{{BasicCardResponse/cardholderName}}
           to the <a>card holder's name</a>.
           </li>
-          <li>If the |card| supports a <a>security code</a> and the user
+          <li>If the |card| supports a <a>security code</a>, and
+          {{BasicCardRequest/requestSecurityCode}} is true, and the user
           chooses provide it, set |card|.{{BasicCardResponse/cardSecurityCode}}
           to a three or more digit string.
           </li>
