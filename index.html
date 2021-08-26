@@ -4,12 +4,21 @@
     <title>
       Payment Method: Basic Card
     </title>
-    <meta charset='utf-8'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' async class=
-    'remove'></script>
-    <script class='remove'>
+    <meta charset="utf-8">
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" async class=
+    "remove"></script>
+    <script class="remove">
       const respecConfig = {
         editors: [
+          {
+            name: "Ian Jacobs",
+            url: "http://www.w3.org/People/Jacobs/",
+            company: "W3C",
+            companyURL: "https://www.w3.org/",
+            w3cid: 2175,
+          },
+        ],
+        formerEditors: [
           {
             name: "Marcos Cáceres",
             company: "W3C",
@@ -21,6 +30,11 @@
             w3cid: 52873,
           },
           {
+            name: "Adrian Bateman",
+            company: "Microsoft Corporation",
+            w3cid: 42763,
+          },
+          {
             name: "Zach Koch",
             company: "Google",
             w3cid: 76588,
@@ -30,28 +44,19 @@
             company: "Facebook",
             w3cid: 88345,
           },
-          {
-            name: "Adrian Bateman",
-            company: "Microsoft Corporation",
-            w3cid: 42763,
-            retiredDate: "2018-10-04",
-          },
         ],
-        doJsonLd: true,
+        shortName: "payment-method-basic-card",
         github: "w3c/payment-method-basic-card",
         noRecTrack: true,
         previousMaturity: "FPWD",
-        previousPublishDate: "2016-04-21",
         specStatus: "ED",
-        testSuiteURI: "https://w3c-test.org/payment-method-basic-card/",
         group: "payments",
         xref: "web-platform",
-        mdn: true,
       };
     </script>
   </head>
   <body data-cite="payment-method-id payment-request">
-    <section id='abstract'>
+    <section id="abstract">
       <p>
         This specification describes data structures and formats, and a simple
         processing model, to facilitate card-based payments on the Web. It is
@@ -59,7 +64,7 @@
         "basic-card", such as credit, debit, or prepaid card.
       </p>
     </section>
-    <section id='sotd'>
+    <section id="sotd">
       <p>
         <strong>The <a href="https://www.w3.org/Payments/WG/">Web Payments
         Working Group</a> has deprecated this specification. See the <a href=
